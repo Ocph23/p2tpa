@@ -1,0 +1,70 @@
+﻿<Page x:Class="Main.Views.TambahKasusPages.KondisiPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Main.Views.TambahKasusPages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"   xmlns:main="clr-namespace:Main"
+        xmlns:utilities="clr-namespace:Main.Utilities"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
+      Title="Kondisi Korban">
+    <Page.Resources>
+        <main:EnumToBoolConverter x:Key="EBConverter"/>
+    </Page.Resources>
+    <GroupBox Header="Kondisi Korban">
+        <StackPanel  Background="White">
+            <GroupBox Header="Fisik">
+                <WrapPanel Margin="10,20,0,30">
+                    <RadioButton GroupName="kondisiFisik" IsChecked="{Binding Path=Fisik, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiFisik.Sehat}}" Content="Sehat" ></RadioButton>
+                    <RadioButton GroupName="kondisiFisik" IsChecked="{Binding Path=Fisik, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiFisik.Sakit}}" Content="Tidak Sehat/Sakit" ></RadioButton>
+                    <RadioButton GroupName="kondisiFisik" IsChecked="{Binding Path=Fisik, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiFisik.Luka}}" Content="Luka-Luka" ></RadioButton>
+
+                </WrapPanel>
+            </GroupBox>
+            <GroupBox Header="Psikis">
+                <WrapPanel Margin="10,20,0,30">
+                    <RadioButton GroupName="kondisiPsikis" IsChecked="{Binding Path=Psikis, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Ketakutan}}" Content="Ketakutan" ></RadioButton>
+                    <RadioButton GroupName="kondisiPsikis" IsChecked="{Binding Path=Psikis, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Cemas}}" Content="Cemas" ></RadioButton>
+                    <RadioButton GroupName="kondisiPsikis" IsChecked="{Binding Path=Psikis, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Emosi}}" Content="Emosi Tinggi" ></RadioButton>
+                    <RadioButton x:Name="kondisiPsikisrb" GroupName="kondisiPsikis" IsChecked="{Binding Path=Psikis,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,
+                        ValidatesOnDataErrors=True,ValidatesOnNotifyDataErrors=False, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Lain}}" Content="Lain-Lain" ></RadioButton>
+                    <TextBox  Text="{Binding PsikisText,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource ResourceKey={x:Type TextBox}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding = "{Binding ElementName = kondisiPsikisrb, Path = IsChecked}" Value = "false">
+                                        <Setter Property="TextBox.Visibility" Value = "Hidden"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </WrapPanel>
+            </GroupBox>
+            <GroupBox Header="Seksual">
+                <WrapPanel Margin="10,20,0,30">
+                    <RadioButton GroupName="kondisiSeksual" IsChecked="{Binding Path=Sex, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiSex.Pendarahan}}" Content="Pendarahan" ></RadioButton>
+                    <RadioButton x:Name="kondisiSeksualRb" GroupName="kondisiSeksual" IsChecked="{Binding Path=Sex,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiSex.Lain}}" Content="Lain-Lain" ></RadioButton>
+                    <TextBox  Text="{Binding SexText,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource ResourceKey={x:Type TextBox}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding = "{Binding ElementName = kondisiSeksualRb, Path = IsChecked}" Value = "false">
+                                        <Setter Property="TextBox.Visibility" Value = "Hidden"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </WrapPanel>
+            </GroupBox>
+        </StackPanel>
+    </GroupBox>
+</Page>

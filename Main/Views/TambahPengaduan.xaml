@@ -1,0 +1,55 @@
+﻿<Window x:Class="Main.Views.TambahPengaduan"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Main.Views"
+        mc:Ignorable="d" FontSize="15"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:main="clr-namespace:Main"
+        xmlns:utilities="clr-namespace:Main.Utilities"
+        MinWidth="800"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="PENGADUAN KORBAN PEREMPUAN"  Height="768" Width="1360" WindowState="Maximized">
+    <Window.Resources>
+        
+        <main:EnumToBoolConverter x:Key="EBConverter"/>
+    </Window.Resources>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+      
+        <Grid Grid.Row="1" Margin="20,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*"></ColumnDefinition>
+                <ColumnDefinition Width="75*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="30">
+                <TextBlock HorizontalAlignment="Center" Text="TAMBAH PENGADUAN" FontSize="20" Margin="10" FontWeight="Bold" TextAlignment="Center" Grid.Row="0"/>
+                <Image Source="/Main;component/Images/pppa.jpg"/>
+                <TextBlock HorizontalAlignment="Center" Text="KEMENTERIAN PEMBERDAYAAN"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" Text="DAN PERLINDUNGAN ANAK"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" Text="REPUBLIK INDONESIA"></TextBlock>
+            </StackPanel>
+            <ScrollViewer Grid.Column="1"  >
+                <StackPanel VerticalAlignment="Center">
+                    <Frame NavigationUIVisibility="Hidden" x:Name="MainFrame"></Frame>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+       
+        <WrapPanel Grid.Row="2" Margin="15" HorizontalAlignment="Right">
+            <utilities:NavigationPage x:Name="nav"></utilities:NavigationPage>
+        </WrapPanel>
+    </Grid>
+</Window>

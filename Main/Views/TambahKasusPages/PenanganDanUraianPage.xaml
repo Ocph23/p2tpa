@@ -1,0 +1,57 @@
+﻿<Page x:Class="Main.Views.TambahKasusPages.PenanganDanUraianPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Main.Views.TambahKasusPages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"   xmlns:main="clr-namespace:Main"
+        xmlns:utilities="clr-namespace:Main.Utilities"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
+      Title="TerlaporPage">
+    <Page.Resources>
+        <main:EnumToBoolConverter x:Key="EBConverter"/>
+    </Page.Resources>
+    <Grid>
+        <StackPanel>
+            <GroupBox Header="Langkah - Langkah Penanganan Kasus" Margin="10,0"  Background="White">
+                <WrapPanel Margin="10,0,0,30">
+                    <Label Content="Langkah Penanganan"></Label>
+                    <StackPanel >
+                        <WrapPanel>
+                            <CheckBox IsChecked="{Binding Hukum,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}">Pendampingan Hukum</CheckBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <CheckBox IsChecked="{Binding NonHukum,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}">Pendampingan Non Hukum</CheckBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <CheckBox IsChecked="{Binding Konsultasi,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}">Konsultasi</CheckBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <CheckBox IsChecked="{Binding Rujukan,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}">Rujukan</CheckBox>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <CheckBox Width="80" IsChecked="{Binding Lain,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}">Lainnya</CheckBox>
+                            <TextBox Text="{Binding LainText,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></TextBox>
+                        </WrapPanel>
+                        <StackPanel>
+                            <TextBlock Margin="20" Foreground="Red" Text="{Binding ErrorMessage,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                   
+                </WrapPanel>
+            </GroupBox>
+            <GroupBox Header="Uraian Singkat Kejadian" Margin="10,0"  Background="White">
+                <WrapPanel Margin="10,0,0,30">
+                    <TextBox Text="{Binding Uraian,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
+                </WrapPanel>
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</Page>

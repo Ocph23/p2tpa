@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Main", "Main.csproj", "{58785B05-D509-423F-972D-D9CDAD1A5D00}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ocph.DAL.SQLite", "..\..\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite.csproj", "{F02685D0-50F1-4B27-A5EF-CD1D68B7F848}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58785B05-D509-423F-972D-D9CDAD1A5D00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58785B05-D509-423F-972D-D9CDAD1A5D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58785B05-D509-423F-972D-D9CDAD1A5D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58785B05-D509-423F-972D-D9CDAD1A5D00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F02685D0-50F1-4B27-A5EF-CD1D68B7F848}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F02685D0-50F1-4B27-A5EF-CD1D68B7F848}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F02685D0-50F1-4B27-A5EF-CD1D68B7F848}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F02685D0-50F1-4B27-A5EF-CD1D68B7F848}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0DCA1598-9481-43BC-B467-CF16A3DBAE6E}
+	EndGlobalSection
+EndGlobal

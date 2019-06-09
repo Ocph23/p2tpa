@@ -1,0 +1,102 @@
+﻿<Page x:Class="Main.Views.TambahKasusPages.PengaduanPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Main.Views.TambahKasusPages"
+    mc:Ignorable="d" FontSize="15"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:main="clr-namespace:Main"
+      xmlns:utilities="clr-namespace:Main.Utilities"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
+      Title="PengaduanPage">
+    <Page.Resources>
+        <main:EnumToBoolConverter x:Key="EBConverter"/>
+    </Page.Resources>
+    <GroupBox Header="Pengaduan Kasus">
+        <StackPanel Style="{StaticResource stackPanelExpander}"  Background="White">
+            <WrapPanel>
+                <Label Content="Distrik"></Label>
+                <ComboBox ItemsSource="{Binding Kecamatan}" SelectedValuePath="Id" SelectedValue="{Binding KodeDistrik,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,
+                    ValidatesOnDataErrors=True}" DisplayMemberPath="Nama" ></ComboBox>
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="Nomor Register"></Label>
+                <TextBox Text="{Binding Nomor,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}" ></TextBox>
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="Rujukan Dari"></Label>
+                <TextBox Text="{Binding Rujukan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}" ></TextBox>
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="Hari/Tanggal"></Label>
+                <DatePicker MinWidth="200"  SelectedDateFormat="Long" Language="id-ID" SelectedDate="{Binding Tanggal,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" Width="100"  materialDesign:HintAssist.Hint="Pick Date"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="Penerima Pengaduan"></Label>
+                <TextBox Text="{Binding Penerima,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="Waktu"></Label>
+                <materialDesign:TimePicker Language="id-ID" SelectedTime="{Binding Waktu}"
+                                       materialDesign:HintAssist.Hint="Validates"
+                                       IsInvalidTextAllowed="True"
+                                       Is24Hours="{Binding IsChecked, ElementName=Is24HourCheckbox}"
+                                       Width="100">
+                    <materialDesign:TimePicker.Text>
+                        <Binding Path="ValidatingTime" UpdateSourceTrigger="PropertyChanged">
+                           
+                        </Binding>
+                    </materialDesign:TimePicker.Text>
+                </materialDesign:TimePicker>
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="Tempat"></Label>
+                <TextBox Text="{Binding Tempat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+            </WrapPanel>
+            <WrapPanel Margin="10,10">
+                <Label Content="Yang Melapor"></Label>
+                <RadioButton GroupName="StatusPelapor"  IsChecked="{Binding Path=Pelapor.StatusPelapor, ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:StatusPelapor.Sendiri}}" Content="Sendiri"></RadioButton>
+                <RadioButton GroupName="StatusPelapor" IsChecked="{Binding Path=Pelapor.StatusPelapor,ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:StatusPelapor.OrangTua}}" Content="Orang Tua"></RadioButton>
+                <RadioButton GroupName="StatusPelapor" IsChecked="{Binding Path=Pelapor.StatusPelapor,ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:StatusPelapor.Famili}}" Content="Famili"></RadioButton>
+                </WrapPanel>
+            <StackPanel Margin="180,0,0,0">
+                <WrapPanel>
+                    <RadioButton Width="100" x:Name="statusPelaporLain" GroupName="StatusPelapor" IsChecked="{Binding Path=Pelapor.StatusPelapor,ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:StatusPelapor.Lain}}" Content="Lain-Lain"></RadioButton>
+                    <TextBox  Text="{Binding Pelapor.StatusPelaporText,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}">
+                        <TextBox.Style>
+                            <Style TargetType="TextBox" BasedOn="{StaticResource ResourceKey={x:Type TextBox}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding = "{Binding ElementName = statusPelaporLain, Path = IsChecked}" Value = "false">
+                                        <Setter Property="TextBox.Visibility" Value = "Hidden"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Width="120" Content="Nama"></Label>
+                    <TextBox  Text="{Binding Pelapor.Nama,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                </WrapPanel>
+                <WrapPanel Margin="10,15,0,20">
+                    <Label Width="120" Content="Jenis Kelamin"></Label>
+                    <RadioButton GroupName="pelaporGender"  IsChecked="{Binding Path=Pelapor.Gender, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:Gender.L}}" Content="Laki-Laki"></RadioButton>
+                    <RadioButton  GroupName="pelaporGender" IsChecked="{Binding Path=Pelapor.Gender, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:Gender.P}}" Content="Perempuan"></RadioButton>
+                </WrapPanel>
+                <WrapPanel Margin="10,0,0,30">
+                    <Label Width="120" Content="Alamat"></Label>
+                    <TextBox AcceptsReturn="True" Height="auto" Text="{Binding Pelapor.Alamat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                </WrapPanel>
+                
+            </StackPanel>
+        </StackPanel>
+    </GroupBox>
+</Page>

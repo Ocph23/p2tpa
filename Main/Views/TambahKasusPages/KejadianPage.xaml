@@ -1,0 +1,81 @@
+﻿<Page x:Class="Main.Views.TambahKasusPages.KejadianPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Main.Views.TambahKasusPages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"   xmlns:main="clr-namespace:Main"
+        xmlns:utilities="clr-namespace:Main.Utilities"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
+      Title="Kejadian">
+    <Page.Resources>
+        <main:EnumToBoolConverter x:Key="EBConverter"/>
+    </Page.Resources>
+
+    <GroupBox Header="Kasus Yang Dilaporkan">
+        <StackPanel Margin="10,0"  Background="White">
+            <WrapPanel>
+                <Label Content="Waktu Kajadian"></Label>
+                 <materialDesign:TimePicker Language="id-ID" SelectedTime="{Binding Waktu}" Height="37" Margin="5"
+                                       materialDesign:HintAssist.Hint="Waktu"
+                                       IsInvalidTextAllowed="True"
+                                       Is24Hours="{Binding IsChecked, ElementName=Is24HourCheckbox}"
+                                       Width="100">
+                    <materialDesign:TimePicker.Text>
+                        <Binding Path="ValidatingTime" UpdateSourceTrigger="PropertyChanged">
+
+                        </Binding>
+                    </materialDesign:TimePicker.Text>
+                </materialDesign:TimePicker>
+                <DatePicker MinWidth="200"  SelectedDateFormat="Long" Language="id-ID" SelectedDate="{Binding Waktu,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
+                            Width="100"  materialDesign:HintAssist.Hint="Tanggal"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="Tempat Kejadian"></Label>
+                <TextBox Text="{Binding Tempat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="Kasus Yang Terjadi"></Label>
+                <StackPanel>
+                  
+                </StackPanel>
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="KDRT"></Label>
+                <StackPanel>
+                    <CheckBox IsChecked="{Binding Fisik,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=False}">Kekerasan Fisik</CheckBox>
+                    <CheckBox IsChecked="{Binding Psikis,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=False}">Kekerasan Psikis</CheckBox>
+                    <CheckBox IsChecked="{Binding Penelantaran,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=False}">Kekerasan Penelantaran</CheckBox>
+                    <CheckBox IsChecked="{Binding Seksual,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=False}">Kekerasan Seksual</CheckBox>
+                    
+                </StackPanel>
+            </WrapPanel>
+            <WrapPanel>
+                <Label Content="Publik"></Label>
+                <StackPanel>
+                    <CheckBox IsChecked="{Binding Penganiayaan,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=False}">Penganiayaan</CheckBox>
+                    <CheckBox IsChecked="{Binding Pencabulan,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=False}">Pencabulan</CheckBox>
+                    <CheckBox IsChecked="{Binding Pemerkosaan,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=False}">Pemerkosaan</CheckBox>
+                    <CheckBox IsChecked="{Binding Trafiking,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=False}">Trafiking</CheckBox>
+                    
+                </StackPanel>
+            </WrapPanel>
+            <WrapPanel Margin="10,0,0,30">
+                <Label Content="Kasus Lainnya"></Label>
+                <TextBox Text="{Binding Lain,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+            </WrapPanel>
+            <WrapPanel>
+                <TextBlock Foreground="Red" Text="{Binding KDRTMessage}"></TextBlock>
+            </WrapPanel>
+        </StackPanel>
+    </GroupBox>
+</Page>
