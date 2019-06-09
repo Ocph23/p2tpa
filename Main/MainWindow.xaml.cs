@@ -20,18 +20,23 @@ namespace Main
             InitializeComponent();
         
             TambahPengaduanCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = TambahPengaduanAction };
-            var db = new ImportFromExcel()  ;
-            db.DataReseult += Db_DataReseult;
-            db.Start();
+            ImportCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = ImportAction };
             DataContext = this;
+        }
+
+        private void ImportAction(object obj)
+        {
+            var form = new Views.ImportView();
+            form.Show();
         }
 
         private void Db_DataReseult(List<ViewModels.Pengaduan> data)
         {
-          
+         
         }
 
         public CommandHandler TambahPengaduanCommand { get; }
+        public CommandHandler ImportCommand { get; private set; }
 
         private void TambahPengaduanAction(object obj)
         {

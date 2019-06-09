@@ -63,7 +63,6 @@ namespace Main.DataAccess
                var trans=  db.BeginTransaction();
                 try
                 {
-
                     item.IdPelapor = db.DataPelapor.InsertAndGetLastID(item.Pelapor);
                     if(item.IdPelapor<=0)
                         throw new SystemException("Data Pelapor Tidak Tersimpan");
@@ -79,12 +78,9 @@ namespace Main.DataAccess
                         throw new SystemException("Data Terlapor Tidak Tersimpan");
                     item.Terlapor.Id = item.IdTerlapor;
 
-
-
                     item.Id = db.DataPengaduan.InsertAndGetLastID(item);
                     if (item.Id <= 0)
                         throw new SystemException("Data Pengaduan Tidak Tersimpan");
-
 
                     item.Kejadian.PengaduanId = item.Id.Value;
                     item.Dampak.PengaduanId = item.Id.Value;

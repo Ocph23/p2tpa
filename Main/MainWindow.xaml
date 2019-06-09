@@ -21,6 +21,10 @@
                     <MenuItem Header="Data"/>
                     <MenuItem Header="Tambah" Command="{Binding TambahPengaduanCommand}"/>
                 </MenuItem>
+                <MenuItem Header="Export Import">
+                    <MenuItem Header="Export"/>
+                    <MenuItem Header="Import" Command="{Binding ImportCommand}"/>
+                </MenuItem>
             </Menu>
         </StackPanel>
         <ScrollViewer Grid.Row="1">

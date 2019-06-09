@@ -1,9 +1,11 @@
 ﻿using Main.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Main.DataAccess
@@ -11,7 +13,7 @@ namespace Main.DataAccess
 
 
     public delegate void onResult(List<Pengaduan> data);
-   public class ImportFromExcel      :IDisposable
+   public class ImportFromExcel :IDisposable
     {
        
         Excel.Application xlApp = new Excel.Application();
@@ -23,60 +25,154 @@ namespace Main.DataAccess
             Excel.Application xlApp = new Excel.Application();
             var path = Environment.CurrentDirectory + "\\ImportPengaduan.xlsx";
             xlWorkbook = xlApp.Workbooks.Open(path);
+            PengaduanViews = (CollectionView)CollectionViewSource.GetDefaultView(Pengaduans);
+            this.Start();
         }
 
 
-        public List<Pengaduan> Pengaduans { get; private set; }
-
+        public ObservableCollection<Pengaduan> Pengaduans { get; set; } = new ObservableCollection<Pengaduan>();
+        public CollectionView PengaduanViews { get; set; }
         public async void Start()
         {
-            Pengaduans= await ProccessPengaduan();
+            await ProccessPengaduan().ContinueWith(taskPengaduanComplete);
             await ProccessKorban().ContinueWith(taskKorbanCompleteAsync);
            await ProccessPelapor().ContinueWith(taskPelaporCompleteAsync);
            await ProccessPerkembangan().ContinueWith(taskPerkembanganCompleteAsync);
             await ProccessTerlapor().ContinueWith(taskTerlaporCompleteAsync);
             await ProccessUraian().ContinueWith(taskUraianCompleteAsync);
-            SaveToDatabase(Pengaduans);
+            SaveToDatabaseAsync(Pengaduans.ToList());
 
-
-
-
-           
         }
 
-        private void SaveToDatabase(List<Pengaduan> pengaduans)
+        private void SaveToDatabaseAsync(List<Pengaduan> pengaduans)
+        {
+            foreach(var item in pengaduans)
+            {
+                SaveDataAsync(item).ContinueWith(completeSaveAsync);
+            }
+        }
+
+        private async Task completeSaveAsync(Task<Tuple<string, Pengaduan>> obj)
+        {
+            var result = await obj;
+            if (result.Item2.Id <= 0)
+            {
+                //NotSaved
+            }
+            else
+            {   //Saved
+
+            }
+
+        }
+
+        private async Task<Tuple<string,Pengaduan>> SaveDataAsync(Pengaduan item)
         {
             using (var db = new DbContext())
             {
+                var trans = db.BeginTransaction();
                 try
                 {
-                    foreach (var item in pengaduans)
-                    {
-                        var pengaduan = db.DataPengaduan.Where(O => O.KodeDistrik == item.KodeDistrik && O.Tanggal == item.Tanggal && O.Nomor == item.Nomor).FirstOrDefault();
-                        if (pengaduan != null)
-                            return;
-                        int idPelapor = await GetPelapor(pengaduan.Pelapor);
-                    }
-                }
-                catch (Exception)
-                {
+                    var pengaduanFound = db.DataPengaduan.Where(O => O.KodeDistrik == item.KodeDistrik && O.Tanggal == item.Tanggal && O.Nomor == item.Nomor).FirstOrDefault();
+                    if (pengaduanFound != null)
+                        throw new SystemException("Data Sudah Ada");
 
-                    throw;
+                    var idPelapor = await GetIdIdentitas(item.Pelapor);
+                    if (idPelapor <= 0)
+                        throw new SystemException("Data Pelapor Tidak Ditemukan/Tidak Lengkap");
+
+                    var idKorban = await GetIdIdentitas(item.Korban);
+                    if (idPelapor <= 0)
+                        throw new SystemException("Data Korban Tidak Ditemukan/Tidak Lengkap");
+
+                    var idterlapor = await GetIdIdentitas(item.Terlapor);
+                    if (idPelapor <= 0)
+                        throw new SystemException("Data Terlapor Tidak Ditemukan/Tidak Lengkap");
+
+                    item.IdKorban = idKorban;
+                    item.IdTerlapor = idterlapor;
+                    item.IdPelapor = idPelapor;
+
+                    item.Id = db.DataPengaduan.InsertAndGetLastID(item);
+                    if (item.Id <= 0)
+                        throw new SystemException("Data Pengaduan Tidak Tersimpan");
+
+                    item.Kejadian.PengaduanId = item.Id.Value;
+                    item.Dampak.PengaduanId = item.Id.Value;
+                    item.Kondisi.PengaduanId = item.Id.Value;
+
+                    item.Kondisi.Id = db.DataKondisiKorban.InsertAndGetLastID(item.Kondisi);
+                    if (item.Kondisi.Id <= 0)
+                        throw new SystemException("Data Kondisi Korban Tidak Tersimpan");
+
+                    item.Dampak.Id = db.DataDampak.InsertAndGetLastID(item.Dampak);
+                    if (item.Dampak.Id <= 0)
+                        throw new SystemException("Data  Dampak Yang Dialami Tidak Tersimpan");
+
+                    item.Kejadian.Id = db.DataKejadian.InsertAndGetLastID(item.Kejadian);
+                    if (item.Kejadian.Id <= 0)
+                        throw new SystemException("Data  Kejadian Tidak Tersimpan");
+
+                    foreach (var data in item.Perkembangan)
+                    {
+                        data.PengaduanId = item.Id.Value;
+                        data.Id = db.DataTahapanPerkembangan.InsertAndGetLastID(data);
+                        if (data.Id <= 0)
+                            throw new SystemException("Data Tahapan  Perkembangan Kejadian Tidak Tersimpan");
+                    }
+
+                    return Tuple.Create("Berhasil", item);
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    return Tuple.Create(ex.Message,new Pengaduan());
                 }
 
               
             }
          
 
-            if (DataReseult != null)
-                DataReseult(Pengaduans);
         }
 
-        private Task<int> GetPelapor(Pelapor pelapor)
+        private Task<int> GetIdIdentitas(Pelapor pelapor)
         {
             using (var db = new DbContext())
             {
+                var data = db.DataPelapor.Where(O => O.Nama == pelapor.Nama && O.Gender == pelapor.Gender).FirstOrDefault();
+                if (data != null)
+                   return Task.FromResult(data.Id.Value);
 
+               var  id = db.DataPelapor.InsertAndGetLastID(pelapor);
+                return Task.FromResult(id);
+
+
+            }
+        }
+
+        private Task<int> GetIdIdentitas(Korban item)
+        {
+            using (var db = new DbContext())
+            {
+                var data = db.DataPelapor.Where(O => O.Nama == item.Nama && O.Gender == item.Gender).FirstOrDefault();
+                if (data != null)
+                    return Task.FromResult(data.Id.Value);
+               var id = db.DataKorban.InsertAndGetLastID(item);
+                return Task.FromResult(id);
+
+
+            }
+        }
+
+        private Task<int> GetIdIdentitas(Terlapor item)
+        {
+            using (var db = new DbContext())
+            {
+                var data = db.DataPelapor.Where(O => O.Nama == item.Nama && O.Gender == item.Gender).FirstOrDefault();
+                if (data != null)
+                    return Task.FromResult(data.Id.Value);
+               var id = db.DataTerlapor.InsertAndGetLastID(item);
+                return Task.FromResult(id);
             }
         }
 
@@ -184,7 +280,13 @@ namespace Main.DataAccess
 
         private async Task taskPengaduanComplete(Task<List<Pengaduan>> obj)
         {
-            Pengaduans = await obj;
+            var datas = await obj;
+            foreach(var item in datas)
+            {
+                Pengaduans.Add(item);
+            }
+
+            PengaduanViews.Refresh();
 
         }
 
