@@ -81,12 +81,41 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
-                        <Charts:JenisKekerasanyangDialamiKorban />
+                        <Charts:JenisKekerasanyangDialamiKorban></Charts:JenisKekerasanyangDialamiKorban>
                     </materialDesign:Card>
                     <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
-                        <Charts:JumlahKasusberdasarkanTempatKejadian />
+                        <Charts:KorbanMenurutBanyaknyaKekerasanyangDialami></Charts:KorbanMenurutBanyaknyaKekerasanyangDialami>
                     </materialDesign:Card>
+                </Grid>
 
+                <Grid MinHeight="100" Grid.Row="5" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
+                        <Charts:KorbanBerdasarkanUsia></Charts:KorbanBerdasarkanUsia>
+                    </materialDesign:Card>
+                    <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
+                        <Charts:KorbanBerdasarkanPendidikan></Charts:KorbanBerdasarkanPendidikan>
+                    </materialDesign:Card>
+                </Grid>
+
+                <Grid MinHeight="100" Grid.Row="6" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
+                        <Charts:PelakuBerdasarkanJenisKelamin></Charts:PelakuBerdasarkanJenisKelamin>
+                    </materialDesign:Card>
+                    <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
+                        <Charts:PelakuBerdasarkanKewarganegaraan></Charts:PelakuBerdasarkanKewarganegaraan>
+                    </materialDesign:Card>
+                    <materialDesign:Card Grid.Column="2" Padding="20"  Margin="3"   >
+                        <Charts:PelakuBerdasarkanHubungan></Charts:PelakuBerdasarkanHubungan>
+                    </materialDesign:Card>
                 </Grid>
 
             </Grid>

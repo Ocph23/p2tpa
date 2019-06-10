@@ -90,6 +90,24 @@
     <Compile Include="Charts\JumlahKasusberdasarkanTempatKejadian.xaml.cs">
       <DependentUpon>JumlahKasusberdasarkanTempatKejadian.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Charts\KorbanBerdasarkanPendidikan.xaml.cs">
+      <DependentUpon>KorbanBerdasarkanPendidikan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\KorbanBerdasarkanUsia.xaml.cs">
+      <DependentUpon>KorbanBerdasarkanUsia.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\KorbanMenurutBanyaknyaKekerasanyangDialami.xaml.cs">
+      <DependentUpon>KorbanMenurutBanyaknyaKekerasanyangDialami.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\PelakuBerdasarkanHubungan.xaml.cs">
+      <DependentUpon>PelakuBerdasarkanHubungan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\PelakuBerdasarkanJenisKelamin.xaml.cs">
+      <DependentUpon>PelakuBerdasarkanJenisKelamin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\PelakuBerdasarkanKewarganegaraan.xaml.cs">
+      <DependentUpon>PelakuBerdasarkanKewarganegaraan.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Charts\ProyeksiTerhadapPendduk.xaml.cs">
       <DependentUpon>ProyeksiTerhadapPendduk.xaml</DependentUpon>
     </Compile>
@@ -152,6 +170,30 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Charts\JumlahKasusberdasarkanTempatKejadian.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\KorbanBerdasarkanPendidikan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\KorbanBerdasarkanUsia.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\KorbanMenurutBanyaknyaKekerasanyangDialami.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\PelakuBerdasarkanHubungan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\PelakuBerdasarkanJenisKelamin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\PelakuBerdasarkanKewarganegaraan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
