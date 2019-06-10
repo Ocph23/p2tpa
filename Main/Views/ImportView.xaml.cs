@@ -22,7 +22,13 @@ namespace Main.Views
         public ImportView()
         {
             InitializeComponent();
-            this.DataContext = new DataAccess.ImportFromExcel();
+            var vm = new DataAccess.ImportFromExcel();
+            this.DataContext = vm;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

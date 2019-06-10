@@ -17,9 +17,21 @@ namespace Main
         public DbContext()
         {
             this.ConnectionString = "Data Source=database.db;Version=3;New=True;";
-            this.Open();
+            OpenConnection();
         }
 
+        private void OpenConnection()
+        {
+            try
+            {
+
+                this.Open();
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
         public IRepository<Pengaduan> DataPengaduan { get { return new Repository<Pengaduan>(this); } }
         public IRepository<Pelapor> DataPelapor{ get { return new Repository<Pelapor>(this); } }

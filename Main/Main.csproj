@@ -84,8 +84,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BaseNotify.cs" />
+    <Compile Include="Charts\JenisKekerasanyangDialamiKorban.xaml.cs">
+      <DependentUpon>JenisKekerasanyangDialamiKorban.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\JumlahKasusberdasarkanTempatKejadian.xaml.cs">
+      <DependentUpon>JumlahKasusberdasarkanTempatKejadian.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Charts\ProyeksiTerhadapPendduk.xaml.cs">
       <DependentUpon>ProyeksiTerhadapPendduk.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\RasioPerempuanKorbanKekerasan.xaml.cs">
+      <DependentUpon>RasioPerempuanKorbanKekerasan.xaml</DependentUpon>
     </Compile>
     <Compile Include="CommandHandler.cs" />
     <Compile Include="DataAccess\DasboardDataAccess.cs" />
@@ -138,7 +147,19 @@
     <Compile Include="Views\TambahPengaduan.xaml.cs">
       <DependentUpon>TambahPengaduan.xaml</DependentUpon>
     </Compile>
+    <Page Include="Charts\JenisKekerasanyangDialamiKorban.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\JumlahKasusberdasarkanTempatKejadian.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Charts\ProyeksiTerhadapPendduk.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\RasioPerempuanKorbanKekerasan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

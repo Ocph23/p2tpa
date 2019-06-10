@@ -22,6 +22,8 @@ namespace Main.DataAccess
                            join kondisi in db.DataKondisiKorban.Select() on pengaduan.Id equals kondisi.PengaduanId
                            select new Pengaduan()
                            {
+                               KodeDistrik = pengaduan.KodeDistrik,
+                               HubunganKorbanDenganTerlapor = pengaduan.HubunganKorbanDenganTerlapor,
                                Catatan = pengaduan.Catatan,
                                Hari = pengaduan.Hari,
                                Id = pengaduan.Id,
@@ -51,6 +53,8 @@ namespace Main.DataAccess
                 }
             }
         }
+
+      
         public int Count => list.Count;
 
         public bool IsReadOnly => false;
@@ -60,11 +64,11 @@ namespace Main.DataAccess
 
             using (var db = new DbContext())
             {
-               var trans=  db.BeginTransaction();
+                var trans = db.BeginTransaction();
                 try
                 {
                     item.IdPelapor = db.DataPelapor.InsertAndGetLastID(item.Pelapor);
-                    if(item.IdPelapor<=0)
+                    if (item.IdPelapor <= 0)
                         throw new SystemException("Data Pelapor Tidak Tersimpan");
                     item.Pelapor.Id = item.IdPelapor;
 
@@ -74,7 +78,7 @@ namespace Main.DataAccess
                     item.Korban.Id = item.IdKorban;
 
                     item.IdTerlapor = db.DataTerlapor.InsertAndGetLastID(item.Terlapor);
-                    if (item.IdTerlapor<= 0)
+                    if (item.IdTerlapor <= 0)
                         throw new SystemException("Data Terlapor Tidak Tersimpan");
                     item.Terlapor.Id = item.IdTerlapor;
 
@@ -99,14 +103,14 @@ namespace Main.DataAccess
 
 
                     item.Kejadian.Id = db.DataKejadian.InsertAndGetLastID(item.Kejadian);
-                    if(item.Kejadian.Id<=0)
+                    if (item.Kejadian.Id <= 0)
                         throw new SystemException("Data  Kejadian Tidak Tersimpan");
 
 
-                  foreach(var data in item.Perkembangan)
+                    foreach (var data in item.Perkembangan)
                     {
                         data.PengaduanId = item.Id.Value;
-                        data.Id= db.DataTahapanPerkembangan.InsertAndGetLastID(data);
+                        data.Id = db.DataTahapanPerkembangan.InsertAndGetLastID(data);
                         if (data.Id <= 0)
                             throw new SystemException("Data Tahapan  Perkembangan Kejadian Tidak Tersimpan");
                     }
@@ -119,40 +123,112 @@ namespace Main.DataAccess
                     trans.Rollback();
                     throw new SystemException(ex.Message);
                 }
-              
+
             }
-           
+
         }
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            list.Clear();
         }
 
         public bool Contains(Pengaduan item)
         {
-            throw new NotImplementedException();
+            return list.Contains(item);
         }
 
         public void CopyTo(Pengaduan[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            list.CopyTo(array, arrayIndex);
         }
 
         public IEnumerator<Pengaduan> GetEnumerator()
+        {
+            return new PengaduanEnumerator(this.ToList());
+        }
+
+        public int IndexOf(Pengaduan item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(int index, Pengaduan item)
         {
             throw new NotImplementedException();
         }
 
         public bool Remove(Pengaduan item)
         {
+            try
+            {
+                list.Remove(item);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public void RemoveAt(int index)
+        {
             throw new NotImplementedException();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return list.GetEnumerator();
         }
+    }
+
+
+
+    public class PengaduanEnumerator : IEnumerator<Pengaduan>
+    {
+        private List<Pengaduan> _collection;
+        private int curIndex;
+        private Pengaduan curBox;
+
+
+        public PengaduanEnumerator(List<Pengaduan> collection)
+        {
+            _collection = collection;
+            curIndex = -1;
+            curBox = default(Pengaduan);
+
+        }
+
+        public bool MoveNext()
+        {
+            //Avoids going beyond the end of the collection.
+            if (++curIndex >= _collection.Count)
+            {
+                return false;
+            }
+            else
+            {
+                // Set current box to next item in collection.
+                curBox = _collection[curIndex];
+            }
+            return true;
+        }
+
+        public void Reset() { curIndex = -1; }
+
+        void IDisposable.Dispose() { }
+
+        public Pengaduan Current
+        {
+            get { return curBox; }
+        }
+
+
+        object IEnumerator.Current
+        {
+            get { return Current; }
+        }
+
     }
 
 

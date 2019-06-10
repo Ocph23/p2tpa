@@ -11,6 +11,8 @@ namespace Main.DataAccess
 
     public class DataBasic
     {
+        private static PengaduanServices pengaduans;
+
         public static List<DataPenduduk> DataPendudukPerKecamatan()
         {
             List<DataPenduduk> list = new List<DataPenduduk>();
@@ -96,6 +98,18 @@ namespace Main.DataAccess
         public static List<Kecamatan> GetKecamatan()
         {
           return (from kec in DataPendudukPerKecamatan() select new Kecamatan { Id=kec.Id, Nama=kec.Nama }).ToList();
+        }
+
+
+        public static PengaduanServices DataPengaduan
+        {
+            get
+            {
+                if(pengaduans==null)
+                    pengaduans = new PengaduanServices();
+
+                return pengaduans;
+            }
         }
 
     }

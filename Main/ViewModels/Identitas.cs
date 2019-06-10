@@ -13,7 +13,7 @@ namespace Main.ViewModels
 
             ListAgama = EnumSource.DataAgama();
             ListHubunganKorban = EnumSource.HubunganKorbanDenganTerlapor();
-            ListStatusPernikahan = Enum.GetValues(typeof(StatusPernikahan)).Cast<StatusPernikahan>().ToList();
+            ListStatusPernikahan = EnumSource.DataStatusPernikahan();
             ListPendidikan = EnumSource.DataPendidikan();
 
         }
@@ -26,8 +26,8 @@ namespace Main.ViewModels
         private string pendidikan;
         private Gender gender;
        
-        private StatusPernikahan pernikahan;
-        private Suku suku;
+        private string pernikahan;
+        private string suku;
         private string alamat;
         private string panggilan;
 
@@ -65,17 +65,17 @@ namespace Main.ViewModels
         public string Alamat { get => alamat; set => SetProperty(ref alamat, value); }
 
         [DbColumn("Suku")]
-        public Suku Suku { get => suku; set => SetProperty(ref suku, value); }
+        public string Suku { get => suku; set => SetProperty(ref suku, value); }
 
         [DbColumn("Pernikahan")]
-        public StatusPernikahan Pernikahan { get => pernikahan; set => SetProperty(ref pernikahan, value); }
+        public string Pernikahan { get => pernikahan; set => SetProperty(ref pernikahan, value); }
 
-        
+        [DbColumn("Gender")]
         public Gender Gender { get => gender; set => SetProperty(ref gender, value); }
 
         public List<string> ListAgama { get; set; }
         public List<string> ListHubunganKorban { get; set; }
-        public List<StatusPernikahan> ListStatusPernikahan { get; }
+        public List<string> ListStatusPernikahan { get; }
         public List<string> ListPendidikan { get;  set; }
     }
 

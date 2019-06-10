@@ -23,7 +23,7 @@ namespace Main.ViewModels
         public DateTime Waktu { get => waktu; set => SetProperty(ref waktu, value); }
 
         [DbColumn("Tempat")]
-        public string Tempat { get => tempat; set => SetProperty(backingStore: ref tempat, value); }
+        public string Tempat { get => tempat; set => SetProperty(ref tempat, value); }
 
         [DbColumn("KDRT")]
         public string KDRTData

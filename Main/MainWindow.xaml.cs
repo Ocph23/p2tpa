@@ -1,11 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-using LiveCharts;
-using LiveCharts.Wpf;
-using System.Linq;
-using Main.DataAccess;
+﻿using System.Windows;
 using System.Collections.Generic;
 
 namespace Main

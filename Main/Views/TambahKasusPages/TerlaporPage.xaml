@@ -54,8 +54,8 @@
             </WrapPanel>
             <WrapPanel Margin="10,20,0,30">
                 <Label Content="Asal Suku"></Label>
-                <RadioButton GroupName="sukuKorban" IsChecked="{Binding Path=Suku, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:Suku.Papua}}" Content="Orang Asli Papua" ></RadioButton>
-                <RadioButton GroupName="sukuKorban" IsChecked="{Binding Path=Suku, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:Suku.Non}}" Content="Non Asli Papua" ></RadioButton>
+                <RadioButton GroupName="sukuKorban" IsChecked="{Binding Path=Suku, Converter={StaticResource EBConverter}, ConverterParameter='Papua'}" Content="Orang Asli Papua" ></RadioButton>
+                <RadioButton GroupName="sukuKorban" IsChecked="{Binding Path=Suku, Converter={StaticResource EBConverter}, ConverterParameter='Non Papua'}" Content="Non Asli Papua" ></RadioButton>
             </WrapPanel>
         </StackPanel>
      

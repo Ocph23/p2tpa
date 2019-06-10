@@ -94,27 +94,20 @@ namespace Main.Views.TambahKasusPages
             {
                 if(string.IsNullOrEmpty(item))
                 {
-                    Penanganan penanganan;
-                    var converted=Enum.TryParse<Penanganan>(item ,out penanganan);
-                    if(converted)
-                    {
-                        if (penanganan == Penanganan.Hukum)
-                            this.Hukum = true;
-                        if (penanganan == Penanganan.Konsultasi)
-                            this.Konsultasi = true;
-                       
-                        if (penanganan == Penanganan.Non_Hukum)
-                            this.NonHukum = true;
-                        if (penanganan == Penanganan.Rujukan)
-                            this.Rujukan = true;
-                    }
+
+                    if (item == "Pendampingan Hukum")
+                        this.Hukum = true;
+                    else if (item == "Konsultasi")
+                        this.Konsultasi = true;
+                    else if (item == "Pendampingan Non Hukum")
+                        this.NonHukum = true;
+                    else if (item =="Rujukan")
+                        this.Rujukan = true;
                     else
                     {
                         LainText = item;
                         this.Lain = true;
                     }
-               
-                  
                 }
             }
         }
@@ -134,13 +127,13 @@ namespace Main.Views.TambahKasusPages
            
             StringBuilder sb = new StringBuilder();
             if (Hukum)
-                sb.Append(Penanganan.Hukum + "#");
+                sb.Append("Pendampingan Hukum" + "#");
             if (NonHukum)
-                sb.Append(Penanganan.Non_Hukum+ "#");
+                sb.Append("Pendampingan Non Hukum" + "#");
             if (Konsultasi)
-                sb.Append(Penanganan.Konsultasi+ "#");
+                sb.Append("Konsultasi" + "#");
             if (Rujukan)
-                sb.Append(Penanganan.Rujukan+ "#");
+                sb.Append("Rujukan" + "#");
             if (Lain)
                 sb.Append(LainText+"#");
             vm.Penanganan = sb.ToString();

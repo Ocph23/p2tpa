@@ -18,12 +18,6 @@ namespace Main
     }
 
 
-    public enum StatusPernikahan
-    {
-        Tidak,Adat, Catatan_Sipil,Agama,Cerai
-    }
-
-
 
     public enum KondisiFisik {
           Sehat,Sakit,Luka
@@ -52,16 +46,7 @@ namespace Main
         Lain, Pendarahan
     }
 
-
-    public enum Penanganan
-    {
-        Hukum, Non_Hukum, Konsultasi,Rujukan, Lain
-    }
-
-    public enum Suku
-    {
-        Papua, Non , None
-    }
+    
 
 
 
@@ -83,5 +68,20 @@ namespace Main
         {
             return new List<string> { "Tidak Sekolah", "Paud", "TK", "SD", "SLTP", "SLTA", "Perguruan Tinggi" };
         }
+
+        internal static List<string> DataStatusPernikahan()
+        {
+            return new List<string> { "Nikah Adat", "Nikah Agama", "Nikah Catatan Sipil", "Tidak Ada Status Nikah", "Cerai"};
+        }
+
+        internal static List<string> DataSuku()
+        {
+            return new List<string> { "Papua", "Non Papua" };
+        }
+        internal static List<string> DataEnumPenganan()
+        {
+            return new List<string> { "Pendampingan Hukum", "Pendampingan Non Hukum", "Konsultasi" , "Rujukan" };
+        }
+
     }
 }

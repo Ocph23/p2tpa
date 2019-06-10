@@ -1,7 +1,9 @@
-﻿using Ocph.DAL;
+﻿using MaterialDesignThemes.Wpf;
+using Ocph.DAL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 
 namespace Main.ViewModels
 {
@@ -31,8 +33,7 @@ namespace Main.ViewModels
         private int idPelapor;
         private int idKorban;
         private string kodeDistrik;
-
-
+        private PackIcon _icon;
 
         [PrimaryKey("id")]
         [DbColumn("id")]
@@ -95,6 +96,16 @@ namespace Main.ViewModels
         public string Penanganan { get => penanganan; set => SetProperty(ref penanganan, value); }
 
 
+        public string hkdt;
+
+        [DbColumn("HubunganKorbanDenganTerlapor")]
+        public string HubunganKorbanDenganTerlapor
+        {
+            get => hkdt;
+            set => SetProperty(ref hkdt, value);
+        }
+
+
         public Pelapor Pelapor { get => pelapor; set => SetProperty(ref pelapor, value); }
 
         public Korban Korban { get => korban; set => SetProperty(ref korban, value); }
@@ -111,8 +122,8 @@ namespace Main.ViewModels
 
         public List<TahapanPerkembangan> Perkembangan { get => perkembangan; set => SetProperty(ref perkembangan, value); }
 
+        public PackIcon Icon { get => _icon; set => SetProperty(ref _icon, value); } 
 
-        
 
         private string GetPropertyName(string nomor)
         {
@@ -140,6 +151,11 @@ namespace Main.ViewModels
                     return null;
                 return null;
             }
+        }
+
+        public Pengaduan()
+        {
+            this.Icon = new PackIcon { Kind = PackIconKind.TimerSand };
         }
 
         private string Validate(string name)
@@ -177,6 +193,8 @@ namespace Main.ViewModels
         }
 
     }
+
+
 
 
 }

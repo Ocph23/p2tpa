@@ -8,15 +8,6 @@ namespace Main.ViewModels
     public class Korban :Identitas,IDataErrorInfo
     {
       
-        public string hkdt;
-
-        [DbColumn("HubunganKorbanDenganTerlapor")]
-        public string HubunganKorbanDenganTerlapor
-        {
-            get => hkdt;
-            set => SetProperty(ref hkdt, value);
-        }
-
 
         public string NoReg { get; set; }
         public string this[string columnName] => Validate(columnName);
@@ -35,8 +26,7 @@ namespace Main.ViewModels
                     me[GetPropertyName(() => Alamat)] +
                     me[GetPropertyName(() => Pendidikan)] +
                     me[GetPropertyName(() => Suku)] +
-                    me[GetPropertyName(() => Gender)] +
-                    me[GetPropertyName(() => HubunganKorbanDenganTerlapor)]
+                    me[GetPropertyName(() => Gender)] 
                     ;
                 if (!string.IsNullOrEmpty(error))
                     //return "Please check inputted data.";
@@ -49,9 +39,6 @@ namespace Main.ViewModels
 
             if (name == "Nama" && string.IsNullOrEmpty(Nama))
                 return "Nama Tidak Boleh Kosong";
-
-            if (name == "HubunganKorbanDenganTerlapor" && string.IsNullOrEmpty(HubunganKorbanDenganTerlapor))
-                return "HubunganKorbanDenganTerlapor Tidak Boleh Kosong";
 
             if (name == "TempatLahir" && string.IsNullOrEmpty(TempatLahir))
                 return "TempatLahir Tidak Boleh Kosong";
@@ -68,12 +55,11 @@ namespace Main.ViewModels
             if (name == "Pendidikan" && string.IsNullOrEmpty(Pendidikan))
                 return "Pendidikan Tidak Boleh Kosong";
 
-            if (name == "Suku" && Suku== Suku.None)
+            if (name == "Suku" && string.IsNullOrEmpty(Suku))
                 return "Suku Tidak Boleh Kosong";
 
             if (name == "Gender" && Gender == Gender.None)
                 return "Jenis Kelamin Tidak Boleh Kosong";
-
 
             return null;
         }

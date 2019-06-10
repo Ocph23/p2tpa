@@ -54,7 +54,7 @@ namespace Main.ViewModels
             if (name == "Pendidikan" && string.IsNullOrEmpty(Pendidikan))
                 return "Pendidikan Tidak Boleh Kosong";
 
-            if (name == "Suku" && Suku == Suku.None)
+            if (name == "Suku" && string.IsNullOrEmpty(Suku))
                 return "Suku Tidak Boleh Kosong";
 
             if (name == "Gender" && Gender == Gender.None)
