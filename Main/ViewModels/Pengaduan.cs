@@ -97,6 +97,7 @@ namespace Main.ViewModels
 
 
         public string hkdt;
+        private string statusLapor;
 
         [DbColumn("HubunganKorbanDenganTerlapor")]
         public string HubunganKorbanDenganTerlapor
@@ -105,6 +106,16 @@ namespace Main.ViewModels
             set => SetProperty(ref hkdt, value);
         }
 
+        [DbColumn("StatusPelapor")]
+        public string StatusPelapor
+        {
+            get => statusLapor;
+            set
+            {
+                SetProperty(ref statusLapor, value);
+               
+            }
+        }
 
         public Pelapor Pelapor { get => pelapor; set => SetProperty(ref pelapor, value); }
 
@@ -122,8 +133,8 @@ namespace Main.ViewModels
 
         public List<TahapanPerkembangan> Perkembangan { get => perkembangan; set => SetProperty(ref perkembangan, value); }
 
-        public PackIcon Icon { get => _icon; set => SetProperty(ref _icon, value); } 
-
+        public PackIcon Icon { get => _icon; set => SetProperty(ref _icon, value); }
+        public List<string> StatusPelapors { get; }
 
         private string GetPropertyName(string nomor)
         {
@@ -156,6 +167,7 @@ namespace Main.ViewModels
         public Pengaduan()
         {
             this.Icon = new PackIcon { Kind = PackIconKind.TimerSand };
+            StatusPelapors = EnumSource.DataStatusPelapor();
         }
 
         private string Validate(string name)
@@ -185,6 +197,9 @@ namespace Main.ViewModels
             if (name == "Tempat" && string.IsNullOrEmpty(Tempat))
                   return "Tempat Tidak Boleh Kosong";
 
+            if (name == "StatusPelapor" && string.IsNullOrEmpty(StatusPelapor))
+                return "Status Pelapor Tidak Boleh Kosong";
+
 
             if (name == "UraianKejadian" && string.IsNullOrEmpty(UraianKejadian))
                   return "UraianKejadian Tidak Boleh Kosong";
@@ -193,7 +208,6 @@ namespace Main.ViewModels
         }
 
     }
-
 
 
 

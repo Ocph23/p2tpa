@@ -1,4 +1,6 @@
-﻿<UserControl x:Class="Main.Charts.JenisKekerasanyangDialamiKorban"
+﻿<main:ChartMaster
+            xmlns:main="clr-namespace:Main"
+            x:Class="Main.Charts.JenisKekerasanyangDialamiKorban"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,7 +15,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Content="Proyeksi Jumlah Kasus Terhadap Jumlah Penduduk"></Label>
+        <Label Width="auto" HorizontalAlignment="Center" Content="{Binding Title}"></Label>
         <lvc:CartesianChart Grid.Row="1" ScrollHorizontalTo="100"  Series="{Binding SeriesCollection}" LegendLocation="Bottom" >
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Jumlah" ></lvc:Axis>
@@ -27,4 +29,4 @@
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
     </Grid>
-</UserControl>
+</main:ChartMaster>

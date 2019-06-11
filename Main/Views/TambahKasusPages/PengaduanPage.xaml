@@ -60,28 +60,11 @@
                 <Label Content="Tempat"></Label>
                 <TextBox Text="{Binding Tempat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
             </WrapPanel>
-            <WrapPanel Margin="10,10">
+            <WrapPanel>
                 <Label Content="Yang Melapor"></Label>
-                <RadioButton GroupName="StatusPelapor"  IsChecked="{Binding Path=Pelapor.StatusPelapor, ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:StatusPelapor.Sendiri}}" Content="Sendiri"></RadioButton>
-                <RadioButton GroupName="StatusPelapor" IsChecked="{Binding Path=Pelapor.StatusPelapor,ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:StatusPelapor.OrangTua}}" Content="Orang Tua"></RadioButton>
-                <RadioButton GroupName="StatusPelapor" IsChecked="{Binding Path=Pelapor.StatusPelapor,ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:StatusPelapor.Famili}}" Content="Famili"></RadioButton>
-                </WrapPanel>
+                <ComboBox ItemsSource="{Binding Pelapors}" IsEditable="True" SelectedValue="{Binding StatusPelapor,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
+            </WrapPanel>
             <StackPanel Margin="180,0,0,0">
-                <WrapPanel>
-                    <RadioButton Width="100" x:Name="statusPelaporLain" GroupName="StatusPelapor" IsChecked="{Binding Path=Pelapor.StatusPelapor,ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:StatusPelapor.Lain}}" Content="Lain-Lain"></RadioButton>
-                    <TextBox  Text="{Binding Pelapor.StatusPelaporText,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}">
-                        <TextBox.Style>
-                            <Style TargetType="TextBox" BasedOn="{StaticResource ResourceKey={x:Type TextBox}}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding = "{Binding ElementName = statusPelaporLain, Path = IsChecked}" Value = "false">
-                                        <Setter Property="TextBox.Visibility" Value = "Hidden"></Setter>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
-
-                </WrapPanel>
                 <WrapPanel>
                     <Label Width="120" Content="Nama"></Label>
                     <TextBox  Text="{Binding Pelapor.Nama,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>

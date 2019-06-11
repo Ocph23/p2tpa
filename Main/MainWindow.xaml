@@ -71,7 +71,7 @@
                         <Charts:JumlahKasusberdasarkanTempatKejadian />
                     </materialDesign:Card>
                     <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
-                        <Charts:JumlahKasusberdasarkanTempatKejadian />
+                        <Charts:JumlahKorbanberdasarkanTempatKejadian />
                     </materialDesign:Card>
                   
                 </Grid>

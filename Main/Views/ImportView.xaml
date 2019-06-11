@@ -31,7 +31,7 @@
                 <DataGridTextColumn Header="Waktu" Binding="{Binding Waktu}"/>
                 <DataGridTextColumn Header="Tempat" Binding="{Binding Tempat}"/>
                 <DataGridTextColumn Header="Penerima" Binding="{Binding Penerima}"/>
-                <DataGridTextColumn Header="Yang Melapor" Binding="{Binding Pelapor.StatusPelapor}"/>
+                <DataGridTextColumn Header="Yang Melapor" Binding="{Binding StatusPelapor}"/>
                 <DataGridTemplateColumn  Header="Pelapor" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

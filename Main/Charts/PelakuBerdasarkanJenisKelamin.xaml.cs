@@ -18,11 +18,19 @@ namespace Main.Charts
     /// <summary>
     /// Interaction logic for PelakuBerdasarkanJenisKelamin.xaml
     /// </summary>
-    public partial class PelakuBerdasarkanJenisKelamin : UserControl
+    public partial class PelakuBerdasarkanJenisKelamin : ChartMaster
     {
         public PelakuBerdasarkanJenisKelamin()
         {
             InitializeComponent();
+            this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
+            this.RefreshChartCommand.Execute(null);
+            Title = "Pelaku Berdasarkan Jenis Kelamin";
+            this.DataContext = this;
+        }
+
+        private void RefreshAction(object obj)
+        {
         }
     }
 }

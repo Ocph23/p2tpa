@@ -18,11 +18,18 @@ namespace Main.Charts
     /// <summary>
     /// Interaction logic for PelakuBerdasarkanKewarganegaraan.xaml
     /// </summary>
-    public partial class PelakuBerdasarkanKewarganegaraan : UserControl
+    public partial class PelakuBerdasarkanKewarganegaraan : ChartMaster
     {
         public PelakuBerdasarkanKewarganegaraan()
         {
-            InitializeComponent();
+            InitializeComponent(); this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
+            this.RefreshChartCommand.Execute(null);
+            Title = "Pelaku Berdasarkan Kewarganegaraan";
+            this.DataContext = this;
+        }
+
+        private void RefreshAction(object obj)
+        {
         }
     }
 }

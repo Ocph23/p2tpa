@@ -18,11 +18,19 @@ namespace Main.Charts
     /// <summary>
     /// Interaction logic for PelakuBerdasarkanHubungan.xaml
     /// </summary>
-    public partial class PelakuBerdasarkanHubungan : UserControl
+    public partial class PelakuBerdasarkanHubungan : ChartMaster
     {
         public PelakuBerdasarkanHubungan()
         {
             InitializeComponent();
+            this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
+            this.RefreshChartCommand.Execute(null);
+            Title = "PelakuBerdasarkanHubungan";
+            this.DataContext = this;
+        }
+
+        private void RefreshAction(object obj)
+        {
         }
     }
 }

@@ -10,11 +10,19 @@ namespace Main.Charts
     /// <summary>
     /// Interaction logic for RasioPerempuanKorbanKekerasan.xaml
     /// </summary>
-    public partial class RasioPerempuanKorbanKekerasan : UserControl
+    public partial class RasioPerempuanKorbanKekerasan : ChartMaster
     {
         public RasioPerempuanKorbanKekerasan()
         {
             InitializeComponent();
+            this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
+            this.RefreshChartCommand.Execute(null);
+            Title = "Rasio Perempuan Korban Kekerasan";
+            this.DataContext = this;
+        }
+
+        private void RefreshAction(object obj)
+        {
             var dataKec = (from a in DataAccess.DataBasic.DataPendudukPerKecamatan() select a);
             var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.KodeDistrik);
 
@@ -58,10 +66,7 @@ namespace Main.Charts
             Labels = (from a in DataAccess.DataBasic.GetKecamatan() select a.Nama).ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
             //YFormatter = value => value.ToString("C");
-            this.DataContext = this;
         }
 
-        public SeriesCollection SeriesCollection { get; private set; }
-        public string[] Labels { get; private set; }
     }
 }

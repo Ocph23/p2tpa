@@ -20,11 +20,20 @@ namespace Main.Charts
     /// <summary>
     /// Interaction logic for KorbanMenurutBanyaknyaKekerasanyangDialami.xaml
     /// </summary>
-    public partial class KorbanMenurutBanyaknyaKekerasanyangDialami : UserControl
+    public partial class KorbanMenurutBanyaknyaKekerasanyangDialami : ChartMaster
     {
         public KorbanMenurutBanyaknyaKekerasanyangDialami()
         {
             InitializeComponent();
+
+            this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
+            this.RefreshChartCommand.Execute(null);
+            Title = "Korban Menurut Banyaknya Kekerasan Yang Dialami";
+            this.DataContext = this;
+        }
+
+        private void RefreshAction(object obj)
+        {
             List<string> labels = new List<string>();
             int satu = 0;
             int dua = 0;
@@ -69,8 +78,8 @@ namespace Main.Charts
 
             labels.Add(">3 ");
 
-            SeriesCollection = new SeriesCollection{new ColumnSeries { DataLabels = true, Title = "1 Jenis",
-                Values = new ChartValues<int> { satu } } };
+            SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = "1 Jenis",
+                Values = new ChartValues<int> { satu } } );
 
             SeriesCollection.Add(new ColumnSeries
             {
@@ -96,8 +105,5 @@ namespace Main.Charts
             this.DataContext = this;
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
-        public string[] Labels { get; private set; }
-        public Func<int, string> YFormatter { get; set; }
     }
 }

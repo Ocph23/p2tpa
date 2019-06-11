@@ -21,25 +21,33 @@ namespace Main.Charts
     /// <summary>
     /// Interaction logic for JenisKekerasanyangDialamiKorban.xaml
     /// </summary>
-    public partial class JenisKekerasanyangDialamiKorban : UserControl
+    public partial class JenisKekerasanyangDialamiKorban : ChartMaster
     {
         public JenisKekerasanyangDialamiKorban()
         {
             InitializeComponent();
-            
+            this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
+            this.RefreshChartCommand.Execute(null);
+            Title = "Proyeksi Jumlah Kasus Terhadap Jumlah Penduduk";
+            this.DataContext = this;
+        }
 
+        private void RefreshAction(object obj)
+        {
             var source = DataAccess.DataBasic.DataPengaduan;
-
             List<string> labels = new List<string>();
             List<int> datas = new List<int>();
-
             labels.Add("Fisik");
-            SeriesCollection = new SeriesCollection { new ColumnSeries { DataLabels = true, Title ="Fisik",
-                Values = new ChartValues<ObservableValue> { new ObservableValue(source.Where(x => x.Kejadian.Fisik).Count()) } } };
+            SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title ="Fisik",
+                Values = new ChartValues<ObservableValue> { new ObservableValue(source.Where(x => x.Kejadian.Fisik).Count()) } } );
 
             labels.Add("Psikis");
-            SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = "Psikis",
-                Values = new ChartValues<ObservableValue> { new ObservableValue(source.Where(x => x.Kejadian.Fisik).Count()) } });
+            SeriesCollection.Add(new ColumnSeries
+            {
+                DataLabels = true,
+                Title = "Psikis",
+                Values = new ChartValues<ObservableValue> { new ObservableValue(source.Where(x => x.Kejadian.Fisik).Count()) }
+            });
 
             labels.Add("Penelataran");
             SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = "Penelataran", Values = new ChartValues<int> { source.Where(x => x.Kejadian.Penelantaran).Count() } });
@@ -61,20 +69,14 @@ namespace Main.Charts
 
 
             labels.Add("Lain");
-            SeriesCollection.Add(new ColumnSeries {  DataLabels = true, Title = "Lain", Values = new ChartValues<int> { source.Where(x => !string.IsNullOrEmpty(x.Kejadian.Lain)).Count() } });
-
-
-
+            SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = "Lain", Values = new ChartValues<int> { source.Where(x => !string.IsNullOrEmpty(x.Kejadian.Lain)).Count() } });
 
             Labels = labels.ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
             YFormatter = value => value.ToString("N");
-            this.DataContext = this;
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
-        public string[] Labels { get; private set; }
-        public Func<int, string> YFormatter { get; set; }
+      
 
     }
 }

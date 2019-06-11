@@ -6,38 +6,35 @@ using System.Threading.Tasks;
 
 namespace Main
 {
-    public enum StatusPelapor
-    {
-       None, Sendiri, OrangTua, Famili , Lain
-    }
+
 
 
     public enum Gender
     {
-        L,P,None
+        L, P, None
     }
 
 
 
     public enum KondisiFisik {
-          Sehat,Sakit,Luka
+        Sehat, Sakit, Luka
     }
 
 
     public enum KondisiPsikis
     {
-        Ketakutan,Cemas,Emosi, Lain
+        Ketakutan, Cemas, Emosi, Lain
     }
 
 
     public enum KDRT
     {
-        Fisik,Psikis,Penelataran,Seksual
+        Fisik, Psikis, Penelataran, Seksual
     }
 
     public enum KekerasanPulik
     {
-        Penganiayaan,Pencabulan,Pemerkosaan,Trafiking
+        Penganiayaan, Pencabulan, Pemerkosaan, Trafiking
     }
 
 
@@ -46,7 +43,7 @@ namespace Main
         Lain, Pendarahan
     }
 
-    
+
 
 
 
@@ -61,7 +58,7 @@ namespace Main
 
         public static List<string> DataAgama()
         {
-            return new List<string> { "Islam","Kristen","Katolik","Hindu","Budha","Kong Hu Chu"};
+            return new List<string> { "Islam", "Kristen", "Katolik", "Hindu", "Budha", "Kong Hu Chu" };
         }
 
         internal static List<string> DataPendidikan()
@@ -71,7 +68,7 @@ namespace Main
 
         internal static List<string> DataStatusPernikahan()
         {
-            return new List<string> { "Nikah Adat", "Nikah Agama", "Nikah Catatan Sipil", "Tidak Ada Status Nikah", "Cerai"};
+            return new List<string> { "Nikah Adat", "Nikah Agama", "Nikah Catatan Sipil", "Tidak Ada Status Nikah", "Cerai" };
         }
 
         internal static List<string> DataSuku()
@@ -80,8 +77,12 @@ namespace Main
         }
         internal static List<string> DataEnumPenganan()
         {
-            return new List<string> { "Pendampingan Hukum", "Pendampingan Non Hukum", "Konsultasi" , "Rujukan" };
+            return new List<string> { "Pendampingan Hukum", "Pendampingan Non Hukum", "Konsultasi", "Rujukan" };
         }
 
+        internal static List<string> DataStatusPelapor()
+        {
+            return new List<string> { "Sendiri", "OrangTua", "Famili" };
+        }
     }
 }
