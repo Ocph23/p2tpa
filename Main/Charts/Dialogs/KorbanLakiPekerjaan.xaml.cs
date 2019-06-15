@@ -19,12 +19,14 @@ namespace Main.Charts.Dialogs
 
         private void RefreshAction(object obj)
         {
-            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.Korban.Pekerjaan);
+            var groupPengaduan = from pengaduan in DataAccess.DataBasic.DataPengaduan 
+                                 from korban in pengaduan.Korban
+                                 select korban ;
 
-            foreach (var pekerjaan in groupPengaduan)
+            foreach (var pekerjaan in groupPengaduan.GroupBy(x=>x.Pekerjaan))
             {
                 int value = 0;
-                var data = pekerjaan.Where(x => x.Korban.Gender == Gender.L);
+                var data = pekerjaan.Where(x => x.Gender == Gender.L);
 
                 if (data != null)
                 {

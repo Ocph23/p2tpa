@@ -33,7 +33,8 @@ namespace Main.Charts
                 var kasus = groupPengaduan.Where(x => x.Key == kec.Id).FirstOrDefault();
                 if (kasus != null)
                 {
-                    var kasusPerem = kasus.Where(x => x.Korban.Gender == Gender.P).Count();
+                    var kasusPerem = (from a in kasus
+                                     from korban in a.Korban where korban.Gender == Gender.P select korban).Count();
                     rasio.Add((Convert.ToDouble(kasusPerem)*100000)/kec.Perempuan);
                     jumlahKorbanPerempuan.Add(kasusPerem);
                 }

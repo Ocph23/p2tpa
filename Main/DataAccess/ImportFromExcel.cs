@@ -118,16 +118,7 @@ namespace Main.DataAccess
                     if (idPelapor <= 0)
                         throw new SystemException("Data Pelapor Tidak Ditemukan/Tidak Lengkap");
 
-                    var idKorban = await GetIdIdentitas(item.Korban, db);
-                    if (idPelapor <= 0)
-                        throw new SystemException("Data Korban Tidak Ditemukan/Tidak Lengkap");
 
-                    var idterlapor = await GetIdIdentitas(item.Terlapor, db);
-                    if (idPelapor <= 0)
-                        throw new SystemException("Data Terlapor Tidak Ditemukan/Tidak Lengkap");
-
-                    item.IdKorban = idKorban;
-                    item.IdTerlapor = idterlapor;
                     item.IdPelapor = idPelapor;
 
                     item.Id = db.DataPengaduan.InsertAndGetLastID(item);
@@ -260,18 +251,18 @@ namespace Main.DataAccess
                     await Task.Delay(10000);
                 foreach (var item in datas)
                 {
-                    var pelapors = Pengaduans.Where(O => O.Korban.Nama == item.Nama);
-                    foreach (var data in pelapors)
+                    var pengaduans = Pengaduans.Where(O => O.Id == item.PengaduanId).FirstOrDefault();
+                    foreach (var data in pengaduans.Terlapor.Where(x=>x.Nama==item.Nama))
                     {
-                        data.Korban.Nama = item.Nama;
-                        data.Korban.NamaPanggilan = item.NamaPanggilan;
-                        data.Korban.TempatLahir = item.TempatLahir;
-                        data.Korban.Pendidikan = item.Pendidikan;
-                        data.Korban.Agama = item.Agama;
-                        data.Korban.Alamat = item.Alamat;
-                        data.Korban.TanggalLahir = item.TanggalLahir;
-                        data.Korban.Gender = item.Gender;
-                        data.Korban.NIK = item.NIK;
+                        data.Nama = item.Nama;
+                        data.NamaPanggilan = item.NamaPanggilan;
+                        data.TempatLahir = item.TempatLahir;
+                        data.Pendidikan = item.Pendidikan;
+                        data.Agama = item.Agama;
+                        data.Alamat = item.Alamat;
+                        data.TanggalLahir = item.TanggalLahir;
+                        data.Gender = item.Gender;
+                        data.NIK = item.NIK;
                     }
                 }
             });
@@ -287,18 +278,18 @@ namespace Main.DataAccess
                     await Task.Delay(10000);
                 foreach (var item in datas)
                 {
-                    var pengaduans = Pengaduans.Where(O => O.Terlapor.Nama == item.Nama);
-                    foreach (var data in pengaduans)
+                    var pengaduans = Pengaduans.Where(O => O.Id == item.PengaduanId).FirstOrDefault();
+                    foreach (var data in pengaduans.Terlapor.Where(x=>x.Nama==item.Nama))
                     {
-                        data.Terlapor.Nama = item.Nama;
-                        data.Terlapor.NamaPanggilan = item.NamaPanggilan;
-                        data.Terlapor.TempatLahir = item.TempatLahir;
-                        data.Terlapor.Pendidikan = item.Pendidikan;
-                        data.Terlapor.Agama = item.Agama;
-                        data.Terlapor.Alamat = item.Alamat;
-                        data.Terlapor.TanggalLahir = item.TanggalLahir;
-                        data.Terlapor.Gender = item.Gender;
-                        data.Terlapor.NIK = item.NIK;
+                        data.Nama = item.Nama;
+                        data.NamaPanggilan = item.NamaPanggilan;
+                        data.TempatLahir = item.TempatLahir;
+                        data.Pendidikan = item.Pendidikan;
+                        data.Agama = item.Agama;
+                        data.Alamat = item.Alamat;
+                        data.TanggalLahir = item.TanggalLahir;
+                        data.Gender = item.Gender;
+                        data.NIK = item.NIK;
                     }
                 }
             });
@@ -394,11 +385,11 @@ namespace Main.DataAccess
                 pengaduan.Pelapor.Nama = rngPengaduan.Cells[row, "I"].Value2;
 
 
-                pengaduan.Korban = new Korban();
-                pengaduan.Korban.Nama = rngPengaduan.Cells[row, "K"].Value2;
+               // pengaduan.Korban = new Korban();
+              //  pengaduan.Korban.Nama = rngPengaduan.Cells[row, "K"].Value2;
 
-                pengaduan.Terlapor = new Terlapor();
-                pengaduan.Terlapor.Nama = rngPengaduan.Cells[row, "N"].Value2;
+             //   pengaduan.Terlapor = new Terlapor();
+             //   pengaduan.Terlapor.Nama = rngPengaduan.Cells[row, "N"].Value2;
 
 
                 pengaduan.Kondisi = new KondisiKorban();

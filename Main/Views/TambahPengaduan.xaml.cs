@@ -38,33 +38,24 @@ namespace Main.Views
         {
             this.Model = new Identitas();
         }
-
-
     }
 
 
     public class TambahViewModel:Pengaduan
     {
-
-
         public TambahViewModel()
         {
-
             Kecamatan = DataAccess.DataBasic.GetKecamatan();
-
             this.Pelapor = new Pelapor();
-            this.Terlapor = new Terlapor();
-            this.Korban = new Korban();
+            this.Terlapor = new List<Terlapor>();
+            this.Korban = new List<Korban>();
             this.Kondisi = new KondisiKorban();
             this.Dampak = new DampakKorban();
             this.Kejadian = new Kejadian();
             this.Perkembangan = new List<TahapanPerkembangan>();
         }
 
-
         public List<Kecamatan> Kecamatan { get; set; }
-
-
 
     }
 }

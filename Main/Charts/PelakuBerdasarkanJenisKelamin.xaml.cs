@@ -33,7 +33,8 @@ namespace Main.Charts
 
         private void RefreshAction(object obj)
         {
-            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.Terlapor.Gender);
+            var groupPengaduan = (from a in DataAccess.DataBasic.DataPengaduan
+                                 from terlapor in a.Terlapor select terlapor) .GroupBy(x => x.Gender);
             List<string> datagender = new List<string>() { "Laki-Laki","Perempuan"};
             List<int> datas = new List<int>();
             foreach (var data in datagender)

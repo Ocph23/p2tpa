@@ -15,8 +15,6 @@ namespace Main.DataAccess
             {
                 var data = from pengaduan in db.DataPengaduan.Select()
                            join pelapor in db.DataPelapor.Select() on pengaduan.IdPelapor equals pelapor.Id
-                           join korban in db.DataKorban.Select() on pengaduan.IdKorban equals korban.Id
-                           join terlapor in db.DataTerlapor.Select() on pengaduan.IdTerlapor equals terlapor.Id
                            join dampak in db.DataDampak.Select() on pengaduan.Id equals dampak.PengaduanId
                            join kejadian in db.DataKejadian.Select() on pengaduan.Id equals kejadian.PengaduanId
                            join kondisi in db.DataKondisiKorban.Select() on pengaduan.Id equals kondisi.PengaduanId
@@ -27,13 +25,9 @@ namespace Main.DataAccess
                                Catatan = pengaduan.Catatan,
                                Hari = pengaduan.Hari,
                                Id = pengaduan.Id,
-                               IdKorban = pengaduan.IdKorban,
                                IdPelapor = pengaduan.IdPelapor,
-                               IdTerlapor = pengaduan.IdTerlapor,
                                Nomor = pengaduan.Nomor,
-                               Korban = korban,
                                Pelapor = pelapor,
-                               Terlapor = terlapor,
                                Penerima = pengaduan.Penerima,
                                Rujukan = pengaduan.Rujukan,
                                Tanggal = pengaduan.Tanggal,
@@ -49,6 +43,8 @@ namespace Main.DataAccess
                 ;
                 foreach (var item in data)
                 {
+                    item.Korban = db.DataKorban.Where(x => x.PengaduanId == item.Id).ToList();
+                    item.Terlapor= db.DataTerlapor.Where(x => x.PengaduanId == item.Id).ToList();
                     list.Add(item);
                 }
             }
@@ -71,16 +67,6 @@ namespace Main.DataAccess
                     if (item.IdPelapor <= 0)
                         throw new SystemException("Data Pelapor Tidak Tersimpan");
                     item.Pelapor.Id = item.IdPelapor;
-
-                    item.IdKorban = db.DataKorban.InsertAndGetLastID(item.Korban);
-                    if (item.IdKorban <= 0)
-                        throw new SystemException("Data Korban Tidak Tersimpan");
-                    item.Korban.Id = item.IdKorban;
-
-                    item.IdTerlapor = db.DataTerlapor.InsertAndGetLastID(item.Terlapor);
-                    if (item.IdTerlapor <= 0)
-                        throw new SystemException("Data Terlapor Tidak Tersimpan");
-                    item.Terlapor.Id = item.IdTerlapor;
 
                     item.Id = db.DataPengaduan.InsertAndGetLastID(item);
                     if (item.Id <= 0)

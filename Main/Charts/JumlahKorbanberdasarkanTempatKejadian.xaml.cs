@@ -34,7 +34,10 @@ namespace Main.Charts
 
         private void RefreshAction(object obj)
         {
-            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.Kejadian.Tempat);
+            var groupPengaduan = (from a in  DataAccess.DataBasic.DataPengaduan
+                                 from korban in a.Korban  select new { Pengaduan = a, Korban = korban } )
+                                 .GroupBy(x => x.Pengaduan.Tempat);
+
             List<string> dataTempat = new List<string>();
             List<int> datas = new List<int>();
             foreach (var kasus in groupPengaduan)

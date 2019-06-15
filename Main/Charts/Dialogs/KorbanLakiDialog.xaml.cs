@@ -19,7 +19,7 @@ namespace Main.Charts.Dialogs
             var result = win.Width;
             this.Width = result * 80/100;
             this.Height = win.Height *80/100;
-            var data = DataAccess.DataBasic.DataPengaduan.Where(x => x.Korban.Gender == Gender.L).Count();
+            var data =  DataAccess.DataBasic.DataPengaduan.Where(x => x.Korban.Where(z => z.Gender == Gender.L).Count() > 0).Count();
             this.Title = $"Jumlah korban kekerasan dengan gender Laki-Laki tahun {DateTime.Now.Year} adalah {data} jiwa ";
             this.DataContext = this;
 

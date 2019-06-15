@@ -17,8 +17,12 @@ namespace Main.Charts.Dialogs
             var result = win.Width;
             this.Width = result * 80 / 100;
             this.Height = win.Height * 80 / 100;
-            var data = DataAccess.DataBasic.DataPengaduan.Where(x => x.Korban.Gender == Gender.P).Count();
-            this.Title = $"Jumlah korban kekerasan dengan gender Perempuan tahun {DateTime.Now.Year} adalah {data} jiwa ";
+            var data = from a in DataAccess.DataBasic.DataPengaduan
+                       from korban in a.Korban
+                       where korban.Gender == Gender.P
+                       select korban;
+                       
+            this.Title = $"Jumlah korban kekerasan dengan gender Perempuan tahun {DateTime.Now.Year} adalah {data.Count()} jiwa ";
             this.DataContext = this;
         }
     }

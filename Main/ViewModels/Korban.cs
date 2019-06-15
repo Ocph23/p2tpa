@@ -7,12 +7,13 @@ namespace Main.ViewModels
     [TableName("Korban")]
     public class Korban :Identitas,IDataErrorInfo
     {
-      
+        private int pengaduanid;
+
+        [DbColumn("PengaduanId")]
+        public int PengaduanId { get => pengaduanid; set => SetProperty(ref pengaduanid, value); }
 
         public string NoReg { get; set; }
         public string this[string columnName] => Validate(columnName);
-
-
         public string Error
         {
             get

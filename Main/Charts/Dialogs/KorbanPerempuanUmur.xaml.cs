@@ -21,7 +21,7 @@ namespace Main.Charts.Dialogs
 
         private void RefreshAction(object obj)
         {
-            var source = DataAccess.DataBasic.DataPengaduan;
+           
             List<string> labels = new List<string>();
             labels.Add("0-5");
             labels.Add("6-12");
@@ -32,9 +32,10 @@ namespace Main.Charts.Dialogs
             labels.Add("60+");
             List<int> datas = new List<int>();
 
-            var result = from p in source
-                         where p.Korban.TanggalLahir != null && p.Korban.Gender == Gender.P
-                         let age = p.Tanggal.Year - p.Korban.TanggalLahir.Year
+            var result = from p in DataAccess.DataBasic.DataPengaduan
+                         from korban in p.Korban
+                         where korban.TanggalLahir != null && korban.Gender == Gender.P
+                         let age = p.Tanggal.Year - korban.TanggalLahir.Year
                          group p by
                             age < 6 ? "0-5" :
                             age < 13 ? "6-12" :

@@ -24,7 +24,8 @@ namespace Main.Charts.Dialogs
         private async void RefreshActionAsync(object obj)
         {
             await Task.Delay(500);
-            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.Korban.Gender);
+            var groupPengaduan = (from p in  DataAccess.DataBasic.DataPengaduan
+                                 from korban in p.Korban select korban).GroupBy(x=>x.Gender);
 
             List<string> datagender = new List<string>() { "Laki-Laki", "Perempuan" };
             List<int> datas = new List<int>();

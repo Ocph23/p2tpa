@@ -21,20 +21,19 @@ namespace Main.Charts.Dialogs
 
         private void RefreshAction(object obj)
         {
-            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.Kejadian.Tempat);
+            var groupPengaduan = from p in DataAccess.DataBasic.DataPengaduan
+                                 from korban in p.Korban
+                                 where korban.Gender == Gender.L
+                                 select new { Pengaduan = p, Korban = korban };
+
+
             List<string> labels = new List<string>();
-            foreach (var tempatKejadidan in groupPengaduan)
+            foreach (var tempatKejadidan in groupPengaduan.GroupBy(x=>x.Pengaduan.Kejadian.Tempat))
             {
 
                 labels.Add(tempatKejadidan.Key);
-                int value = 0;
-                var data = tempatKejadidan.Where(x => x.Korban.Gender == Gender.L);
-
-                if (data != null)
-                {
-                    value = data.Count();
-                }
-
+                int value = tempatKejadidan.Count();
+               
                 SeriesCollection.Add(new PieSeries { DataLabels = true, Title = tempatKejadidan.Key, Values = new ChartValues<double> { value } });
             }
 

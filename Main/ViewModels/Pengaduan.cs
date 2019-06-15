@@ -16,8 +16,8 @@ namespace Main.ViewModels
         private string hari;
         private DateTime tanggal;
         private Pelapor pelapor;
-        private Korban korban;
-        private Terlapor terlapor;
+        private List<Korban> korbans = new List<Korban>();
+        private List<Terlapor> terlapors= new List<Terlapor>();
         private KondisiKorban kondisi;
         private DampakKorban dampak;
         private Kejadian kejadian;
@@ -29,9 +29,7 @@ namespace Main.ViewModels
         private string tempat;
         private string penerima;
         private int? id;
-        private int idTerlapor;
         private int idPelapor;
-        private int idKorban;
         private string kodeDistrik;
         private PackIcon _icon;
 
@@ -51,14 +49,7 @@ namespace Main.ViewModels
         [DbColumn("idPelapor")]
         public int IdPelapor { get => idPelapor; set => SetProperty(ref idPelapor, value); }
 
-        [DbColumn("idKorban")]
-        public int IdKorban { get => idKorban; set => SetProperty(ref idKorban, value); }
-
-        [DbColumn("idTerlapor")]
-        public int IdTerlapor { get => idTerlapor; set => SetProperty(ref idTerlapor, value); }
-
-
-
+       
 
         [DbColumn("nomor")]
         public string Nomor { get => nomor; set => SetProperty(ref nomor, value); }
@@ -70,7 +61,6 @@ namespace Main.ViewModels
 
         [DbColumn("hari")]
         public string Hari { get => hari; set => SetProperty(ref hari, value); }
-
 
         [DbColumn("penerima")]
         public string Penerima { get => penerima; set => SetProperty(ref penerima, value); }
@@ -119,9 +109,9 @@ namespace Main.ViewModels
 
         public Pelapor Pelapor { get => pelapor; set => SetProperty(ref pelapor, value); }
 
-        public Korban Korban { get => korban; set => SetProperty(ref korban, value); }
+        public List<Korban> Korban { get => korbans; set => SetProperty(ref korbans, value); }
 
-        public Terlapor Terlapor { get => terlapor; set => SetProperty(ref terlapor, value); }
+        public List<Terlapor> Terlapor { get => terlapors; set => SetProperty(ref terlapors, value); }
 
         public KondisiKorban Kondisi { get => kondisi; set => SetProperty(ref kondisi, value); }
 

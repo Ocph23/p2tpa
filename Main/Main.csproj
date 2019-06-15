@@ -194,6 +194,9 @@
     <Compile Include="Views\ImportView.xaml.cs">
       <DependentUpon>ImportView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TambahKasusPages\AddKorbanView.xaml.cs">
+      <DependentUpon>AddKorbanView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TambahKasusPages\DampakPage.xaml.cs">
       <DependentUpon>DampakPage.xaml</DependentUpon>
     </Compile>
@@ -350,6 +353,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TambahKasusPages\AddKorbanView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

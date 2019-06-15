@@ -6,6 +6,7 @@
       mc:Ignorable="d"
       d:DesignHeight="450" d:DesignWidth="800"
       xmlns:main="clr-namespace:Main"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
      TextElement.FontSize="13"
@@ -17,58 +18,70 @@
     <Page.Resources>
         <main:EnumToBoolConverter x:Key="EBConverter"/>
     </Page.Resources>
-    <GroupBox Header="Korban">
-        <StackPanel  Background="White">
-            <WrapPanel>
-                <Label Content="NIK"></Label>
-                <TextBox  Text="{Binding NIK,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Nama"></Label>
-                <TextBox Text="{Binding Nama,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Nama Panggilan"></Label>
-                <TextBox Text="{Binding NamaPanggilan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
-            </WrapPanel>
-            
-            <WrapPanel>
-                <Label Content="Tampat/Tanggal Lahir"></Label>
-                <TextBox Margin="0,0,5,0" MaxWidth="250" Text="{Binding TempatLahir,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
-                <DatePicker Width="145"   Language="id-ID" SelectedDate="{Binding TanggalLahir,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  
-                           Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Alamat"></Label>
-                <TextBox AcceptsReturn="True" Text="{Binding Alamat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
-            </WrapPanel>
-         
-            <WrapPanel>
-                <Label Content="Pekerjaan"></Label>
-                <TextBox Text="{Binding Pekerjaan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Agama"></Label>
-                <ComboBox ItemsSource="{Binding ListAgama}" SelectedValue="{Binding Agama,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Pendidikan"></Label>
-                <ComboBox ItemsSource="{Binding ListPendidikan}" SelectedValue="{Binding Pendidikan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></ComboBox>
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Hubungan Dgn Terlapor"></Label>
-                <ComboBox LostFocus="statusPernikahanLosfocs" IsEditable="True" ItemsSource="{Binding ListHubunganKorban}" x:Name="cmbHubungan" SelectedValue="{Binding HubunganKorbanDenganTerlapor,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
-            </WrapPanel>
-
-            <WrapPanel>
-                <Label Content="Status Pernikahan"></Label>
-                <ComboBox  ItemsSource="{Binding ListStatusPernikahan}" SelectedValue="{Binding Pernikahan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
-            </WrapPanel>
-            <WrapPanel Margin="10,20,0,30">
-                <Label Content="Asal Suku"></Label>
-                <RadioButton GroupName="sukuKorban" IsChecked="{Binding Path=Suku, Converter={StaticResource EBConverter}, ConverterParameter='Papua'}" Content="Orang Asli Papua" ></RadioButton>
-                <RadioButton GroupName="sukuKorban" IsChecked="{Binding Path=Suku, Converter={StaticResource EBConverter}, ConverterParameter='Non Papua'}" Content="Non Asli Papua" ></RadioButton>
-            </WrapPanel>
-        </StackPanel>
-    </GroupBox>
+    <StackPanel>
+        <GroupBox >
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80*"/>
+                            <ColumnDefinition Width="20*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Width="auto" Content="Korban" HorizontalAlignment="Left" Foreground="White"/>
+                        <WrapPanel HorizontalAlignment="Right" Grid.Column="1">
+                            <Button  Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Width="25" Height="25">
+                                <materialDesign:PackIcon
+                                Kind="Add"
+                                Height="24"
+                                Width="24" />               
+                            </Button>
+                        </WrapPanel>
+                    </Grid>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
+            <DataGrid>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="No"/>
+                    <DataGridTextColumn Header="Nama"/>
+                    <DataGridTextColumn Header="JK"/>
+                    <DataGridTextColumn Header="Agama"/>
+                    <DataGridTextColumn Header="Pendidikan"/>
+                    <DataGridTextColumn Header="Suku"/>
+                    <DataGridTextColumn Header="Alamat" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        <GroupBox Header="Pelaku">
+            <GroupBox.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Margin="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80*"/>
+                            <ColumnDefinition Width="20*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Width="auto" Content="Pelaku" HorizontalAlignment="Left" Foreground="White"/>
+                        <WrapPanel Grid.Column="1" HorizontalAlignment="Right">
+                            <Button  Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Width="30" Height="30" >
+                                <materialDesign:PackIcon
+                                Kind="Add"
+                                Height="24"
+                                Width="24" />
+                            </Button>
+                        </WrapPanel>
+                    </Grid>
+                </DataTemplate>
+            </GroupBox.HeaderTemplate>
+            <DataGrid>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="No"/>
+                    <DataGridTextColumn Header="Nama"/>
+                    <DataGridTextColumn Header="JK"/>
+                    <DataGridTextColumn Header="Agama"/>
+                    <DataGridTextColumn Header="Pendidikan"/>
+                    <DataGridTextColumn Header="Suku"/>
+                    <DataGridTextColumn Header="Alamat" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+    </StackPanel>
 </Page>
