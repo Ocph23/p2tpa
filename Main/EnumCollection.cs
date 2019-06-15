@@ -84,5 +84,7 @@ namespace Main
         {
             return new List<string> { "Sendiri", "OrangTua", "Famili" };
         }
+
+        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Main.Models;
+using Main.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Main.DataAccess
 
     public class DataBasic
     {
-        private static PengaduanServices pengaduans;
+        private static List<Pengaduan> pengaduans;
 
         public static List<DataPenduduk> DataPendudukPerKecamatan()
         {
@@ -101,12 +102,16 @@ namespace Main.DataAccess
         }
 
 
-        public static PengaduanServices DataPengaduan
+        public static List<Pengaduan> DataPengaduan
         {
             get
             {
                 if(pengaduans==null)
-                    pengaduans = new PengaduanServices();
+                {
+                    var pengaduan = new PengaduanServices();
+                    pengaduans = pengaduan.Where(x => x.Tanggal.Year == DateTime.Now.Year).ToList();
+
+                }
 
                 return pengaduans;
             }

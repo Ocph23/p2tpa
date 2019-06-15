@@ -15,7 +15,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label Width="auto" HorizontalContentAlignment="Center" Content="{Binding Title}"></Label>
-        <lvc:CartesianChart Grid.Row="1" ScrollHorizontalTo="100" Ser  Series="{Binding SeriesCollection}" LegendLocation="Bottom" >
+        <lvc:CartesianChart Grid.Row="1" ScrollHorizontalTo="100" Series="{Binding SeriesCollection}" LegendLocation="Bottom" >
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Jumlah" ></lvc:Axis>
             </lvc:CartesianChart.AxisY>

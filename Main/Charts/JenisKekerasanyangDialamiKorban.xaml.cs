@@ -69,11 +69,12 @@ namespace Main.Charts
 
 
             labels.Add("Lain");
-            SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = "Lain", Values = new ChartValues<int> { source.Where(x => !string.IsNullOrEmpty(x.Kejadian.Lain)).Count() } });
+            SeriesCollection.Add(new ColumnSeries { Fill=Brushes.Black, DataLabels = true, Title = "Lain", Values = new ChartValues<int> { source.Where(x => !string.IsNullOrEmpty(x.Kejadian.Lain)).Count() } });
 
             Labels = labels.ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
-            YFormatter = value => value.ToString("N");
+            YFormatter = value => ((int)value).ToString("N");
+            XFormatter = value => ((int)value) <= 0 ? "" : ((int)value).ToString("N");
         }
 
       

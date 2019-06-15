@@ -16,9 +16,9 @@ namespace Main
         public SeriesCollection SeriesCollection { get; set; } = new SeriesCollection();
         public string[] Labels { get; set; }
         public ICommand RefreshChartCommand { get; set; }
-        public Func<int, string> XFormatter { get; set; }
-        public Func<int, string> YFormatter { get; set; }
-
+        public Func<object, object> XFormatter { get; set; }
+        public Func<object, object> YFormatter { get; set; }
+        public Func<ChartPoint, string> PointLabel { get; set; }
         public string Title
         {
             get { return _title; }

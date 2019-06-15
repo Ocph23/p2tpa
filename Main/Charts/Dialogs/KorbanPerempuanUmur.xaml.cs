@@ -1,34 +1,21 @@
 ﻿using LiveCharts;
-using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace Main.Charts
+namespace Main.Charts.Dialogs
 {
     /// <summary>
-    /// Interaction logic for KorbanBerdasarkanUsia.xaml
+    /// Interaction logic for KorbanPerempuanUmur.xaml
     /// </summary>
-    public partial class KorbanBerdasarkanUsia : ChartMaster
+    public partial class KorbanPerempuanUmur : ChartMaster
     {
-        public KorbanBerdasarkanUsia()
+        public KorbanPerempuanUmur()
         {
             InitializeComponent();
             this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
             this.RefreshChartCommand.Execute(null);
-            Title = "Korban Berdasarkan Usia";
+            Title = "%Korban Perempuan Berdasarkan Usia";
             this.DataContext = this;
         }
 
@@ -46,18 +33,18 @@ namespace Main.Charts
             List<int> datas = new List<int>();
 
             var result = from p in source
-                         where p.Korban.TanggalLahir != null
+                         where p.Korban.TanggalLahir != null && p.Korban.Gender == Gender.P
                          let age = p.Tanggal.Year - p.Korban.TanggalLahir.Year
-                         group p by 
-                            age <6 ? "0-5" : 
-                            age < 13 ? "6-12": 
+                         group p by
+                            age < 6 ? "0-5" :
+                            age < 13 ? "6-12" :
                             age < 18 ? "13-17" :
-                            age <25 ? "18-24":
-                            age < 45 ? "25-44":
-                            age <60 ?"45-59": "60+" into ages
+                            age < 25 ? "18-24" :
+                            age < 45 ? "25-44" :
+                            age < 60 ? "45-59" : "60+" into ages
                          select new { Age = ages.Key, Persons = ages };
 
-            foreach(var item in labels)
+            foreach (var item in labels)
             {
 
                 int value = 0;
@@ -65,19 +52,20 @@ namespace Main.Charts
                 if (data != null)
                     value = data.Persons.Count();
                 datas.Add(value);
-                SeriesCollection.Add(new ColumnSeries
+                SeriesCollection.Add(new PieSeries
                 {
                     Title = item,
-                    Values = new ChartValues<int> { value}
+                    Values = new ChartValues<int> { value }
                 });
             }
 
-           
+
 
             Labels = labels.ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
-            YFormatter = value => ((int)value).ToString("N");
-            XFormatter = value => ((int)value) <= 0 ? "" : ((int)value).ToString("N");
+            PointLabel = chartPoint =>
+              string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+
         }
     }
 }

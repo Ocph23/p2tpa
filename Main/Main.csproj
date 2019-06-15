@@ -56,6 +56,9 @@
       <HintPath>packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="ResponsiveGrid.Wpf, Version=0.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\ResponsiveGrid.0.3.3\lib\net45\ResponsiveGrid.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -85,6 +88,51 @@
     </ApplicationDefinition>
     <Compile Include="BaseNotify.cs" />
     <Compile Include="Charts\ChartMaster.cs" />
+    <Compile Include="Charts\Dialogs\JumlahKasusDialog.xaml.cs">
+      <DependentUpon>JumlahKasusDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\JumlahKasusDialog1.xaml.cs">
+      <DependentUpon>JumlahKasusDialog1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\JumlahKasusDialog2.xaml.cs">
+      <DependentUpon>JumlahKasusDialog2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\JumlahKasusKorbanMenurutUmur.xaml.cs">
+      <DependentUpon>JumlahKasusKorbanMenurutUmur.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\JumlahKasusTerlaporMenurutUmur.xaml.cs">
+      <DependentUpon>JumlahKasusTerlaporMenurutUmur.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\KorbanLakiDialog.xaml.cs">
+      <DependentUpon>KorbanLakiDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\KorbanLakiPekerjaan.xaml.cs">
+      <DependentUpon>KorbanLakiPekerjaan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\KorbanLakiPendidikan.xaml.cs">
+      <DependentUpon>KorbanLakiPendidikan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\KorbanLakiTempatKejadian.xaml.cs">
+      <DependentUpon>KorbanLakiTempatKejadian.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\KorbanLakiUmur.xaml.cs">
+      <DependentUpon>KorbanLakiUmur.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\KorbanPerempuanDialog.xaml.cs">
+      <DependentUpon>KorbanPerempuanDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\KorbanPerempuanPekerjaan.xaml.cs">
+      <DependentUpon>KorbanPerempuanPekerjaan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\KorbanPerempuanPendidikan.xaml.cs">
+      <DependentUpon>KorbanPerempuanPendidikan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\KorbanPerempuanTempatkejadian.xaml.cs">
+      <DependentUpon>KorbanPerempuanTempatkejadian.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\Dialogs\KorbanPerempuanUmur.xaml.cs">
+      <DependentUpon>KorbanPerempuanUmur.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Charts\JenisKekerasanyangDialamiKorban.xaml.cs">
       <DependentUpon>JenisKekerasanyangDialamiKorban.xaml</DependentUpon>
     </Compile>
@@ -126,6 +174,7 @@
     <Compile Include="DbContext.cs" />
     <Compile Include="EnumToBoolConverter.cs" />
     <Compile Include="Models\Kecamatan.cs" />
+    <Compile Include="Utilities\Helpers.cs" />
     <Compile Include="Utilities\NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>
     </Compile>
@@ -139,6 +188,9 @@
     <Compile Include="ViewModels\Pengaduan.cs" />
     <Compile Include="ViewModels\TahapanPerkembangan.cs" />
     <Compile Include="ViewModels\Terlapor.cs" />
+    <Compile Include="Views\DataView.xaml.cs">
+      <DependentUpon>DataView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ImportView.xaml.cs">
       <DependentUpon>ImportView.xaml</DependentUpon>
     </Compile>
@@ -169,6 +221,66 @@
     <Compile Include="Views\TambahPengaduan.xaml.cs">
       <DependentUpon>TambahPengaduan.xaml</DependentUpon>
     </Compile>
+    <Page Include="Charts\Dialogs\JumlahKasusDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\JumlahKasusDialog1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\JumlahKasusDialog2.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\JumlahKasusKorbanMenurutUmur.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\JumlahKasusTerlaporMenurutUmur.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\KorbanLakiDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\KorbanLakiPekerjaan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\KorbanLakiPendidikan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\KorbanLakiTempatKejadian.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\KorbanLakiUmur.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\KorbanPerempuanDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\KorbanPerempuanPekerjaan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\KorbanPerempuanPendidikan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\KorbanPerempuanTempatkejadian.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\Dialogs\KorbanPerempuanUmur.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Charts\JenisKekerasanyangDialamiKorban.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -230,6 +342,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Utilities\NavigationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

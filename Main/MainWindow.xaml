@@ -6,120 +6,201 @@
         xmlns:local="clr-namespace:Main"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-        xmlns:Charts="clr-namespace:Main.Charts" x:Class="Main.MainWindow"
+        xmlns:Charts="clr-namespace:Main.Charts"
+    xmlns:system="clr-namespace:System;assembly=mscorlib" x:Class="Main.MainWindow"
         mc:Ignorable="d" WindowState="Maximized"
         Title="MainWindow" Height="750" Width="1024">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel>
-            <Menu Height="auto">
-                <MenuItem Header="Home"/>
-                <MenuItem Header="Pengaduan">
-                    <MenuItem Header="Data"/>
-                    <MenuItem Header="Tambah" Command="{Binding TambahPengaduanCommand}"/>
-                </MenuItem>
-                <MenuItem Header="Export Import">
-                    <MenuItem Header="Export"/>
-                    <MenuItem Header="Import" Command="{Binding ImportCommand}"/>
-                </MenuItem>
-            </Menu>
-        </StackPanel>
-        <ScrollViewer Grid.Row="1">
-            <Grid Margin="5">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type system:DateTime}">
+            <StackPanel Margin="16">
+                <TextBlock>England win the World Cup:</TextBlock>
+                <TextBlock Margin="0 8 0 0" Text="{Binding }" />
+                <TextBlock Margin="0 8 0 0" >You will never see that again.</TextBlock>
+                <Button  Margin="0 8 0 0" IsDefault="True" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}">AWESOME</Button>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <materialDesign:DialogHost Identifier="RootDialog" SnackbarMessageQueue="{Binding ElementName=MainSnackbar, Path=MessageQueue}">
+        <materialDesign:DrawerHost IsLeftDrawerOpen="{Binding ElementName=MenuToggleButton, Path=IsChecked}">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid MinHeight="100" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:Card Padding="20" Margin="3"  >
-                        <Label Content="map" />
-                    </materialDesign:Card>
-                    <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
-                        <Label Content="map" />
-                    </materialDesign:Card>
-                    <materialDesign:Card Grid.Column="2" Padding="20"  Margin="3"  >
-                        <Label Content="map" />
-                    </materialDesign:Card>
-                </Grid>
-                <materialDesign:Card Padding="20" Margin="3" Grid.Row="1" >
-                    <Charts:ProyeksiTerhadapPendduk ></Charts:ProyeksiTerhadapPendduk>
-                </materialDesign:Card>
-                <materialDesign:Card Padding="20" Margin="3" Grid.Row="2" >
-                    <Charts:RasioPerempuanKorbanKekerasan />
-                </materialDesign:Card>
-                <Grid MinHeight="100" Grid.Row="4" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
-                        <Charts:JumlahKasusberdasarkanTempatKejadian />
-                    </materialDesign:Card>
-                    <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
-                        <Charts:JumlahKorbanberdasarkanTempatKejadian />
-                    </materialDesign:Card>
-                  
-                </Grid>
-                <Grid MinHeight="100" Grid.Row="5" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
-                        <Charts:JenisKekerasanyangDialamiKorban></Charts:JenisKekerasanyangDialamiKorban>
-                    </materialDesign:Card>
-                    <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
-                        <Charts:KorbanMenurutBanyaknyaKekerasanyangDialami></Charts:KorbanMenurutBanyaknyaKekerasanyangDialami>
-                    </materialDesign:Card>
-                </Grid>
+                <StackPanel>
+                    <Menu Height="auto" Background="#FFDD4B39">
+                        <MenuItem Header="Home" Foreground="White" FontWeight="Bold"/>
+                        <MenuItem Header="Pengaduan" Foreground="White" FontWeight="Bold">
+                            <MenuItem Header="Data" Command="{Binding DataViewCommand}"/>
+                            <MenuItem Header="Tambah" Command="{Binding TambahPengaduanCommand}"/>
+                        </MenuItem>
+                        <MenuItem Header="Export Import" Foreground="White" FontWeight="Bold">
+                            <MenuItem Header="Export"/>
+                            <MenuItem Header="Import" Command="{Binding ImportCommand}"/>
+                        </MenuItem>
+                    </Menu>
+                </StackPanel>
+                <ScrollViewer Grid.Row="1">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid MinHeight="100" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:Card Background="#03a9f4"
+                      Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                      Padding="0" Margin="3">
+                                <Grid >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <DockPanel Margin="10,10">
+                                        <StackPanel DockPanel.Dock="Left">
+                                            <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="12522" FontSize="40" Margin="3" />
+                                            <TextBlock Margin="10,0,0,0" Text="Jumlah Kasus" FontSize="20"  />
+                                        </StackPanel>
+                                        <Image Height="100" DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/pppa.jpg"/>
 
-                <Grid MinHeight="100" Grid.Row="5" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
-                        <Charts:KorbanBerdasarkanUsia></Charts:KorbanBerdasarkanUsia>
-                    </materialDesign:Card>
-                    <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
-                        <Charts:KorbanBerdasarkanPendidikan></Charts:KorbanBerdasarkanPendidikan>
-                    </materialDesign:Card>
-                </Grid>
+                                    </DockPanel>
 
-                <Grid MinHeight="100" Grid.Row="6" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
-                        <Charts:PelakuBerdasarkanJenisKelamin></Charts:PelakuBerdasarkanJenisKelamin>
-                    </materialDesign:Card>
-                    <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
-                        <Charts:PelakuBerdasarkanKewarganegaraan></Charts:PelakuBerdasarkanKewarganegaraan>
-                    </materialDesign:Card>
-                    <materialDesign:Card Grid.Column="2" Padding="20"  Margin="3"   >
-                        <Charts:PelakuBerdasarkanHubungan></Charts:PelakuBerdasarkanHubungan>
-                    </materialDesign:Card>
-                </Grid>
 
+                                    <Grid Grid.Row="2" Background="#FF0581B9">
+                                        <Button Click="Button_Click" Content="More Info " FontSize="10" Style="{StaticResource MaterialDesignToolForegroundButton}"   
+                                        materialDesign:RippleAssist.IsCentered="False">
+                                        </Button>
+                                        <materialDesign:PackIcon HorizontalAlignment="Right" Margin="0,5,55,0" VerticalAlignment="Center" Kind="ArrowRight" />
+                                    </Grid>
+                                </Grid>
+                            </materialDesign:Card>
+                            <materialDesign:Card Background="#FF029B33" Grid.Column="1"
+                      Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                      Padding="0" Margin="3">
+                                <Grid >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <DockPanel Margin="10,10">
+                                        <StackPanel DockPanel.Dock="Left">
+                                            <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="12522" FontSize="40" Margin="3" />
+                                            <TextBlock Margin="10,0,0,0" Text="Jumlah Kasus" FontSize="20"  />
+                                        </StackPanel>
+                                        <Image Height="100" DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/pppa.jpg"/>
+                                    </DockPanel>
+
+
+                                    <Grid Grid.Row="2" Background="#FF016822">
+                                        <Button Content="More Info" Click="lakiKasus" FontSize="10" Style="{StaticResource MaterialDesignToolForegroundButton}"   
+                                        materialDesign:RippleAssist.IsCentered="False">
+                                        </Button>
+                                        <materialDesign:PackIcon HorizontalAlignment="Right" Margin="0,5,55,0" VerticalAlignment="Center" Kind="ArrowRight" />
+                                    </Grid>
+                                </Grid>
+                            </materialDesign:Card>
+                            <materialDesign:Card Background="#FFF39C12" Grid.Column="2"
+                      Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+                      Padding="0" Margin="3">
+                                <Grid >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <DockPanel Margin="10,10">
+                                        <StackPanel DockPanel.Dock="Left">
+                                            <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="12522" FontSize="40" Margin="3" />
+                                            <TextBlock Margin="10,0,0,0" Text="Jumlah Kasus" FontSize="20"  />
+                                        </StackPanel>
+                                        <Image Height="100" DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/pppa.jpg"/>
+                                    </DockPanel>
+                                    <Grid Grid.Row="2" Background="#FF875608">
+                                        <Button Content="More Info " Click="perempuankasus" FontSize="10" Style="{StaticResource MaterialDesignToolForegroundButton}"   
+                                        materialDesign:RippleAssist.IsCentered="False">
+                                        </Button>
+                                        <materialDesign:PackIcon HorizontalAlignment="Right" Margin="0,5,55,0" VerticalAlignment="Center" Kind="ArrowRight" />
+                                    </Grid>
+                                </Grid>
+                            </materialDesign:Card>
+                        </Grid>
+                        <materialDesign:Card Padding="20" Margin="3" Grid.Row="1" >
+                            <Charts:ProyeksiTerhadapPendduk ></Charts:ProyeksiTerhadapPendduk>
+                        </materialDesign:Card>
+                        <materialDesign:Card Padding="20" Margin="3" Grid.Row="2" >
+                            <Charts:RasioPerempuanKorbanKekerasan />
+                        </materialDesign:Card>
+                        <Grid MinHeight="100" Grid.Row="4" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
+                                <Charts:JumlahKasusberdasarkanTempatKejadian />
+                            </materialDesign:Card>
+                            <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
+                                <Charts:JumlahKorbanberdasarkanTempatKejadian />
+                            </materialDesign:Card>
+
+                        </Grid>
+                        <Grid MinHeight="100" Grid.Row="5" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
+                                <Charts:JenisKekerasanyangDialamiKorban></Charts:JenisKekerasanyangDialamiKorban>
+                            </materialDesign:Card>
+                            <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
+                                <Charts:KorbanMenurutBanyaknyaKekerasanyangDialami></Charts:KorbanMenurutBanyaknyaKekerasanyangDialami>
+                            </materialDesign:Card>
+                        </Grid>
+
+                        <Grid MinHeight="100" Grid.Row="6" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
+                                <Charts:KorbanBerdasarkanUsia></Charts:KorbanBerdasarkanUsia>
+                            </materialDesign:Card>
+                            <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
+                                <Charts:KorbanBerdasarkanPendidikan></Charts:KorbanBerdasarkanPendidikan>
+                            </materialDesign:Card>
+                        </Grid>
+
+                        <Grid MinHeight="100" Grid.Row="7" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
+                                <Charts:PelakuBerdasarkanJenisKelamin></Charts:PelakuBerdasarkanJenisKelamin>
+                            </materialDesign:Card>
+                            <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
+                                <Charts:PelakuBerdasarkanKewarganegaraan></Charts:PelakuBerdasarkanKewarganegaraan>
+                            </materialDesign:Card>
+                            <materialDesign:Card Grid.Column="2" Padding="20"  Margin="3"   >
+                                <Charts:PelakuBerdasarkanHubungan></Charts:PelakuBerdasarkanHubungan>
+                            </materialDesign:Card>
+                        </Grid>
+
+                    </Grid>
+
+                </ScrollViewer>
             </Grid>
-
-        </ScrollViewer>
-    </Grid>
+        </materialDesign:DrawerHost>
+    </materialDesign:DialogHost>
+   
 </Window>

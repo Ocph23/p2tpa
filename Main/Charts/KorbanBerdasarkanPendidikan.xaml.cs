@@ -34,21 +34,29 @@ namespace Main.Charts
         private void RefreshAction(object obj)
         {
             var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.Korban.Pendidikan);
-            List<string> dataTempat = new List<string>();
-            List<int> datas = new List<int>();
-            foreach (var kasus in groupPengaduan)
+          
+            foreach (var pendidikan in EnumSource.DataPendidikan())
             {
-                dataTempat.Add(kasus.Key);
-                if (kasus != null)
+                int value = 0;
+                var data = groupPengaduan.Where(x => x.Key == pendidikan).FirstOrDefault();
+            
+                if (data != null)
                 {
-                    datas.Add(kasus.Count());
-                    SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = kasus.Key, Values = new ChartValues<int> { kasus.Count() } });
+                    value = data.Count();
                 }
+
+                SeriesCollection.Add(new ColumnSeries
+                {
+                    DataLabels = true,
+                    Title = pendidikan,
+                    Values = new ChartValues<int> { value }
+                });
             }
 
-            Labels = dataTempat.ToArray();
+            Labels = EnumSource.DataPendidikan().ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
-            YFormatter = value => value.ToString("N");
+            YFormatter = value => ((int)value).ToString("N");
+            XFormatter = value => ((int)value)<=0 ? "": ((int)value).ToString("N");
         }
     }
 }

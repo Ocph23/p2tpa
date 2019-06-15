@@ -20,9 +20,9 @@
                 <lvc:Axis Title="Jumlah" ></lvc:Axis>
             </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title=" " Labels="{Binding Labels}">
+                <lvc:Axis Title="Hubungan" Labels="{Binding Labels}">
                     <lvc:Axis.Separator>
-                        <lvc:Separator IsEnabled="True"></lvc:Separator>
+                        <lvc:Separator IsEnabled="False" Step="1"></lvc:Separator>
                     </lvc:Axis.Separator>
                 </lvc:Axis>
             </lvc:CartesianChart.AxisX>

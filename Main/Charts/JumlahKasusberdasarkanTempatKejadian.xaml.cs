@@ -38,8 +38,8 @@ namespace Main.Charts
 
             Labels = dataTempat.ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
-            YFormatter = value => value.ToString("N");
-
+            YFormatter = value => ((int)value).ToString("N");
+            XFormatter = value => ((int)value) <= 0 ? "" : ((int)value).ToString("N");
         }
        
     }

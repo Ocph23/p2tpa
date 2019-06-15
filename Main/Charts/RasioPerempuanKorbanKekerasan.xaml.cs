@@ -31,8 +31,6 @@ namespace Main.Charts
             foreach (var kec in dataKec)
             {
                 var kasus = groupPengaduan.Where(x => x.Key == kec.Id).FirstOrDefault();
-
-
                 if (kasus != null)
                 {
                     var kasusPerem = kasus.Where(x => x.Korban.Gender == Gender.P).Count();
@@ -44,13 +42,10 @@ namespace Main.Charts
                     rasio.Add(0);
                     jumlahKorbanPerempuan.Add(0);
                 }
-
-
             }
 
             SeriesCollection = new SeriesCollection
             {
-                
                 new LineSeries
                 {
                     Title = "Rasio",

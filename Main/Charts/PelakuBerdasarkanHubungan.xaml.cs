@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LiveCharts;
+using LiveCharts.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,6 +33,24 @@ namespace Main.Charts
 
         private void RefreshAction(object obj)
         {
+            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.HubunganKorbanDenganTerlapor);
+            List<string> dataHubungan = EnumSource.HubunganKorbanDenganTerlapor();
+            List<int> datas = new List<int>();
+            foreach (var hubungan in dataHubungan)
+            {
+                var value = 0;
+                var result = groupPengaduan.Where(x => x.Key == hubungan).FirstOrDefault();
+                if (result != null)
+                    value = result.Count();
+
+                SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = hubungan, Values = new ChartValues<int> { value } });
+
+            }
+
+            Labels = dataHubungan.ToArray();
+            //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
+            YFormatter = value => ((int)value).ToString("N");
+            XFormatter = value => ((int)value) <= 0 ? "" : ((int)value).ToString("N");
         }
     }
 }

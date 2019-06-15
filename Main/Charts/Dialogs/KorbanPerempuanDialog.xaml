@@ -1,0 +1,50 @@
+﻿<main:ChartMaster
+    xmlns:main="clr-namespace:Main" x:Class="Main.Charts.Dialogs.KorbanPerempuanDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Main.Charts.Dialogs"
+    xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+    xmlns:rg="clr-namespace:SourceChord.ResponsiveGrid;assembly=ResponsiveGrid.Wpf"
+    mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <rg:ResponsiveGrid Grid.Row="0">
+            <StackPanel Margin="10" rg:ResponsiveGrid.XS="10" HorizontalAlignment="Left">
+                <TextBlock Width="auto" Text="Detail" FontSize="20"/>
+                <TextBlock Width="auto"  TextWrapping="Wrap" Text="{Binding Title}"/>
+                <TextBlock Width="auto" Text="Dengan sebaran sebagai berikut :"/>
+            </StackPanel>
+            <Button  Width="25" Height="25" Margin="20,0" Padding="1" rg:ResponsiveGrid.XS="2"
+                 IsCancel="True" Background="{x:Null}" Foreground="Red" HorizontalAlignment="Right"
+                 Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                <materialDesign:PackIcon Kind="Close" />
+            </Button>
+        </rg:ResponsiveGrid>
+        <Separator Grid.Row="1"/>
+        <ScrollViewer Grid.Row="2" Padding="10">
+            <rg:ResponsiveGrid>
+                <materialDesign:Card rg:ResponsiveGrid.XS="12" rg:ResponsiveGrid.SM="6"  Height="450" Padding="20" Margin="3"  >
+                    <local:KorbanPerempuanUmur/>
+                </materialDesign:Card>
+                <materialDesign:Card rg:ResponsiveGrid.XS="12" rg:ResponsiveGrid.SM="6"  Height="450" Padding="20" Margin="3"  >
+                    <local:KorbanPerempuanPendidikan/>
+                </materialDesign:Card>
+                <materialDesign:Card rg:ResponsiveGrid.XS="12" rg:ResponsiveGrid.SM="6"  Height="450" Padding="20" Margin="3" >
+                    <local:KorbanPerempuanPekerjaan/>
+                </materialDesign:Card>
+                <materialDesign:Card rg:ResponsiveGrid.XS="12" rg:ResponsiveGrid.SM="6"  Height="450" Padding="20" Margin="3" >
+                    <local:KorbanPerempuanTempatkejadian/>
+                </materialDesign:Card>
+            </rg:ResponsiveGrid>
+        </ScrollViewer>
+
+    </Grid>
+</main:ChartMaster>

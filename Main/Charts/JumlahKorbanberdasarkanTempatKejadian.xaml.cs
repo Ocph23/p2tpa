@@ -29,7 +29,7 @@ namespace Main.Charts
             this.RefreshChartCommand.Execute(null);
 
             Title = "Jumlah Korban Berdasarkan Tempat Kejadian";
-                 this.DataContext = this;
+            this.DataContext = this;
         }
 
         private void RefreshAction(object obj)
@@ -42,15 +42,15 @@ namespace Main.Charts
                 dataTempat.Add(kasus.Key);
                 if (kasus != null)
                 {
-                    datas.Add(kasus.GroupBy(x=>x.Korban.Id).Count());
+                    datas.Add(kasus.GroupBy(x => x.Korban.Id).Count());
                     SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = kasus.Key, Values = new ChartValues<int> { kasus.Count() } });
                 }
             }
 
             Labels = dataTempat.ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
-            YFormatter = value => value.ToString("N");
-
+            YFormatter = value => ((int)value).ToString("N");
+            XFormatter = value => ((int)value) <= 0 ? "" : ((int)value).ToString("N");
         }
-}
+    }
 }
