@@ -1,11 +1,11 @@
-﻿<Window x:Class="Main.Views.TambahKasusPages.AddKorbanView"
+﻿<Window x:Class="Main.Views.TambahKasusPages.AddViewTerlaporView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Main.Views.TambahKasusPages"
-        xmlns:main="clr-namespace:Main" FontSize="12"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        xmlns:main="clr-namespace:Main"
+        mc:Ignorable="d"     WindowStartupLocation="CenterScreen"
         Title="" Height="650" Width="720">
     <Window.Resources>
         <main:EnumToBoolConverter x:Key="EBConverter"/>
@@ -15,14 +15,9 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-
-        <GroupBox Grid.Row="0" Header="Tambah/Edit Korban">
+        <GroupBox Grid.Row="0" Header="Tambah/Edit Terlapor">
             <ScrollViewer >
-                <StackPanel   Background="White">
-                    <WrapPanel>
-                        <Label Content="NIK"></Label>
-                        <TextBox  Text="{Binding NIK,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
-                    </WrapPanel>
+                <StackPanel  Background="White">
                     <WrapPanel>
                         <Label Content="Nama"></Label>
                         <TextBox Text="{Binding Nama,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
@@ -31,15 +26,11 @@
                         <Label Content="Nama Panggilan"></Label>
                         <TextBox Text="{Binding NamaPanggilan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
                     </WrapPanel>
-
                     <WrapPanel>
                         <Label Content="Tampat/Tanggal Lahir"></Label>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBox Width="300"  Text="{Binding TempatLahir, 
-                        UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
-                            <DatePicker  Width="100" Language="id-ID" SelectedDate="{Binding TanggalLahir,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  
+                        <TextBox Margin="0,0,5,0" MaxWidth="250" Text="{Binding TempatLahir,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                        <DatePicker Width="145"   Language="id-ID" SelectedDate="{Binding TanggalLahir,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  
                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-                        </StackPanel>
                     </WrapPanel>
                     <WrapPanel>
                         <Label Content="Alamat"></Label>
@@ -47,7 +38,7 @@
                     </WrapPanel>
 
                     <WrapPanel>
-                        <Label Content="Pekerjaan"></Label>
+                        <Label Content="Pekerjaan" ></Label>
                         <ComboBox ItemsSource="{Binding ListPekerjaan}" Text="{Binding PekerjaanText}" IsEditable="True" SelectedItem="{Binding Pekerjaan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></ComboBox>
                     </WrapPanel>
                     <WrapPanel>
@@ -57,15 +48,6 @@
                     <WrapPanel>
                         <Label Content="Pendidikan"></Label>
                         <ComboBox ItemsSource="{Binding ListPendidikan}" SelectedValue="{Binding Pendidikan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></ComboBox>
-                    </WrapPanel>
-                    <WrapPanel>
-                        <Label Content="Hubungan Dgn Terlapor"></Label>
-                        <ComboBox LostFocus="statusPernikahanLosfocs" IsEditable="True" ItemsSource="{Binding ListHubunganKorban}" x:Name="cmbHubungan" SelectedValue="{Binding HubunganKorbanDenganTerlapor,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
-                    </WrapPanel>
-
-                    <WrapPanel>
-                        <Label Content="Status Pernikahan"></Label>
-                        <ComboBox  ItemsSource="{Binding ListStatusPernikahan}" SelectedValue="{Binding Pernikahan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
                     </WrapPanel>
                     <WrapPanel Margin="10,20,0,30">
                         <Label Content="Asal Suku"></Label>

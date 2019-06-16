@@ -6,12 +6,9 @@ namespace Main.ViewModels
 {
 
     [TableName("Terlapor")]
-   public class Terlapor : Identitas   ,IDataErrorInfo
+   public class Terlapor : Identitas,IDataErrorInfo
     {
-        private int pengaduanid;
-
-        [DbColumn("PengaduanId")]
-        public int PengaduanId { get => pengaduanid; set => SetProperty(ref pengaduanid, value); }
+        
 
         public string this[string columnName] => Validate(columnName);
         public string Error
@@ -35,13 +32,14 @@ namespace Main.ViewModels
                 return null;
             }
         }
+
+      
+
         public string Validate(string name)
         {
 
             if (name == "Nama" && string.IsNullOrEmpty(Nama))
                 return "Nama Tidak Boleh Kosong";
-
-           
 
             if (name == "TempatLahir" && string.IsNullOrEmpty(TempatLahir))
                 return "TempatLahir Tidak Boleh Kosong";

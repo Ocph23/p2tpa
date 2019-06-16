@@ -13,11 +13,13 @@ namespace Main.DataAccess
         {
             using (var db = new DbContext())
             {
+                var aaa = db.DataPengaduan.Select();
+
                 var data = from pengaduan in db.DataPengaduan.Select()
-                           join pelapor in db.DataPelapor.Select() on pengaduan.IdPelapor equals pelapor.Id
-                           join dampak in db.DataDampak.Select() on pengaduan.Id equals dampak.PengaduanId
-                           join kejadian in db.DataKejadian.Select() on pengaduan.Id equals kejadian.PengaduanId
-                           join kondisi in db.DataKondisiKorban.Select() on pengaduan.Id equals kondisi.PengaduanId
+                           join pelapor in db.DataPelapor.Select().DefaultIfEmpty() on pengaduan.Id equals pelapor.PengaduanId
+                           join dampak in db.DataDampak.Select().DefaultIfEmpty() on pengaduan.Id equals dampak.PengaduanId
+                           join kejadian in db.DataKejadian.Select().DefaultIfEmpty() on pengaduan.Id equals kejadian.PengaduanId
+                           join kondisi in db.DataKondisiKorban.Select().DefaultIfEmpty() on pengaduan.Id equals kondisi.PengaduanId
                            select new Pengaduan()
                            {
                                KodeDistrik = pengaduan.KodeDistrik,
@@ -25,7 +27,6 @@ namespace Main.DataAccess
                                Catatan = pengaduan.Catatan,
                                Hari = pengaduan.Hari,
                                Id = pengaduan.Id,
-                               IdPelapor = pengaduan.IdPelapor,
                                Nomor = pengaduan.Nomor,
                                Pelapor = pelapor,
                                Penerima = pengaduan.Penerima,
@@ -43,8 +44,9 @@ namespace Main.DataAccess
                 ;
                 foreach (var item in data)
                 {
-                    item.Korban = db.DataKorban.Where(x => x.PengaduanId == item.Id).ToList();
-                    item.Terlapor= db.DataTerlapor.Where(x => x.PengaduanId == item.Id).ToList();
+                    var id = item.Id.Value;
+                    item.Korban = db.DataKorban.Where(x => x.PengaduanId == id).ToList();
+                    item.Terlapor= db.DataTerlapor.Where(x => x.PengaduanId == id).ToList();
                     list.Add(item);
                 }
             }
@@ -63,15 +65,74 @@ namespace Main.DataAccess
                 var trans = db.BeginTransaction();
                 try
                 {
-                    item.IdPelapor = db.DataPelapor.InsertAndGetLastID(item.Pelapor);
-                    if (item.IdPelapor <= 0)
-                        throw new SystemException("Data Pelapor Tidak Tersimpan");
-                    item.Pelapor.Id = item.IdPelapor;
 
                     item.Id = db.DataPengaduan.InsertAndGetLastID(item);
                     if (item.Id <= 0)
                         throw new SystemException("Data Pengaduan Tidak Tersimpan");
 
+
+                     if(item.Korban!=null)
+                        foreach(var data in item.Korban)
+                        {
+                            if (data.Id<=0)
+                            {
+                                data.PengaduanId = item.Id.Value;
+                                data.Id = db.DataKorban.InsertAndGetLastID(data);
+                            }
+                            else
+                            {
+                                db.DataKorban.Update(x => new
+                                {
+                                    x.Agama,
+                                    x.Alamat,
+                                    x.Gender,
+                                    x.Nama,
+                                    x.NamaPanggilan,
+                                    x.NIK,
+                                    x.Pekerjaan,
+                                    x.Pendidikan,
+                                    x.Pernikahan,
+                                    x.Suku,
+                                    x.TanggalLahir,
+                                    x.TempatLahir
+                                }, data, x => x.Id == data.Id);
+                            }
+                        }
+
+
+                    if (item.Terlapor != null)
+                        foreach (var data in item.Terlapor)
+                        {
+                            if (data.Id <= 0)
+                            {
+                                data.PengaduanId = item.Id.Value;
+                                data.Id = db.DataTerlapor.InsertAndGetLastID(data);
+                            }
+                            else
+                            {
+                                db.DataTerlapor.Update(x => new
+                                {
+                                    x.Agama,
+                                    x.Alamat,
+                                    x.Gender,
+                                    x.Nama,
+                                    x.NamaPanggilan,
+                                    x.NIK,
+                                    x.Pekerjaan,
+                                    x.Pendidikan,
+                                    x.Pernikahan,
+                                    x.Suku,
+                                    x.TanggalLahir,
+                                    x.TempatLahir
+                                }, data, x => x.Id == data.Id);
+                            }
+                        }
+
+                    item.Pelapor.PengaduanId = item.Id.Value;
+                    item.Pelapor.Id = db.DataPelapor.InsertAndGetLastID(item.Pelapor);
+                    if (item.Pelapor.Id <= 0)
+                        throw new SystemException("Data Pelapor Tidak Tersimpan");
+                  
                     item.Kejadian.PengaduanId = item.Id.Value;
                     item.Dampak.PengaduanId = item.Id.Value;
                     item.Kondisi.PengaduanId = item.Id.Value;

@@ -1,4 +1,5 @@
-﻿using MaterialDesignThemes.Wpf;
+﻿using Main.Models;
+using MaterialDesignThemes.Wpf;
 using Ocph.DAL;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Main.ViewModels
         private string nomor;
         private string rujukan;
         private string hari;
-        private DateTime tanggal;
+        private DateTime tanggal = DateTime.Now;
         private Pelapor pelapor;
         private List<Korban> korbans = new List<Korban>();
         private List<Terlapor> terlapors= new List<Terlapor>();
@@ -25,11 +26,10 @@ namespace Main.ViewModels
         private string uraian;
         private List<TahapanPerkembangan> perkembangan;
         private string catatan;
-        private TimeSpan waktu;
+        private DateTime waktu;
         private string tempat;
         private string penerima;
         private int? id;
-        private int idPelapor;
         private string kodeDistrik;
         private PackIcon _icon;
 
@@ -46,11 +46,6 @@ namespace Main.ViewModels
         }
 
 
-        [DbColumn("idPelapor")]
-        public int IdPelapor { get => idPelapor; set => SetProperty(ref idPelapor, value); }
-
-       
-
         [DbColumn("nomor")]
         public string Nomor { get => nomor; set => SetProperty(ref nomor, value); }
 
@@ -60,7 +55,12 @@ namespace Main.ViewModels
 
 
         [DbColumn("hari")]
-        public string Hari { get => hari; set => SetProperty(ref hari, value); }
+        public string Hari {
+            get => hari;
+            set
+            {
+                SetProperty(ref hari, value);
+            } }
 
         [DbColumn("penerima")]
         public string Penerima { get => penerima; set => SetProperty(ref penerima, value); }
@@ -69,7 +69,7 @@ namespace Main.ViewModels
         [DbColumn("tanggal")]
         public DateTime Tanggal { get => tanggal; set => SetProperty(ref tanggal, value); }
 
-        public TimeSpan Waktu { get => waktu; set => SetProperty(ref waktu, value); }
+        public DateTime Waktu { get => waktu; set => SetProperty(ref waktu, value); }
 
 
         [DbColumn("tempat")]
@@ -88,6 +88,7 @@ namespace Main.ViewModels
 
         public string hkdt;
         private string statusLapor;
+        private string statusLaporText;
 
         [DbColumn("HubunganKorbanDenganTerlapor")]
         public string HubunganKorbanDenganTerlapor
@@ -103,7 +104,7 @@ namespace Main.ViewModels
             set
             {
                 SetProperty(ref statusLapor, value);
-               
+       
             }
         }
 
@@ -119,18 +120,14 @@ namespace Main.ViewModels
 
         public Kejadian Kejadian { get => kejadian; set => SetProperty(ref kejadian, value); }
 
-
+        public List<Kecamatan> Kecamatan { get; set; }
 
         public List<TahapanPerkembangan> Perkembangan { get => perkembangan; set => SetProperty(ref perkembangan, value); }
 
         public PackIcon Icon { get => _icon; set => SetProperty(ref _icon, value); }
         public List<string> StatusPelapors { get; }
 
-        private string GetPropertyName(string nomor)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public string this[string columnName] => Validate(columnName);
 
         public string Error
@@ -142,14 +139,13 @@ namespace Main.ViewModels
                     me[GetPropertyName(() => KodeDistrik)] +
                     me[GetPropertyName(() => Nomor)] +
                     me[GetPropertyName(() => Rujukan)] +
-                    me[GetPropertyName(() => Hari)] +
                     me[GetPropertyName(() => Waktu)] +
                     me[GetPropertyName(() => Tanggal)] +
                     me[GetPropertyName(() => Penerima)] +
                     me[GetPropertyName(() => Tempat)]
                     ;
                 if (!string.IsNullOrEmpty(error))
-                    return null;
+                    return "Check and Complete Data";
                 return null;
             }
         }
@@ -158,6 +154,14 @@ namespace Main.ViewModels
         {
             this.Icon = new PackIcon { Kind = PackIconKind.TimerSand };
             StatusPelapors = EnumSource.DataStatusPelapor();
+            Kecamatan = DataAccess.DataBasic.GetKecamatan();
+            this.Pelapor = new Pelapor();
+            this.Terlapor = new List<Terlapor>();
+            this.Korban = new List<Korban>();
+            this.Kondisi = new KondisiKorban();
+            this.Dampak = new DampakKorban();
+            this.Kejadian = new Kejadian();
+            this.Perkembangan = new List<TahapanPerkembangan>();
         }
 
         private string Validate(string name)
@@ -178,7 +182,7 @@ namespace Main.ViewModels
             if (name == "Tanggal" && new DateTime() == Tanggal)
                   return "Tanggal Tidak Boleh Kosong";
 
-            if (name == "Waktu" && Waktu == new TimeSpan())
+            if (name == "Waktu" && Waktu == new DateTime())
                   return "Waktu Tidak Boleh Kosong";
 
             if (name == "Penerima" && string.IsNullOrEmpty(Penerima))
@@ -196,6 +200,28 @@ namespace Main.ViewModels
 
             return null;
         }
+
+
+        public string StatusPelaporText
+        {
+            get => statusLaporText;
+            set
+            {
+                SetProperty(ref statusLaporText, value);
+                if (StatusPelapor != null)
+                {
+                    return;
+                }
+                if (!string.IsNullOrEmpty(value))
+                {
+                    StatusPelapors.Add(value);
+                    StatusPelapor = value;
+                }
+
+            }
+        }
+
+
 
     }
 

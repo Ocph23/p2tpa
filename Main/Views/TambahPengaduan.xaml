@@ -16,39 +16,34 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="PENGADUAN KORBAN PEREMPUAN"  Height="768" Width="1360" WindowState="Maximized">
+        Title="PENGADUAN KORBAN PEREMPUAN"   WindowState="Maximized">
     <Window.Resources>
-        
         <main:EnumToBoolConverter x:Key="EBConverter"/>
     </Window.Resources>
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-      
-        <Grid Grid.Row="1" Margin="20,10">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25*"></ColumnDefinition>
-                <ColumnDefinition Width="75*"></ColumnDefinition>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="75*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="30">
-                <TextBlock HorizontalAlignment="Center" Text="TAMBAH PENGADUAN" FontSize="20" Margin="10" FontWeight="Bold" TextAlignment="Center" Grid.Row="0"/>
-                <Image Source="/Main;component/Images/pppa.jpg"/>
-                <TextBlock HorizontalAlignment="Center" Text="KEMENTERIAN PEMBERDAYAAN"></TextBlock>
-                <TextBlock HorizontalAlignment="Center" Text="DAN PERLINDUNGAN ANAK"></TextBlock>
-                <TextBlock HorizontalAlignment="Center" Text="REPUBLIK INDONESIA"></TextBlock>
+            <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="30" >
+                <TextBlock HorizontalAlignment="Center" Text="TAMBAH PENGADUAN" FontSize="15" Margin="10" FontWeight="Bold" TextAlignment="Center" Grid.Row="0"/>
+                <Image Margin="10"  Source="/Main;component/Images/pppa.jpg"/>
+                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="KEMENTERIAN PEMBERDAYAAN"></TextBlock>
+                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="DAN PERLINDUNGAN ANAK"></TextBlock>
+                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="REPUBLIK INDONESIA"></TextBlock>
             </StackPanel>
-            <ScrollViewer Grid.Column="1"  >
+            <ScrollViewer Grid.Column="1">
                 <StackPanel VerticalAlignment="Center">
                     <Frame NavigationUIVisibility="Hidden" x:Name="MainFrame"></Frame>
                 </StackPanel>
             </ScrollViewer>
         </Grid>
-
-       
-        <WrapPanel Grid.Row="2" Margin="15" HorizontalAlignment="Right">
+        <WrapPanel Grid.Row="1" Margin="15" HorizontalAlignment="Right">
             <utilities:NavigationPage x:Name="nav"></utilities:NavigationPage>
         </WrapPanel>
     </Grid>

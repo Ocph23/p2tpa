@@ -35,34 +35,39 @@
                 <TextBox Text="{Binding Rujukan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}" ></TextBox>
             </WrapPanel>
             <WrapPanel>
-                <Label Content="Hari/Tanggal"></Label>
-                <DatePicker MinWidth="200"  SelectedDateFormat="Long" Language="id-ID" SelectedDate="{Binding Tanggal,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" Width="100"  materialDesign:HintAssist.Hint="Pick Date"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                <Label Content="Waktu Lapor"></Label>
+                <WrapPanel>
+                    <DatePicker SelectedDateFormat="Long" Language="id-ID" 
+                            SelectedDate="{Binding Tanggal,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"
+                            Width="250" Margin="0,0,5,0"  materialDesign:HintAssist.Hint="Pick Date"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                    <materialDesign:TimePicker Language="id-ID" Height="36" SelectedTime="{Binding Waktu}"
+                                       materialDesign:HintAssist.Hint="Validates"
+                                       IsInvalidTextAllowed="False"
+                                       Is24Hours="{Binding IsChecked, ElementName=Is24HourCheckbox}"
+                                       Width="100">
+                        <materialDesign:TimePicker.Text>
+                            <Binding Path="Hari" UpdateSourceTrigger="PropertyChanged">
+                                <Binding.ValidationRules>
+                               
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </materialDesign:TimePicker.Text>
+
+                    </materialDesign:TimePicker>
+                </WrapPanel>
             </WrapPanel>
+         
             <WrapPanel>
                 <Label Content="Penerima Pengaduan"></Label>
                 <TextBox Text="{Binding Penerima,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
             </WrapPanel>
             <WrapPanel>
-                <Label Content="Waktu"></Label>
-                <materialDesign:TimePicker Language="id-ID" SelectedTime="{Binding Waktu}"
-                                       materialDesign:HintAssist.Hint="Validates"
-                                       IsInvalidTextAllowed="True"
-                                       Is24Hours="{Binding IsChecked, ElementName=Is24HourCheckbox}"
-                                       Width="100">
-                    <materialDesign:TimePicker.Text>
-                        <Binding Path="ValidatingTime" UpdateSourceTrigger="PropertyChanged">
-                           
-                        </Binding>
-                    </materialDesign:TimePicker.Text>
-                </materialDesign:TimePicker>
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Tempat"></Label>
+                <Label Content="Tempat Pengaduan"></Label>
                 <TextBox Text="{Binding Tempat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
             </WrapPanel>
             <WrapPanel>
                 <Label Content="Yang Melapor"></Label>
-                <ComboBox ItemsSource="{Binding Pelapors}" IsEditable="True" SelectedValue="{Binding StatusPelapor,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
+                <ComboBox  ItemsSource="{Binding StatusPelapors}" Text="{Binding StatusPelaporText}" IsEditable="True" SelectedItem="{Binding StatusPelapor,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
             </WrapPanel>
             <StackPanel Margin="180,0,0,0">
                 <WrapPanel>

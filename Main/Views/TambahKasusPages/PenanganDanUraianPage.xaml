@@ -37,8 +37,18 @@
                             <CheckBox IsChecked="{Binding Rujukan,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}">Rujukan</CheckBox>
                         </WrapPanel>
                         <WrapPanel>
-                            <CheckBox Width="80" IsChecked="{Binding Lain,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}">Lainnya</CheckBox>
-                            <TextBox Text="{Binding LainText,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></TextBox>
+                            <CheckBox Width="80" x:Name="kondisiSeksualRb" IsChecked="{Binding Lain,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=False}">Lainnya</CheckBox>
+                            <TextBox Text="{Binding LainText,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource ResourceKey={x:Type TextBox}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding = "{Binding ElementName = kondisiSeksualRb, Path = IsChecked}" Value = "false">
+                                                <Setter Property="TextBox.Visibility" Value = "Hidden"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
+                            </TextBox>
                         </WrapPanel>
                         <StackPanel>
                             <TextBlock Margin="20" Foreground="Red" Text="{Binding ErrorMessage,UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></TextBlock>

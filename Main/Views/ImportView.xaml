@@ -60,41 +60,41 @@
                 <DataGridTemplateColumn Header="Korban" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Korban.Nama}">
+                            <TextBlock Text="{Binding Korban[0].Nama}">
                                 <TextBlock.ToolTip>
                                     <StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Nama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban.Nama}" FontSize="13"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Korban[0].Nama}" FontSize="13"></TextBlock>
                                         </StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Jenis Kelamin" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban.Gender}" FontSize="13"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Korban[0].Gender}" FontSize="13"></TextBlock>
                                         </StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="TTL" FontSize="9"></TextBlock>
                                             <WrapPanel>
-                                                <TextBlock Text="{Binding Path=Korban.TempatLahir}" FontSize="13"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Korban[0].TempatLahir}" FontSize="13"></TextBlock>
                                                 <TextBlock Text=", " FontSize="13"></TextBlock>
-                                                <TextBlock Text="{Binding Path=Korban.TanggalLahir,StringFormat=dd MM yyyy}" FontSize="13"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Korban[0].TanggalLahir,StringFormat=dd MM yyyy}" FontSize="13"></TextBlock>
                                             </WrapPanel>
                                         </StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Alamat" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban.Alamat}" FontSize="13"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Korban[0].Alamat}" FontSize="13"></TextBlock>
                                         </StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Agama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban.Agama}" FontSize="13"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Korban[0].Agama}" FontSize="13"></TextBlock>
                                         </StackPanel>
 
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Pendidikan" FontSize="10"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban.Pendidikan}" FontSize="14"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Korban[0].Pendidikan}" FontSize="14"></TextBlock>
                                         </StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Suku" FontSize="10"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban.Suku}" FontSize="14"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Korban[0].Suku}" FontSize="14"></TextBlock>
                                         </StackPanel>
 
                                     </StackPanel>
@@ -108,40 +108,40 @@
                 <DataGridTemplateColumn Header="Terlapor" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Terlapor.Nama}">
+                            <TextBlock Text="{Binding Terlapor[0].Nama}">
                                 <TextBlock.ToolTip>
                                     <StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Nama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor.Nama}" FontSize="13"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Terlapor[0].Nama}" FontSize="13"></TextBlock>
                                         </StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Nama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor.Gender}" FontSize="13"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Terlapor[0].Gender}" FontSize="13"></TextBlock>
                                         </StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="TTL" FontSize="9"></TextBlock>
                                             <WrapPanel>
-                                                <TextBlock Text="{Binding Path=Terlapor.TempatLahir}" FontSize="13"></TextBlock>
-                                                <TextBlock Text="{Binding Path=Terlapor.TanggalLahir}" FontSize="13"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Terlapor[0].TempatLahir}" FontSize="13"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Terlapor[0].TanggalLahir}" FontSize="13"></TextBlock>
                                             </WrapPanel>
                                         </StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Alamat" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor.Alamat}" FontSize="13"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Terlapor[0].Alamat}" FontSize="13"></TextBlock>
                                         </StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Agama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor.Agama}" FontSize="13"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Terlapor[0].Agama}" FontSize="13"></TextBlock>
                                         </StackPanel>
 
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Pendidikan" FontSize="10"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor.Pendidikan}" FontSize="14"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Terlapor[0].Pendidikan}" FontSize="14"></TextBlock>
                                         </StackPanel>
                                         <StackPanel Margin="5">
                                             <TextBlock Text="Suku" FontSize="10"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor.Suku}" FontSize="14"></TextBlock>
+                                            <TextBlock Text="{Binding Path=Terlapor[0].Suku}" FontSize="14"></TextBlock>
                                         </StackPanel>
 
                                     </StackPanel>

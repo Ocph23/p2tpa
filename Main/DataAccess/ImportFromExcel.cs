@@ -114,16 +114,28 @@ namespace Main.DataAccess
                     if (pengaduanFound != null)
                         throw new SystemException("Data Sudah Ada");
 
-                    var idPelapor = await GetIdIdentitas(item.Pelapor, db);
-                    if (idPelapor <= 0)
-                        throw new SystemException("Data Pelapor Tidak Ditemukan/Tidak Lengkap");
-
-
-                    item.IdPelapor = idPelapor;
-
+                 
                     item.Id = db.DataPengaduan.InsertAndGetLastID(item);
                     if (item.Id <= 0)
                         throw new SystemException("Data Pengaduan Tidak Tersimpan");
+
+                    item.Pelapor.PengaduanId = item.Id.Value;
+                    item.Pelapor.Id = await GetIdIdentitas(item.Pelapor, db);
+                    if (item.Pelapor.Id <= 0)
+                        throw new SystemException("Data Pelapor Tidak Ditemukan/Tidak Lengkap");
+
+
+                    foreach(var data in item.Korban)
+                    {
+                        data.PengaduanId = item.Id.Value;
+                        data.Id = await GetIdIdentitas(data, db);
+                    }
+
+                    foreach (var data in item.Terlapor)
+                    {
+                        data.PengaduanId = item.Id.Value;
+                        data.Id = await GetIdIdentitas(data, db);
+                    }
 
                     item.Kejadian.PengaduanId = item.Id.Value;
                     item.Dampak.PengaduanId = item.Id.Value;
@@ -249,20 +261,11 @@ namespace Main.DataAccess
             {
                 if (Pengaduans.Count <= 0)
                     await Task.Delay(10000);
-                foreach (var item in datas)
+                foreach (var item in Pengaduans)
                 {
-                    var pengaduans = Pengaduans.Where(O => O.Id == item.PengaduanId).FirstOrDefault();
-                    foreach (var data in pengaduans.Terlapor.Where(x=>x.Nama==item.Nama))
+                    foreach (var data in datas.Where(x => x.NoReq == item.Nomor))
                     {
-                        data.Nama = item.Nama;
-                        data.NamaPanggilan = item.NamaPanggilan;
-                        data.TempatLahir = item.TempatLahir;
-                        data.Pendidikan = item.Pendidikan;
-                        data.Agama = item.Agama;
-                        data.Alamat = item.Alamat;
-                        data.TanggalLahir = item.TanggalLahir;
-                        data.Gender = item.Gender;
-                        data.NIK = item.NIK;
+                        item.Korban.Add(data);
                     }
                 }
             });
@@ -276,20 +279,11 @@ namespace Main.DataAccess
             {
                 if (Pengaduans.Count <= 0)
                     await Task.Delay(10000);
-                foreach (var item in datas)
+                foreach (var item in Pengaduans)
                 {
-                    var pengaduans = Pengaduans.Where(O => O.Id == item.PengaduanId).FirstOrDefault();
-                    foreach (var data in pengaduans.Terlapor.Where(x=>x.Nama==item.Nama))
+                    foreach(var data in datas.Where(x => x.NoReq == item.Nomor))
                     {
-                        data.Nama = item.Nama;
-                        data.NamaPanggilan = item.NamaPanggilan;
-                        data.TempatLahir = item.TempatLahir;
-                        data.Pendidikan = item.Pendidikan;
-                        data.Agama = item.Agama;
-                        data.Alamat = item.Alamat;
-                        data.TanggalLahir = item.TanggalLahir;
-                        data.Gender = item.Gender;
-                        data.NIK = item.NIK;
+                        item.Terlapor.Add(data);
                     }
                 }
             });
@@ -325,19 +319,23 @@ namespace Main.DataAccess
             List<Pelapor> listPelapor = new List<Pelapor>();
 
             //read pengaduan
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "C100"];
+            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "D500"];
             int row = 1;
-            for (var i = 1; i <= 100; i++)
+            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
                 Pelapor pelaport = new Pelapor();
-                pelaport.Nama = rngPengaduan.Cells[row, "A"].Value2;
+                var nomor = rngPengaduan.Cells[row, "A"].Value2;
+                if (string.IsNullOrEmpty(nomor))
+                    break;
+                pelaport.NoReq = nomor;
+                pelaport.Nama = rngPengaduan.Cells[row, "B"].Value2;
 
                 Gender data;
-                var success = Enum.TryParse<Gender>(rngPengaduan.Cells[row, "B"].Value2, out data);
+                var success = Enum.TryParse<Gender>(rngPengaduan.Cells[row, "C"].Value2, out data);
                 if (!success)
                     break;
                 pelaport.Gender = data;
-                pelaport.Alamat = rngPengaduan.Cells[row, "C"].Value2;
+                pelaport.Alamat = rngPengaduan.Cells[row, "D"].Value2;
                 row++;
 
                 listPelapor.Add(pelaport);
@@ -358,13 +356,13 @@ namespace Main.DataAccess
 
             int row = 1;
             var kodeDistrik = xlRange.Cells[2, 3].Value2;
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A7", "AH100"];
+            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A7", "AG500"];
             if (string.IsNullOrEmpty(kodeDistrik))
                 throw new SystemException("Kode Distrik Tidak Ditemukan");
 
             List<Pengaduan> list = new List<Pengaduan>();
 
-            for (var i = 1; i <= 100; i++)
+            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
                 var pengaduan = new Pengaduan();
                 pengaduan.KodeDistrik = kodeDistrik;
@@ -393,36 +391,36 @@ namespace Main.DataAccess
 
 
                 pengaduan.Kondisi = new KondisiKorban();
-                pengaduan.Kondisi.Fisik = ConvertEnum<KondisiFisik>(rngPengaduan.Cells[row, "P"].Value2);
-                pengaduan.Kondisi.Psikis = ConvertEnum<KondisiPsikis>(rngPengaduan.Cells[row, "Q"].Value2);
-                pengaduan.Kondisi.Sex = ConvertEnum<KondisiSex>(rngPengaduan.Cells[row, "R"].Value2);
+                pengaduan.Kondisi.Fisik = ConvertEnum<KondisiFisik>(rngPengaduan.Cells[row, "K"].Value2);
+                pengaduan.Kondisi.Psikis = ConvertEnum<KondisiPsikis>(rngPengaduan.Cells[row, "L"].Value2);
+                pengaduan.Kondisi.Sex = ConvertEnum<KondisiSex>(rngPengaduan.Cells[row, "M"].Value2);
                 if (pengaduan.Kondisi.Sex != KondisiSex.Pendarahan)
-                    pengaduan.Kondisi.SexText = rngPengaduan.Cells[row, "S"].Value2;
+                    pengaduan.Kondisi.SexText = rngPengaduan.Cells[row, "N"].Value2;
 
                 //Kondisi Korban
                 pengaduan.Dampak = new DampakKorban();
-                pengaduan.Dampak.Fisik = rngPengaduan.Cells[row, "T"].Value2;
-                pengaduan.Dampak.Psikis = rngPengaduan.Cells[row, "U"].Value2;
-                pengaduan.Dampak.Seksual = rngPengaduan.Cells[row, "V"].Value2;
-                pengaduan.Dampak.Ekonomi = rngPengaduan.Cells[row, "W"].Value2;
-                pengaduan.Dampak.Kesehatan = rngPengaduan.Cells[row, "X"].Value2;
-                pengaduan.Dampak.Lain = rngPengaduan.Cells[row, "Y"].Value2;
+                pengaduan.Dampak.Fisik = rngPengaduan.Cells[row, "O"].Value2;
+                pengaduan.Dampak.Psikis = rngPengaduan.Cells[row, "P"].Value2;
+                pengaduan.Dampak.Seksual = rngPengaduan.Cells[row, "Q"].Value2;
+                pengaduan.Dampak.Ekonomi = rngPengaduan.Cells[row, "R"].Value2;
+                pengaduan.Dampak.Kesehatan = rngPengaduan.Cells[row, "S"].Value2;
+                pengaduan.Dampak.Lain = rngPengaduan.Cells[row, "T"].Value2;
 
                 pengaduan.Kejadian = new Kejadian();
-                pengaduan.Kejadian.Waktu = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "Z"].Value2));
-                pengaduan.Kejadian.Tempat = rngPengaduan.Cells[row, "AA"].Value2;
-                pengaduan.Kejadian.Fisik = rngPengaduan.Cells[row, "AB"].Value2;
-                pengaduan.Kejadian.Psikis = rngPengaduan.Cells[row, "AC"].Value2;
-                pengaduan.Kejadian.Penelantaran = rngPengaduan.Cells[row, "AD"].Value2;
-                pengaduan.Kejadian.Seksual = rngPengaduan.Cells[row, "AE"].Value2;
-                pengaduan.Kejadian.Penganiayaan = rngPengaduan.Cells[row, "AF"].Value2;
-                pengaduan.Kejadian.Pencabulan = rngPengaduan.Cells[row, "AG"].Value2;
-                pengaduan.Kejadian.Pemerkosaan = rngPengaduan.Cells[row, "AH"].Value2;
-                pengaduan.Kejadian.Trafiking = rngPengaduan.Cells[row, "AI"].Value2;
-                pengaduan.Kejadian.Lain = rngPengaduan.Cells[row, "AJ"].Value2;
-                pengaduan.Penanganan = rngPengaduan.Cells[row, "AK"].Value2;
+                pengaduan.Kejadian.Waktu = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "U"].Value2));
+                pengaduan.Kejadian.Tempat = rngPengaduan.Cells[row, "V"].Value2;
+                pengaduan.Kejadian.Fisik = rngPengaduan.Cells[row, "W"].Value2;
+                pengaduan.Kejadian.Psikis = rngPengaduan.Cells[row, "X"].Value2;
+                pengaduan.Kejadian.Penelantaran = rngPengaduan.Cells[row, "Y"].Value2;
+                pengaduan.Kejadian.Seksual = rngPengaduan.Cells[row, "Z"].Value2;
+                pengaduan.Kejadian.Penganiayaan = rngPengaduan.Cells[row, "AA"].Value2;
+                pengaduan.Kejadian.Pencabulan = rngPengaduan.Cells[row, "AB"].Value2;
+                pengaduan.Kejadian.Pemerkosaan = rngPengaduan.Cells[row, "AC"].Value2;
+                pengaduan.Kejadian.Trafiking = rngPengaduan.Cells[row, "AD"].Value2;
+                pengaduan.Kejadian.Lain = rngPengaduan.Cells[row, "AE"].Value2;
+                pengaduan.Penanganan = rngPengaduan.Cells[row, "AF"].Value2;
                 if (pengaduan.Penanganan == "Lain")
-                    pengaduan.Penanganan = rngPengaduan.Cells[row, "AL"].Value2;
+                    pengaduan.Penanganan = rngPengaduan.Cells[row, "AG"].Value2;
                 row++;
 
 
@@ -437,11 +435,15 @@ namespace Main.DataAccess
 
             List<Korban> listKorban = new List<Korban>();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Korban"];
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A2", "M100"];
+            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "M500"];
             int row = 1;
-            for (var i = 1; i <= 100; i++)
+            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
                 Korban data = new Korban();
+                var nomor = rngPengaduan.Cells[row, "A"].Value2;
+                if (string.IsNullOrEmpty(nomor))
+                    break;
+                data.NoReq = nomor;
                 data.Nama = rngPengaduan.Cells[row, "B"].Value2;
                 data.NamaPanggilan = rngPengaduan.Cells[row, "C"].Value2;
 
@@ -475,18 +477,23 @@ namespace Main.DataAccess
         {
             List<Terlapor> listTerlapor = new List<Terlapor>();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Terlapor"];
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A2", "L100"];
+            
+            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "L500"];
             int row = 1;
-            for (var i = 1; i <= 100; i++)
+            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
                 Terlapor data = new Terlapor();
+
+                var nomor= rngPengaduan.Cells[row, "A"].Value2;
+                if (string.IsNullOrEmpty(nomor))
+                    break;
+                data.NoReq = nomor;
                 data.Nama = rngPengaduan.Cells[row, "B"].Value2;
                 data.NamaPanggilan = rngPengaduan.Cells[row, "C"].Value2;
 
                 Gender gender;
                 var success = Enum.TryParse<Gender>(rngPengaduan.Cells[row, "D"].Value2, out gender);
-                if (!success)
-                    break;
+               
                 data.Gender = ConvertEnum<Gender>(rngPengaduan.Cells[row, "D"].Value2);
                 data.TempatLahir = rngPengaduan.Cells[row, "E"].Value2;
                 data.TanggalLahir = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "F"].Value2));
@@ -512,14 +519,15 @@ namespace Main.DataAccess
         {
             List<TahapanPerkembangan> list = new List<TahapanPerkembangan>();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Perkembangan"];
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A2", "D200"];
+            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "D500"];
             int row = 1;
-            for (var i = 1; i <= 100; i++)
+            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
                 TahapanPerkembangan data = new TahapanPerkembangan();
-                data.NoReg = rngPengaduan.Cells[row, "A"].Value2;
-                if (string.IsNullOrEmpty(data.NoReg))
+                var nomor = rngPengaduan.Cells[row, "A"].Value2;
+                if (string.IsNullOrEmpty(nomor))
                     break;
+                data.NoReg = nomor;
                 data.Tanggal = new DateTime(Convert.ToInt64(rngPengaduan.Cells[row, "B"].Value2));
                 data.BentukPenanganan = rngPengaduan.Cells[row, "C"].Value2;
                 data.Keterangan = rngPengaduan.Cells[row, "D"].Value2;
@@ -539,7 +547,7 @@ namespace Main.DataAccess
         {
             List<Tuple<string, string, string>> list = new List<Tuple<string, string, string>>();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Uraian&Catatan"];
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A2", "C200"];
+            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "C500"];
             int row = 1;
             for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {

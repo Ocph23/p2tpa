@@ -5,8 +5,7 @@ using System.Linq;
 
 namespace Main.ViewModels
 {
-
-    public class Identitas : BaseNotify
+    public abstract class Identitas : BaseNotify
     {
         public Identitas()
         {
@@ -15,13 +14,14 @@ namespace Main.ViewModels
             ListHubunganKorban = EnumSource.HubunganKorbanDenganTerlapor();
             ListStatusPernikahan = EnumSource.DataStatusPernikahan();
             ListPendidikan = EnumSource.DataPendidikan();
+            ListPekerjaan = EnumSource.DataPekerjaan();
 
         }
         private string nik;
         private string nama;
         private string tl;
         private string pekerjaan;
-        private DateTime tgll;
+        private DateTime tgll = new DateTime(1988,1,1);
         private string agama;
         private string pendidikan;
         private Gender gender;
@@ -30,12 +30,19 @@ namespace Main.ViewModels
         private string suku;
         private string alamat;
         private string panggilan;
-
+        private int pengaduanid;
         private int? id;
+
+
 
         [PrimaryKey("Id")]
         [DbColumn("Id")]
         public int? Id { get => id; set => SetProperty(ref id, value); }
+     
+
+        [DbColumn("PengaduanId")]
+        public int PengaduanId { get => pengaduanid; set => SetProperty(ref pengaduanid, value); }
+
 
         [DbColumn("NIK")]
         public string NIK { get => nik; set => SetProperty(ref nik, value); }
@@ -73,10 +80,33 @@ namespace Main.ViewModels
         [DbColumn("Gender")]
         public Gender Gender { get => gender; set => SetProperty(ref gender, value); }
 
+        public string NoReq { get; set; }
         public List<string> ListAgama { get; set; }
         public List<string> ListHubunganKorban { get; set; }
         public List<string> ListStatusPernikahan { get; }
         public List<string> ListPendidikan { get;  set; }
+
+        public List<string> ListPekerjaan { get; set; }
+
+
+
+
+        public string StatusPelaporText
+        {
+            set
+            {
+                if (Pekerjaan != null)
+                {
+                    return;
+                }
+                if (!string.IsNullOrEmpty(value))
+                {
+                    ListPekerjaan.Add(value);
+                    Pekerjaan = value;
+                }
+
+            }
+        }
     }
 
 

@@ -222,6 +222,12 @@ namespace Main.ViewModels
 
         public string PublikMessage { get => publikMessage; set => SetProperty(ref publikMessage, value); }
 
+        public List<string> DaftarTempatKejadian { get; set; }
+
+        public Kejadian()
+        {
+            DaftarTempatKejadian = EnumSource.DataTempatKejadian();
+        }
 
     }
 

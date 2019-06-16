@@ -7,7 +7,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:Charts="clr-namespace:Main.Charts"
-    xmlns:system="clr-namespace:System;assembly=mscorlib" x:Class="Main.MainWindow"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:utilities="clr-namespace:Main.Utilities" x:Class="Main.MainWindow"
         mc:Ignorable="d" WindowState="Maximized"
         Title="MainWindow" Height="750" Width="1024">
     <Window.Resources>
@@ -39,6 +40,7 @@
                             <MenuItem Header="Import" Command="{Binding ImportCommand}"/>
                         </MenuItem>
                     </Menu>
+                    <utilities:ComboChips ItemSource="{Binding}"  Width="300"/>
                 </StackPanel>
                 <ScrollViewer Grid.Row="1">
                     <Grid Margin="5">
@@ -59,6 +61,7 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
+                          
                             <materialDesign:Card Background="#03a9f4"
                       Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                       Padding="0" Margin="3">
@@ -85,6 +88,7 @@
                                     </Grid>
                                 </Grid>
                             </materialDesign:Card>
+                           
                             <materialDesign:Card Background="#FF029B33" Grid.Column="1"
                       Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
                       Padding="0" Margin="3">
@@ -194,6 +198,7 @@
                             <materialDesign:Card Grid.Column="2" Padding="20"  Margin="3"   >
                                 <Charts:PelakuBerdasarkanHubungan></Charts:PelakuBerdasarkanHubungan>
                             </materialDesign:Card>
+                     
                         </Grid>
 
                     </Grid>

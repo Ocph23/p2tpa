@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Main.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace Main.Views.TambahKasusPages
     public partial class KondisiPage : Page
     {
 
-        public KondisiPage(TambahViewModel vm)
+        public KondisiPage(Pengaduan vm)
         {
             InitializeComponent();
             this.DataContext =  vm.Kondisi;

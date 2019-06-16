@@ -85,6 +85,14 @@ namespace Main
             return new List<string> { "Sendiri", "OrangTua", "Famili" };
         }
 
-        
+        internal static List<string> DataTempatKejadian()
+        {
+            return new List<string> { "Rumah Tangga", "Tempat Kerja", "Sekolah" ,"Fasilitas Umum","Lainnya"};
+        }
+
+        internal static List<string> DataPekerjaan()
+        {
+            return new List<string> { "NA", "Bekerja", "Pelajar", "Ibu Rumah Tangga", "Swasta/Buruh" , "PNS/TNI/POLRI", "Pedagang/Tani/Nelayan","Tidak Bekerja"};
+        }
     }
 }

@@ -4,6 +4,7 @@ using MaterialDesignThemes.Wpf;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using Main.ViewModels;
 
 namespace Main
 {
@@ -45,6 +46,7 @@ namespace Main
         private void TambahPengaduanAction(object obj)
         {
             var form = new Views.TambahPengaduan();
+            form.DataContext = new Pengaduan();
             form.Show();
         }
 
@@ -52,7 +54,7 @@ namespace Main
         {
             var spiner = new ProgressBar() { Margin= new Thickness(30), IsIndeterminate=true};
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+            await DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
            
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);
@@ -70,7 +72,7 @@ namespace Main
         {
             var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+            await DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
 
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);
@@ -83,7 +85,7 @@ namespace Main
         {
             var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+            await  DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
 
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);

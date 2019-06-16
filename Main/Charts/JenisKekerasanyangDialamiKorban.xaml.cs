@@ -28,7 +28,7 @@ namespace Main.Charts
             InitializeComponent();
             this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
             this.RefreshChartCommand.Execute(null);
-            Title = "Proyeksi Jumlah Kasus Terhadap Jumlah Penduduk";
+            Title = "Jenis Kekerasan yang Dialami Korban";
             this.DataContext = this;
         }
 

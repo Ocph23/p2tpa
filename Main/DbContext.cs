@@ -27,7 +27,7 @@ namespace Main
 
                 this.Open();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }

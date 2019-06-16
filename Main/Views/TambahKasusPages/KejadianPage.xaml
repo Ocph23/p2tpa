@@ -41,7 +41,7 @@
             </WrapPanel>
             <WrapPanel>
                 <Label Content="Tempat Kejadian"></Label>
-                <TextBox Text="{Binding Tempat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                <ComboBox ItemsSource="{Binding DaftarTempatKejadian}" SelectedItem="{Binding Tempat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></ComboBox>
             </WrapPanel>
             <WrapPanel>
                 <Label Content="Kasus Yang Terjadi"></Label>

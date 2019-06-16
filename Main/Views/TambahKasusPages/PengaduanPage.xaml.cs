@@ -1,4 +1,5 @@
 ﻿using Main.Utilities;
+using Main.ViewModels;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,9 @@ namespace Main.Views.TambahKasusPages
     /// </summary>
     public partial class PengaduanPage : Page
     {
-        private TambahViewModel viewmodel;
+        private Pengaduan viewmodel;
 
-        public PengaduanPage(TambahViewModel vm)
+        public PengaduanPage(Pengaduan vm)
         {
             InitializeComponent();
            this.DataContext= this.viewmodel = vm;
@@ -33,7 +34,7 @@ namespace Main.Views.TambahKasusPages
 
         private void PengaduanPage_Loaded(object sender, RoutedEventArgs e)
         {
-
+         
         }
 
     }

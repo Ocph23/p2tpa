@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Main.ViewModels;
 using System.ComponentModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Main.Views.TambahKasusPages
 {
@@ -22,7 +11,7 @@ namespace Main.Views.TambahKasusPages
     public partial class PenanganDanUraianPage : Page
     {
 
-        public PenanganDanUraianPage(TambahViewModel vm)
+        public PenanganDanUraianPage(Pengaduan vm)
         {
             InitializeComponent();
             this.DataContext = new PenangananKasus(vm);
@@ -32,7 +21,7 @@ namespace Main.Views.TambahKasusPages
 
     public class PenangananKasus : BaseNotify, IDataErrorInfo
     {
-        private TambahViewModel vm;
+        private Pengaduan vm;
         private bool _hukum;
         private bool _nonHukum;
         private bool _konseling;
@@ -40,7 +29,7 @@ namespace Main.Views.TambahKasusPages
         private bool _lain;
         private string _lainText;
 
-        public PenangananKasus(TambahViewModel vm)
+        public PenangananKasus(Pengaduan vm)
         {
             this.vm = vm;
         }

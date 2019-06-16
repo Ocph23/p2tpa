@@ -174,6 +174,9 @@
     <Compile Include="DbContext.cs" />
     <Compile Include="EnumToBoolConverter.cs" />
     <Compile Include="Models\Kecamatan.cs" />
+    <Compile Include="Utilities\ComboChips.xaml.cs">
+      <DependentUpon>ComboChips.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\Helpers.cs" />
     <Compile Include="Utilities\NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>
@@ -197,6 +200,9 @@
     <Compile Include="Views\TambahKasusPages\AddKorbanView.xaml.cs">
       <DependentUpon>AddKorbanView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TambahKasusPages\AddViewTerlaporView.xaml.cs">
+      <DependentUpon>AddViewTerlaporView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TambahKasusPages\DampakPage.xaml.cs">
       <DependentUpon>DampakPage.xaml</DependentUpon>
     </Compile>
@@ -217,9 +223,6 @@
     </Compile>
     <Compile Include="Views\TambahKasusPages\PerkembanganDanCatatan.xaml.cs">
       <DependentUpon>PerkembanganDanCatatan.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TambahKasusPages\TerlaporPage.xaml.cs">
-      <DependentUpon>TerlaporPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TambahPengaduan.xaml.cs">
       <DependentUpon>TambahPengaduan.xaml</DependentUpon>
@@ -344,6 +347,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Utilities\ComboChips.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Utilities\NavigationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -357,6 +364,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TambahKasusPages\AddKorbanView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TambahKasusPages\AddViewTerlaporView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -385,10 +396,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TambahKasusPages\PerkembanganDanCatatan.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TambahKasusPages\TerlaporPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Main.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" Title="Data Kasus"
-        mc:Ignorable="d"
+        mc:Ignorable="d" WindowState="Maximized"
         Height="450" Width="800">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -14,32 +14,42 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Label Width="auto" Content="Kasus"/>
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Datas}" AutoGenerateColumns="False">
+        <DataGrid Margin="20" Grid.Row="1" ItemsSource="{Binding Datas}" AutoGenerateColumns="False"
+                   >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Nomor"/>
+                <DataGridTextColumn  Header="Nomor" Binding="{Binding Nomor}"/>
+                <DataGridTextColumn  Header="Distrik" Binding="{Binding Distrik}"/>
+                <DataGridTextColumn   Header="Kejadian" Binding="{Binding Kejadian.Waktu,StringFormat=dd MMMM yyyy}"/>
+                <DataGridTextColumn  Header="Lapor" Binding="{Binding Tanggal,StringFormat=dd MMMM yyyy}"/>
+                <DataGridTemplateColumn MaxWidth="600" MinWidth="200"  Width="*" Header="Kronologi" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding UraianKejadian}" TextWrapping="Wrap"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn  Header="Korban" Binding="{Binding Korban[0].Nama}"/>
+                <DataGridTextColumn Header="Pelaku" Binding="{Binding Terlapor[0].Nama}"/>
+                <DataGridTextColumn   Header="TKP" Binding="{Binding Kejadian.Tempat}"/>
                 <DataGridTemplateColumn Header="Action">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <materialDesign:PopupBox  Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
-          PlacementMode="BottomAndAlignCentres"
-          ToolTipService.Placement="Right"
-          ToolTip="PopupBox, Style MaterialDesignMultiFloatingActionPopupBox"
-          Opened="PopupBox_OnOpened"
-          Closed="PopupBox_OnClosed">
-                                <StackPanel>
-                                    <Button Style="{StaticResource MaterialDesignFlatDarkBgButton}" ToolTip="MaterialDesignFlatDarkButton">
-                                       Edit
-                                    </Button>
+                            <materialDesign:PopupBox  VerticalAlignment="Top" StaysOpen="True" IsEnabled="True">
+                                <StackPanel >
+                                    <Button Height="35" Content="Print" Command="{Binding Path=DataContext.PrintCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
+                                    <Button Height="35" Content="Lihat" Command="{Binding Path=DataContext.EditCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
+                                    <Button Height="35" Content="Hapus" Command="{Binding Path=DataContext.DeleteCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
                                 </StackPanel>
                             </materialDesign:PopupBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Tanggal"/>
-                <DataGridTextColumn Header="Kronologi"/>
-                <DataGridTextColumn Header="Korban"/>
-                <DataGridTextColumn Header="Pelaku"/>
-                <DataGridTextColumn Header="Tempat"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Row="2" HorizontalAlignment="Right" Margin="5"

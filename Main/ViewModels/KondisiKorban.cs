@@ -55,8 +55,8 @@ namespace Main.ViewModels
                  
                     ;
                 if (!string.IsNullOrEmpty(error))
-                    //return "Please check inputted data.";
-                    return null;
+                    return "Please check inputted data.";
+                    //return null;
                 return null;
             }
         }
@@ -66,17 +66,14 @@ namespace Main.ViewModels
         public string Validate(string name)
         {
 
-            if (name == "Psikis" && Psikis == KondisiPsikis.Lain && string.IsNullOrEmpty(PsikisText))
-                return " "; 
-
+           
             if (name == "PsikisText" && Psikis == KondisiPsikis.Lain && string.IsNullOrEmpty(PsikisText))
                 return "Jelaskan Tidak Boleh Kosong";
 
             if (name == "SexText" && Sex == KondisiSex.Lain && string.IsNullOrEmpty(SexText))
                 return "Jelaskan Tidak Boleh Kosong";
 
-            if (name == "Sex" && Sex == KondisiSex.Lain && string.IsNullOrEmpty(SexText))
-                return " ";
+           
 
             return null;
         }
