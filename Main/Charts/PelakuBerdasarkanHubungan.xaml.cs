@@ -33,7 +33,7 @@ namespace Main.Charts
 
         private void RefreshAction(object obj)
         {
-            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.HubunganKorbanDenganTerlapor);
+            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.Catatan);
             List<string> dataHubungan = EnumSource.HubunganKorbanDenganTerlapor();
             List<int> datas = new List<int>();
             foreach (var hubungan in dataHubungan)

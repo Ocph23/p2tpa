@@ -25,24 +25,11 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="75*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="30" >
-                <TextBlock HorizontalAlignment="Center" Text="TAMBAH PENGADUAN" FontSize="15" Margin="10" FontWeight="Bold" TextAlignment="Center" Grid.Row="0"/>
-                <Image Margin="10"  Source="/Main;component/Images/pppa.jpg"/>
-                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="KEMENTERIAN PEMBERDAYAAN"></TextBlock>
-                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="DAN PERLINDUNGAN ANAK"></TextBlock>
-                <TextBlock FontSize="10" HorizontalAlignment="Center" Text="REPUBLIK INDONESIA"></TextBlock>
+        <ScrollViewer Grid.Row="0" >
+            <StackPanel VerticalAlignment="Top">
+                <Frame NavigationUIVisibility="Hidden" x:Name="MainFrame"></Frame>
             </StackPanel>
-            <ScrollViewer Grid.Column="1">
-                <StackPanel VerticalAlignment="Center">
-                    <Frame NavigationUIVisibility="Hidden" x:Name="MainFrame"></Frame>
-                </StackPanel>
-            </ScrollViewer>
-        </Grid>
+        </ScrollViewer>
         <WrapPanel Grid.Row="1" Margin="15" HorizontalAlignment="Right">
             <utilities:NavigationPage x:Name="nav"></utilities:NavigationPage>
         </WrapPanel>

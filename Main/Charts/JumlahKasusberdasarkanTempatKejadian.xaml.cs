@@ -23,7 +23,7 @@ namespace Main.Charts
 
         private void RefreshAction(object obj)
         {
-            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.Kejadian.Tempat);
+            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.TempatKejadian);
             List<string> dataTempat = new List<string>();
             List<int> datas = new List<int>();
             foreach (var kasus in groupPengaduan)

@@ -21,21 +21,21 @@
     <GroupBox Header="Kondisi Korban">
         <StackPanel  Background="White">
             <GroupBox Header="Fisik">
-                <WrapPanel Margin="10,20,0,30">
-                    <RadioButton GroupName="kondisiFisik" IsChecked="{Binding Path=Fisik, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiFisik.Sehat}}" Content="Sehat" ></RadioButton>
-                    <RadioButton GroupName="kondisiFisik" IsChecked="{Binding Path=Fisik, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiFisik.Sakit}}" Content="Tidak Sehat/Sakit" ></RadioButton>
-                    <RadioButton GroupName="kondisiFisik" IsChecked="{Binding Path=Fisik, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiFisik.Luka}}" Content="Luka-Luka" ></RadioButton>
+                <WrapPanel Margin="10">
+                    <RadioButton GroupName="kondisiFisik" IsChecked="{Binding Path=Kondisi.Fisik, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiFisik.Sehat}}" Content="Sehat" ></RadioButton>
+                    <RadioButton GroupName="kondisiFisik" IsChecked="{Binding Path=Kondisi.Fisik, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiFisik.Sakit}}" Content="Tidak Sehat/Sakit" ></RadioButton>
+                    <RadioButton GroupName="kondisiFisik" IsChecked="{Binding Path=Kondisi.Fisik, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiFisik.Luka}}" Content="Luka-Luka" ></RadioButton>
 
                 </WrapPanel>
             </GroupBox>
             <GroupBox Header="Psikis">
-                <WrapPanel Margin="10,20,0,30">
-                    <RadioButton GroupName="kondisiPsikis" IsChecked="{Binding Path=Psikis, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Ketakutan}}" Content="Ketakutan" ></RadioButton>
-                    <RadioButton GroupName="kondisiPsikis" IsChecked="{Binding Path=Psikis, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Cemas}}" Content="Cemas" ></RadioButton>
-                    <RadioButton GroupName="kondisiPsikis" IsChecked="{Binding Path=Psikis, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Emosi}}" Content="Emosi Tinggi" ></RadioButton>
-                    <RadioButton x:Name="kondisiPsikisrb" GroupName="kondisiPsikis" IsChecked="{Binding Path=Psikis,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,
+                <WrapPanel Margin="10">
+                    <RadioButton GroupName="kondisiPsikis" IsChecked="{Binding Path=Kondisi.Psikis, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Ketakutan}}" Content="Ketakutan" ></RadioButton>
+                    <RadioButton GroupName="kondisiPsikis" IsChecked="{Binding Path=Kondisi.Psikis, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Cemas}}" Content="Cemas" ></RadioButton>
+                    <RadioButton GroupName="kondisiPsikis" IsChecked="{Binding Path=Kondisi.Psikis, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Emosi}}" Content="Emosi Tinggi" ></RadioButton>
+                    <RadioButton x:Name="kondisiPsikisrb" GroupName="kondisiPsikis" IsChecked="{Binding Path=Kondisi.Psikis,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,
                         ValidatesOnDataErrors=True,ValidatesOnNotifyDataErrors=False, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiPsikis.Lain}}" Content="Lain-Lain" ></RadioButton>
-                    <TextBox  Text="{Binding PsikisText,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}">
+                    <TextBox  Text="{Binding Kondisi.PsikisText,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}">
                         <TextBox.Style>
                             <Style TargetType="TextBox" BasedOn="{StaticResource ResourceKey={x:Type TextBox}}">
                                 <Style.Triggers>
@@ -49,10 +49,10 @@
                 </WrapPanel>
             </GroupBox>
             <GroupBox Header="Seksual">
-                <WrapPanel Margin="10,20,0,30">
-                    <RadioButton GroupName="kondisiSeksual" IsChecked="{Binding Path=Sex, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiSex.Pendarahan}}" Content="Pendarahan" ></RadioButton>
-                    <RadioButton x:Name="kondisiSeksualRb" GroupName="kondisiSeksual" IsChecked="{Binding Path=Sex,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiSex.Lain}}" Content="Lain-Lain" ></RadioButton>
-                    <TextBox  Text="{Binding SexText,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}">
+                <WrapPanel Margin="10">
+                    <RadioButton GroupName="kondisiSeksual" IsChecked="{Binding Path=Kondisi.Sex, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiSex.Pendarahan}}" Content="Pendarahan" ></RadioButton>
+                    <RadioButton x:Name="kondisiSeksualRb" GroupName="kondisiSeksual" IsChecked="{Binding Path=Kondisi.Sex,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True, Converter={StaticResource EBConverter}, ConverterParameter={x:Static main:KondisiSex.Lain}}" Content="Lain-Lain" ></RadioButton>
+                    <TextBox  Text="{Binding Kondisi.SexText,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}">
                         <TextBox.Style>
                             <Style TargetType="TextBox" BasedOn="{StaticResource ResourceKey={x:Type TextBox}}">
                                 <Style.Triggers>
@@ -63,6 +63,11 @@
                             </Style>
                         </TextBox.Style>
                     </TextBox>
+                </WrapPanel>
+            </GroupBox>
+            <GroupBox Header="Uraian Singkat Kejadian"  Background="White">
+                <WrapPanel Margin="10">
+                    <TextBox Text="{Binding UraianKejadian,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
                 </WrapPanel>
             </GroupBox>
         </StackPanel>

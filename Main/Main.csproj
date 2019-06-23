@@ -170,10 +170,14 @@
     <Compile Include="DataAccess\DasboardDataAccess.cs" />
     <Compile Include="DataAccess\DataBasic.cs" />
     <Compile Include="DataAccess\ImportFromExcel.cs" />
+    <Compile Include="DataAccess\InstansiCollection.cs" />
     <Compile Include="DataAccess\PengaduanServices.cs" />
     <Compile Include="DbContext.cs" />
     <Compile Include="EnumToBoolConverter.cs" />
     <Compile Include="Models\Kecamatan.cs" />
+    <Compile Include="Models\Korban.cs" />
+    <Compile Include="Models\Pelapor.cs" />
+    <Compile Include="Models\Terlapor.cs" />
     <Compile Include="Utilities\ComboChips.xaml.cs">
       <DependentUpon>ComboChips.xaml</DependentUpon>
     </Compile>
@@ -183,19 +187,25 @@
     </Compile>
     <Compile Include="ViewModels\DampakKorban.cs" />
     <Compile Include="EnumCollection.cs" />
-    <Compile Include="ViewModels\Identitas.cs" />
-    <Compile Include="ViewModels\Kejadian.cs" />
+    <Compile Include="Models\Identitas.cs" />
+    <Compile Include="Models\Instansi.cs" />
     <Compile Include="ViewModels\KondisiKorban.cs" />
-    <Compile Include="ViewModels\Korban.cs" />
-    <Compile Include="ViewModels\Pelapor.cs" />
+    <Compile Include="ViewModels\KorbanViewModel.cs" />
+    <Compile Include="ViewModels\PelaporViewModel.cs" />
+    <Compile Include="ViewModels\Penanganan.cs" />
     <Compile Include="ViewModels\Pengaduan.cs" />
-    <Compile Include="ViewModels\TahapanPerkembangan.cs" />
-    <Compile Include="ViewModels\Terlapor.cs" />
+    <Compile Include="ViewModels\TerlaporViewModel.cs" />
+    <Compile Include="Views\AddInstansi.xaml.cs">
+      <DependentUpon>AddInstansi.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DataView.xaml.cs">
       <DependentUpon>DataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ImportView.xaml.cs">
       <DependentUpon>ImportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InstansiView.xaml.cs">
+      <DependentUpon>InstansiView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TambahKasusPages\AddKorbanView.xaml.cs">
       <DependentUpon>AddKorbanView.xaml</DependentUpon>
@@ -206,23 +216,17 @@
     <Compile Include="Views\TambahKasusPages\DampakPage.xaml.cs">
       <DependentUpon>DampakPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TambahKasusPages\KejadianPage.xaml.cs">
-      <DependentUpon>KejadianPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TambahKasusPages\KondisiPage.xaml.cs">
       <DependentUpon>KondisiPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TambahKasusPages\KorbanPage.xaml.cs">
       <DependentUpon>KorbanPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TambahKasusPages\PenanganDanUraianPage.xaml.cs">
-      <DependentUpon>PenanganDanUraianPage.xaml</DependentUpon>
+    <Compile Include="Views\TambahKasusPages\PenangananView.xaml.cs">
+      <DependentUpon>PenangananView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TambahKasusPages\PengaduanPage.xaml.cs">
       <DependentUpon>PengaduanPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TambahKasusPages\PerkembanganDanCatatan.xaml.cs">
-      <DependentUpon>PerkembanganDanCatatan.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TambahPengaduan.xaml.cs">
       <DependentUpon>TambahPengaduan.xaml</DependentUpon>
@@ -355,11 +359,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AddInstansi.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DataView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ImportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\InstansiView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -375,10 +387,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TambahKasusPages\KejadianPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\TambahKasusPages\KondisiPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -387,15 +395,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TambahKasusPages\PenanganDanUraianPage.xaml">
+    <Page Include="Views\TambahKasusPages\PenangananView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TambahKasusPages\PengaduanPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TambahKasusPages\PerkembanganDanCatatan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

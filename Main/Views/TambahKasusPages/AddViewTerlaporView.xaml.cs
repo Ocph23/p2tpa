@@ -27,7 +27,7 @@ namespace Main.Views.TambahKasusPages
         }
     }
 
-    public class AddTerlaporViewModel : Terlapor
+    public class AddTerlaporViewModel : TerlaporViewModel
     {
         public CommandHandler SaveCommand { get; }
         public CommandHandler CancelCommand { get; }
@@ -38,7 +38,7 @@ namespace Main.Views.TambahKasusPages
             SaveCommand = new CommandHandler { CanExecuteAction = ValidateSave, ExecuteAction = SaveAction };
             CancelCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction =CancelAction };
         }
-        public AddTerlaporViewModel(Terlapor data)
+        public AddTerlaporViewModel(TerlaporViewModel data)
         {
             SaveCommand = new CommandHandler { CanExecuteAction = ValidateSave, ExecuteAction = SaveAction };
             CancelCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = CancelAction };

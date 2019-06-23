@@ -1,11 +1,11 @@
 ﻿using Ocph.DAL;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Main.ViewModels
 {
-    [TableName("Korban")]
-    public class Korban :Identitas,IDataErrorInfo
+    public class KorbanViewModel :Korban,IDataErrorInfo
     {
         
         public string this[string columnName] => Validate(columnName);
@@ -58,6 +58,9 @@ namespace Main.ViewModels
 
             return null;
         }
+
+
+        public List<string> Kekerasans { get; set; } = EnumSource.DataPendidikan();
 
     }
 }

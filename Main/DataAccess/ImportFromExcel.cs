@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -12,11 +14,12 @@ namespace Main.DataAccess
 {
 
     public delegate void onResult(List<Pengaduan> data);
-    public class ImportFromExcel : IDisposable
+    public class ImportFromExcel : BaseNotify, IDisposable
     {
 
         Excel.Application xlApp = new Excel.Application();
         Excel.Workbook xlWorkbook = null;
+        private Pengaduan _selected;
 
         public event onResult DataReseult;
         public ImportFromExcel()
@@ -27,8 +30,66 @@ namespace Main.DataAccess
             Pengaduans = new ObservableCollection<Pengaduan>();
             PengaduanViews = (CollectionView)CollectionViewSource.GetDefaultView(Pengaduans);
             SaveCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = SaveToDatabaseAsync };
+            EditCommand = new CommandHandler { CanExecuteAction = x => this.SelectedItem!=null, ExecuteAction = EditCommandAction };
+            ValidateCommand = new CommandHandler { CanExecuteAction = x => this.SelectedItem!=null, ExecuteAction = ValidateAction };
             this.StartAsync();
         }
+
+        private void ValidateAction(object obj)
+        {
+            var data = obj as Pengaduan;
+           
+            try
+            {
+                using (var db = new DbContext())
+                {
+
+                    var pengaduanFound = db.DataPengaduan.Where(O => O.KodeDistrik == data.KodeDistrik && O.Nomor == data.Nomor).FirstOrDefault();
+                    if (pengaduanFound != null)
+                        throw new SystemException("Data Sudah Ada");
+
+                }
+                ValidatePengaduan(data);
+                data.Icon.ToolTip ="Valid";
+                data.Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Read;
+                data.Icon.Foreground = Brushes.LightSeaGreen;
+            }
+            catch (Exception ex)
+            {
+                data.Icon.ToolTip = ex.Message;
+                if (ex.Message == "Data Sudah Ada")
+                {
+                    data.Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.ContentDuplicate;
+                   data.Icon.Foreground = Brushes.Orange;
+                }
+                else
+                {
+                   data.Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Error;
+                    data.Icon.Foreground = Brushes.Red;
+                }
+
+            }
+        }
+
+        public Pengaduan SelectedItem
+        {
+            get { return _selected; }
+            set
+            {
+                SetProperty(ref _selected, value);
+            }
+        }
+        private void EditCommandAction(object obj)
+        {
+            var data = obj as Pengaduan;
+            if (data != null)
+            {
+                var form = new Views.TambahPengaduan(true);
+                form.DataContext = data;
+                form.ShowDialog();
+            }
+        }
+
         public async void StartAsync()
         {
             await Task.Delay(500);
@@ -36,7 +97,6 @@ namespace Main.DataAccess
             await ProccessKorban().ContinueWith(taskKorbanCompleteAsync);
             await ProccessPelapor().ContinueWith(taskPelaporCompleteAsync);
             await ProccessTerlapor().ContinueWith(taskTerlaporCompleteAsync);
-            await ProccessPerkembangan().ContinueWith(taskPerkembanganCompleteAsync);
 
             await ProccessUraian().ContinueWith(taskUraianCompleteAsync);
             //  SaveToDatabaseAsync(Pengaduans.ToList());
@@ -58,17 +118,24 @@ namespace Main.DataAccess
 
         private void SaveToDatabaseAsync(object obj)
         {
+            var btn = obj as Button;
             foreach (var item in this.Pengaduans)
             {
-                SaveDataAsync(item).ContinueWith(completeSaveAsync);
+                if (btn.Content.ToString() == "Validasi")
+                {
+                    ValidateAction(item);
+                    btn.Content = "Simpan";
+                }
+                else
+                    SaveDataAsync(item).ContinueWith(completeSaveAsync);
             }
-
         }
 
         public ObservableCollection<Pengaduan> Pengaduans { get; set; }
         public CollectionView PengaduanViews { get; set; }
         public CommandHandler SaveCommand { get; }
-
+        public CommandHandler EditCommand { get; }
+        public CommandHandler ValidateCommand { get; }
 
         private async Task completeSaveAsync(Task<Tuple<string, Pengaduan, bool>> obj)
         {
@@ -110,11 +177,12 @@ namespace Main.DataAccess
                 var trans = db.BeginTransaction();
                 try
                 {
+                  
                     var pengaduanFound = db.DataPengaduan.Where(O => O.KodeDistrik == item.KodeDistrik && O.Nomor == item.Nomor).FirstOrDefault();
                     if (pengaduanFound != null)
                         throw new SystemException("Data Sudah Ada");
 
-                 
+                    ValidatePengaduan(item);
                     item.Id = db.DataPengaduan.InsertAndGetLastID(item);
                     if (item.Id <= 0)
                         throw new SystemException("Data Pengaduan Tidak Tersimpan");
@@ -137,7 +205,6 @@ namespace Main.DataAccess
                         data.Id = await GetIdIdentitas(data, db);
                     }
 
-                    item.Kejadian.PengaduanId = item.Id.Value;
                     item.Dampak.PengaduanId = item.Id.Value;
                     item.Kondisi.PengaduanId = item.Id.Value;
 
@@ -149,19 +216,7 @@ namespace Main.DataAccess
                     if (item.Dampak.Id <= 0)
                         throw new SystemException("Data  Dampak Yang Dialami Tidak Tersimpan");
 
-                    item.Kejadian.Id = db.DataKejadian.InsertAndGetLastID(item.Kejadian);
-                    if (item.Kejadian.Id <= 0)
-                        throw new SystemException("Data  Kejadian Tidak Tersimpan");
-                    if (item.Perkembangan != null)
-                    {
-                        foreach (var data in item.Perkembangan)
-                        {
-                            data.PengaduanId = item.Id.Value;
-                            data.Id = db.DataTahapanPerkembangan.InsertAndGetLastID(data);
-                            if (data.Id <= 0)
-                                throw new SystemException("Data Tahapan  Perkembangan Kejadian Tidak Tersimpan");
-                        }
-                    }
+                  
 
                     trans.Commit();
                     return Tuple.Create("Berhasil", item, true);
@@ -178,7 +233,57 @@ namespace Main.DataAccess
 
         }
 
-        private Task<int> GetIdIdentitas(Pelapor pelapor, DbContext db)
+        private void ValidatePengaduan(Pengaduan item)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+                if (!string.IsNullOrEmpty(item.Error))
+                    sb.AppendLine(item.Error);
+
+                if (!string.IsNullOrEmpty(item.Pelapor.Error))
+                    sb.AppendLine(item.Pelapor.Error);
+
+                if (item.Korban != null && item.Korban.Count > 0)
+                {
+                    foreach (var data in item.Korban)
+                    {
+                        if (!string.IsNullOrEmpty(data.Error))
+                            sb.AppendLine($"Data Korban '{data.Nama}' - {data.Error}");
+                    }
+                }
+                else
+                    sb.AppendLine("data korban belum ada");
+
+                if (item.Terlapor != null && item.Terlapor.Count > 0)
+                {
+                    foreach (var data in item.Terlapor)
+                    {
+                        if (!string.IsNullOrEmpty(data.Error))
+                            sb.AppendLine($"Data Terlapor '{data.Nama}' - {data.Error}");
+                    }
+                }
+                else
+                    sb.AppendLine("data Terlapor belum ada");
+
+             
+                if (!string.IsNullOrEmpty(item.Dampak.Error))
+                    sb.AppendLine(item.Dampak.Error);
+
+                if (!string.IsNullOrEmpty(item.Kondisi.Error))
+                    sb.AppendLine(item.Kondisi.Error);
+
+                if (!string.IsNullOrEmpty(sb.ToString()))
+                    throw new SystemException(sb.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                throw new SystemException(ex.Message);
+            }
+        }
+
+        private Task<int> GetIdIdentitas(PelaporViewModel pelapor, DbContext db)
         {
             if (!string.IsNullOrEmpty(pelapor.Error))
                 throw new SystemException("Data pelapor tidak Valid");
@@ -190,7 +295,7 @@ namespace Main.DataAccess
             return Task.FromResult(id);
         }
 
-        private Task<int> GetIdIdentitas(Korban item, DbContext db)
+        private Task<int> GetIdIdentitas(KorbanViewModel item, DbContext db)
         {
             if (!string.IsNullOrEmpty(item.Error))
                 throw new SystemException("Data Korban tidak Valid");
@@ -202,7 +307,7 @@ namespace Main.DataAccess
             return Task.FromResult(id);
         }
 
-        private Task<int> GetIdIdentitas(Terlapor item, DbContext db)
+        private Task<int> GetIdIdentitas(TerlaporViewModel item, DbContext db)
         {
             if (!string.IsNullOrEmpty(item.Error))
                 throw new SystemException("Data Terlapor tidak Valid");
@@ -235,26 +340,8 @@ namespace Main.DataAccess
 
         }
 
-        private async Task taskPerkembanganCompleteAsync(Task<List<TahapanPerkembangan>> obj)
-        {
-            var result = await obj;
-            App.Current.Dispatcher.Invoke((System.Action)async delegate
-            {
-                if (Pengaduans.Count <= 0)
-                    await Task.Delay(10000);
-                foreach (var item in result.GroupBy(O => O.NoReg))
-                {
-                    var data = Pengaduans.Where(O => O.Nomor == item.Key).FirstOrDefault();
-                    data.Perkembangan = new List<TahapanPerkembangan>();
-                    foreach (var tahap in item)
-                    {
-                        data.Perkembangan.Add(tahap);
-                    }
-                }
-            });
-        }
 
-        private async void taskKorbanCompleteAsync(Task<List<Korban>> obj)
+        private async void taskKorbanCompleteAsync(Task<List<KorbanViewModel>> obj)
         {
             var datas = await obj;
             App.Current.Dispatcher.Invoke((System.Action)async delegate
@@ -272,7 +359,7 @@ namespace Main.DataAccess
 
         }
 
-        private async void taskTerlaporCompleteAsync(Task<List<Terlapor>> obj)
+        private async void taskTerlaporCompleteAsync(Task<List<TerlaporViewModel>> obj)
         {
             var datas = await obj;
             App.Current.Dispatcher.Invoke((System.Action)async delegate
@@ -291,7 +378,7 @@ namespace Main.DataAccess
 
         }
 
-        private async void taskPelaporCompleteAsync(Task<List<Pelapor>> obj)
+        private async void taskPelaporCompleteAsync(Task<List<PelaporViewModel>> obj)
         {
             var datas = await obj;
             App.Current.Dispatcher.Invoke((System.Action)async delegate
@@ -312,18 +399,18 @@ namespace Main.DataAccess
         }
 
 
-        private Task<List<Pelapor>> ProccessPelapor()
+        private Task<List<PelaporViewModel>> ProccessPelapor()
         {
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Pelapor"];
 
-            List<Pelapor> listPelapor = new List<Pelapor>();
+            List<PelaporViewModel> listPelapor = new List<PelaporViewModel>();
 
             //read pengaduan
             Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "D500"];
             int row = 1;
             for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
-                Pelapor pelaport = new Pelapor();
+                PelaporViewModel pelaport = new PelaporViewModel();
                 var nomor = rngPengaduan.Cells[row, "A"].Value2;
                 if (string.IsNullOrEmpty(nomor))
                     break;
@@ -370,16 +457,18 @@ namespace Main.DataAccess
                 if (string.IsNullOrEmpty(pengaduan.Nomor))
                     break;
 
-                pengaduan.Tanggal = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "C"].Value2));
-                pengaduan.Waktu = DateTime.FromOADate(Convert.ToDouble(rngPengaduan.Cells[row, "D"].Value2)).TimeOfDay;
+                pengaduan.TanggalLapor = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "C"].Value2));
+                TimeSpan waktu = DateTime.FromOADate(Convert.ToDouble(rngPengaduan.Cells[row, "D"].Value2)).TimeOfDay;
+                pengaduan.WaktuLapor = new DateTime(pengaduan.TanggalLapor.Value.Year, pengaduan.TanggalLapor.Value.Month,
+                    pengaduan.TanggalLapor.Value.Day, waktu.Hours, waktu.Minutes,0);
                 pengaduan.Rujukan = rngPengaduan.Cells[row, "E"].Value2;
                 pengaduan.Penerima = rngPengaduan.Cells[row, "F"].Value2;
-                pengaduan.Tempat = rngPengaduan.Cells[row, "G"].Value2;
+                pengaduan.TempatLapor = rngPengaduan.Cells[row, "G"].Value2;
                 pengaduan.StatusPelapor = rngPengaduan.Cells[row, "H"].Value2;
 
-                pengaduan.HubunganKorbanDenganTerlapor = rngPengaduan.Cells[row, "M"].Value2;
+              //  pengaduan.HubunganKorbanDenganTerlapor = rngPengaduan.Cells[row, "M"].Value2;
 
-                pengaduan.Pelapor = new Pelapor();
+                pengaduan.Pelapor = new PelaporViewModel();
                 pengaduan.Pelapor.Nama = rngPengaduan.Cells[row, "I"].Value2;
 
 
@@ -406,23 +495,7 @@ namespace Main.DataAccess
                 pengaduan.Dampak.Kesehatan = rngPengaduan.Cells[row, "S"].Value2;
                 pengaduan.Dampak.Lain = rngPengaduan.Cells[row, "T"].Value2;
 
-                pengaduan.Kejadian = new Kejadian();
-                pengaduan.Kejadian.Waktu = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "U"].Value2));
-                pengaduan.Kejadian.Tempat = rngPengaduan.Cells[row, "V"].Value2;
-                pengaduan.Kejadian.Fisik = rngPengaduan.Cells[row, "W"].Value2;
-                pengaduan.Kejadian.Psikis = rngPengaduan.Cells[row, "X"].Value2;
-                pengaduan.Kejadian.Penelantaran = rngPengaduan.Cells[row, "Y"].Value2;
-                pengaduan.Kejadian.Seksual = rngPengaduan.Cells[row, "Z"].Value2;
-                pengaduan.Kejadian.Penganiayaan = rngPengaduan.Cells[row, "AA"].Value2;
-                pengaduan.Kejadian.Pencabulan = rngPengaduan.Cells[row, "AB"].Value2;
-                pengaduan.Kejadian.Pemerkosaan = rngPengaduan.Cells[row, "AC"].Value2;
-                pengaduan.Kejadian.Trafiking = rngPengaduan.Cells[row, "AD"].Value2;
-                pengaduan.Kejadian.Lain = rngPengaduan.Cells[row, "AE"].Value2;
-                pengaduan.Penanganan = rngPengaduan.Cells[row, "AF"].Value2;
-                if (pengaduan.Penanganan == "Lain")
-                    pengaduan.Penanganan = rngPengaduan.Cells[row, "AG"].Value2;
-                row++;
-
+               
 
                 list.Add(pengaduan);
             }
@@ -430,16 +503,16 @@ namespace Main.DataAccess
 
         }
 
-        private Task<List<Korban>> ProccessKorban()
+        private Task<List<KorbanViewModel>> ProccessKorban()
         {
 
-            List<Korban> listKorban = new List<Korban>();
+            List<KorbanViewModel> listKorban = new List<KorbanViewModel>();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Korban"];
             Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "M500"];
             int row = 1;
             for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
-                Korban data = new Korban();
+                KorbanViewModel data = new KorbanViewModel();
                 var nomor = rngPengaduan.Cells[row, "A"].Value2;
                 if (string.IsNullOrEmpty(nomor))
                     break;
@@ -473,16 +546,16 @@ namespace Main.DataAccess
 
         }
 
-        private Task<List<Terlapor>> ProccessTerlapor()
+        private Task<List<TerlaporViewModel>> ProccessTerlapor()
         {
-            List<Terlapor> listTerlapor = new List<Terlapor>();
+            List<TerlaporViewModel> listTerlapor = new List<TerlaporViewModel>();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Terlapor"];
             
             Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "L500"];
             int row = 1;
             for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
-                Terlapor data = new Terlapor();
+                TerlaporViewModel data = new TerlaporViewModel();
 
                 var nomor= rngPengaduan.Cells[row, "A"].Value2;
                 if (string.IsNullOrEmpty(nomor))
@@ -511,34 +584,6 @@ namespace Main.DataAccess
             }
 
             return Task.FromResult(listTerlapor);
-
-        }
-
-
-        private Task<List<TahapanPerkembangan>> ProccessPerkembangan()
-        {
-            List<TahapanPerkembangan> list = new List<TahapanPerkembangan>();
-            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Perkembangan"];
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "D500"];
-            int row = 1;
-            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
-            {
-                TahapanPerkembangan data = new TahapanPerkembangan();
-                var nomor = rngPengaduan.Cells[row, "A"].Value2;
-                if (string.IsNullOrEmpty(nomor))
-                    break;
-                data.NoReg = nomor;
-                data.Tanggal = new DateTime(Convert.ToInt64(rngPengaduan.Cells[row, "B"].Value2));
-                data.BentukPenanganan = rngPengaduan.Cells[row, "C"].Value2;
-                data.Keterangan = rngPengaduan.Cells[row, "D"].Value2;
-                row++;
-
-                list.Add(data);
-
-
-            }
-
-            return Task.FromResult(list);
 
         }
 

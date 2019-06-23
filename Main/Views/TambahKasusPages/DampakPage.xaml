@@ -7,7 +7,8 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"   xmlns:main="clr-namespace:Main"
         xmlns:utilities="clr-namespace:Main.Utilities"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
      TextElement.FontSize="13"
      TextOptions.TextFormattingMode="Ideal"
@@ -18,33 +19,70 @@
     <Page.Resources>
         <main:EnumToBoolConverter x:Key="EBConverter"/>
     </Page.Resources>
-    <GroupBox Header="Dampak Yang Dihadapi Korban">
-        <StackPanel  Background="White">
-            <WrapPanel>
-                <Label Content="Fisik"></Label>
-                <TextBox AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Psikis"></Label>
-                <TextBox AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Seksual"></Label>
-                <TextBox AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Ekonomi"></Label>
-                <TextBox AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
-            </WrapPanel>
-            <WrapPanel>
-                <Label Content="Kesehatan"></Label>
-                <TextBox AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
-            </WrapPanel>
-            <WrapPanel Margin="10,0,0,30">
-                <Label Content="Lain-Lain"></Label>
-                <TextBox AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
-            </WrapPanel>
+    <StackPanel>
+        <GroupBox Header="Kasus Yang Dilaporkan">
+            <StackPanel>
+                <StackPanel Margin="10,0"  Background="White">
+                    <WrapPanel>
+                        <Label Content="Waktu Kajadian"></Label>
+                        <materialDesign:TimePicker Language="id-ID" SelectedTime="{Binding Waktu}" Height="37" Margin="5"
+                                       materialDesign:HintAssist.Hint="Waktu"
+                                       IsInvalidTextAllowed="True"
+                                       Is24Hours="{Binding IsChecked, ElementName=Is24HourCheckbox}"
+                                       Width="100">
+                            <materialDesign:TimePicker.Text>
+                                <Binding Path="ValidatingTime" UpdateSourceTrigger="PropertyChanged">
 
-        </StackPanel>
-    </GroupBox>
+                                </Binding>
+                            </materialDesign:TimePicker.Text>
+                        </materialDesign:TimePicker>
+                        <DatePicker MinWidth="200"  SelectedDateFormat="Long" Language="id-ID" SelectedDate="{Binding Tanggal,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
+                            Width="100"  materialDesign:HintAssist.Hint="Tanggal"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Tempat Kejadian"></Label>
+                        <TextBox Text="{Binding Tempat,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"></TextBox>
+                    </WrapPanel>
+                  
+                </StackPanel>
+              
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Dampak Yang Dihadapi Korban">
+            <StackPanel  Background="White">
+                <WrapPanel>
+                    <Label Content="Fisik"></Label>
+                    <TextBox Text="{Binding Dampak.Fisik,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Content="Psikis"></Label>
+                    <TextBox Text="{Binding Dampak.Psikis,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Content="Seksual"></Label>
+                    <TextBox Text="{Binding Dampak.Seksual,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Content="Ekonomi"></Label>
+                    <TextBox Text="{Binding Dampak.Ekonomi,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
+                </WrapPanel>
+                <WrapPanel>
+                    <Label Content="Kesehatan"></Label>
+                    <TextBox Text="{Binding Dampak.Kesehatan,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
+                </WrapPanel>
+                <WrapPanel Margin="10,0,0,30">
+                    <Label Content="Lain-Lain"></Label>
+                    <TextBox Text="{Binding Dampak.Lain,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" AcceptsReturn="True" Height="Auto" TextWrapping="Wrap" MinWidth="300" Width="700"></TextBox>
+                </WrapPanel>
+
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Catatatan Akhir"   Background="White">
+            <WrapPanel Margin="10,0,0,30">
+                <TextBox Text="{Binding Catatan,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" AcceptsReturn="True" Height="Auto" Width="1000" TextWrapping="Wrap" ></TextBox>
+            </WrapPanel>
+        </GroupBox>
+    </StackPanel>
 </Page>

@@ -36,7 +36,7 @@ namespace Main.Charts.Dialogs
             var result = from p in source
                          from korban in p.Korban
                          where korban.TanggalLahir != null
-                         let age = p.Tanggal.Year - korban.TanggalLahir.Year
+                         let age = p.TanggalLapor.Value.Year - korban.TanggalLahir.Year
                          group p by
                             age < 6 ? "0-5" :
                             age < 13 ? "6-12" :

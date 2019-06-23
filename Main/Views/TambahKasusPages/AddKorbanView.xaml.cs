@@ -23,6 +23,7 @@ namespace Main.Views.TambahKasusPages
         public AddKorbanView()
         {
             InitializeComponent();
+            cmb.ItemSource= EnumSource.DataPendidikan();
         }
       
 
@@ -32,13 +33,13 @@ namespace Main.Views.TambahKasusPages
             if (comboBox.SelectedItem != null)
                 return;
             var newItem = comboBox.Text;
-            var viewmodel = this.DataContext as Korban;
+            var viewmodel = this.DataContext as KorbanViewModel;
             viewmodel.ListHubunganKorban.Add(newItem);
             comboBox.SelectedItem = newItem;
         }
     }
 
-    public class AddKorbanViewModel  :Korban
+    public class AddKorbanViewModel  :KorbanViewModel
     {
         public CommandHandler SaveCommand { get; }
         public CommandHandler CancelCommand { get; }
@@ -50,9 +51,9 @@ namespace Main.Views.TambahKasusPages
             CancelCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = CancelAction };
         }
 
-      
+        public List<string> Kekerasans { get; set; } = EnumSource.DataPendidikan();
 
-        public AddKorbanViewModel(Korban korban)
+        public AddKorbanViewModel(KorbanViewModel korban)
         {
             SaveCommand = new CommandHandler { CanExecuteAction = ValidateSave, ExecuteAction = SaveAction };
             CancelCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = CancelAction };

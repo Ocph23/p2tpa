@@ -39,36 +39,6 @@ namespace Main.Charts
             int dua = 0;
             int tiga = 0;
 
-            foreach (var data in DataAccess.DataBasic.DataPengaduan)
-            {
-                int found = 0;
-                if (data.Kejadian.Fisik)
-                    found++;
-                if (data.Kejadian.Psikis)
-                    found++;
-                if (data.Kejadian.Penelantaran)
-                    found++;
-                if (data.Kejadian.Seksual)
-                    found++;
-                if (data.Kejadian.Penganiayaan)
-                    found++;
-                if (data.Kejadian.Pencabulan)
-                    found++;
-                if (data.Kejadian.Pemerkosaan)
-                    found++;
-                if (data.Kejadian.Trafiking)
-                    found++;
-                if (!string.IsNullOrEmpty(data.Kejadian.Lain))
-                    found++;
-
-                if (found == 1)
-                    satu++;
-                if (found == 2)
-                    dua++;
-                if (found >= 3)
-                    tiga++;
-
-            }
 
 
 

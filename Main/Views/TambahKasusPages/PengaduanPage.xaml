@@ -8,13 +8,7 @@
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:main="clr-namespace:Main"
       xmlns:utilities="clr-namespace:Main.Utilities"
-      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-     TextElement.FontWeight="Regular"
-     TextElement.FontSize="13"
-     TextOptions.TextFormattingMode="Ideal"
-     TextOptions.TextRenderingMode="Auto"
-     Background="{DynamicResource MaterialDesignPaper}"
-     FontFamily="{DynamicResource MaterialDesignFont}"
+   
       Title="PengaduanPage">
     <Page.Resources>
         <main:EnumToBoolConverter x:Key="EBConverter"/>
@@ -22,6 +16,7 @@
     <GroupBox Header="Pengaduan Kasus">
         <StackPanel Style="{StaticResource stackPanelExpander}"  Background="White">
             <WrapPanel>
+              
                 <Label Content="Distrik"></Label>
                 <ComboBox ItemsSource="{Binding Kecamatan}" SelectedValuePath="Id" SelectedValue="{Binding KodeDistrik,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,
                     ValidatesOnDataErrors=True}" DisplayMemberPath="Nama" ></ComboBox>
@@ -38,9 +33,9 @@
                 <Label Content="Waktu Lapor"></Label>
                 <WrapPanel>
                     <DatePicker SelectedDateFormat="Long" Language="id-ID" 
-                            SelectedDate="{Binding Tanggal,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"
+                            SelectedDate="{Binding TanggalLapor,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"
                             Width="250" Margin="0,0,5,0"  materialDesign:HintAssist.Hint="Pick Date"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-                    <materialDesign:TimePicker Language="id-ID" Height="36" SelectedTime="{Binding Waktu}"
+                    <materialDesign:TimePicker Language="id-ID" Height="36" SelectedTime="{Binding WaktuLapor}"
                                        materialDesign:HintAssist.Hint="Validates"
                                        IsInvalidTextAllowed="False"
                                        Is24Hours="{Binding IsChecked, ElementName=Is24HourCheckbox}"
@@ -63,7 +58,7 @@
             </WrapPanel>
             <WrapPanel>
                 <Label Content="Tempat Pengaduan"></Label>
-                <TextBox Text="{Binding Tempat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                <TextBox Text="{Binding TempatLapor,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
             </WrapPanel>
             <WrapPanel>
                 <Label Content="Yang Melapor"></Label>
@@ -85,6 +80,7 @@
                 </WrapPanel>
                 
             </StackPanel>
+          
         </StackPanel>
     </GroupBox>
 </Page>

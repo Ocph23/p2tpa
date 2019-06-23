@@ -16,7 +16,7 @@
         <StackPanel>
 
         </StackPanel>
-        <DataGrid Margin="20" Grid.Row="1" ItemsSource="{Binding PengaduanViews}" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+        <DataGrid Margin="20" Grid.Row="1" Name="dataGrid" ToolTip="Click Kanan Untuk Menampilkan Menu" ItemsSource="{Binding PengaduanViews}" SelectedItem="{Binding SelectedItem}" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" ScrollViewer.HorizontalScrollBarVisibility="Visible">
             <DataGrid.Columns >
                 <DataGridTemplateColumn Header="Status"  >
                     <DataGridTemplateColumn.CellTemplate>
@@ -153,9 +153,15 @@
                 </DataGridTemplateColumn>
 
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit" Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItem}"/>
+                    <MenuItem Header="Validasi Data" Command="{Binding ValidateCommand}" CommandParameter="{Binding SelectedItem}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
         <WrapPanel Grid.Row="2" HorizontalAlignment="Right">
-            <Button Margin="2" Command="{Binding SaveCommand}" Content="Simpan" Height="39" Width="99"></Button>
+            <Button Name="Save" Margin="2" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=Save}" Content="Validasi" Height="39" Width="99"></Button>
             <Button Margin="2" Click="Button_Click" Content="Batal" Height="39" Width="99"></Button>
         </WrapPanel>
     </Grid>

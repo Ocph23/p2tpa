@@ -1,0 +1,57 @@
+﻿<Window x:Class="Main.Views.AddInstansi"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Main.Views"
+        mc:Ignorable="d"
+        Title="AddInstansi" Height="502.273" Width="726.136">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Header="Tambah/Edit Instansi">
+            <ScrollViewer >
+                <StackPanel   Background="White">
+                    <WrapPanel>
+                        <Label Content="Nama"></Label>
+                        <TextBox  Text="{Binding Name,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Kategori"></Label>
+                        <ComboBox ItemsSource="{Binding DataKategori}" Text="{Binding Kategori}"></ComboBox>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Tingkat"></Label>
+                        <ComboBox ItemsSource="{Binding DataTingkat}" Text="{Binding Tingkat}"></ComboBox>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Distrik"></Label>
+                        <ComboBox ItemsSource="{Binding DataKecamatan}" SelectedItem="{Binding Kecamatan}"  DisplayMemberPath="Nama" 
+                                  SelectedValuePath="Nama" SelectedValue="{Binding DistrikName,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></ComboBox>
+                        <WrapPanel.Style>
+                            <Style TargetType="WrapPanel" BasedOn="{StaticResource ResourceKey={x:Type WrapPanel}}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding = "{Binding  Path = Tingkat}" Value = "Distrik">
+                                        <Setter Property="WrapPanel.Visibility" Value = "Visible"></Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </WrapPanel.Style>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Alamat"></Label>
+                        <TextBox AcceptsReturn="True" Text="{Binding Alamat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                    </WrapPanel>
+                    
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+        <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
+            <Button Margin="2" Width="100" Command="{Binding SaveCommand}" Content="OK" ></Button>
+            <Button Margin="2" Width="100" Command="{Binding CancelCommand}" Content="Batal" Style="{StaticResource MaterialDesignRaisedAccentButton}" ></Button>
+        </WrapPanel>
+    </Grid>
+</Window>

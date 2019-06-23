@@ -6,7 +6,7 @@ namespace Main.ViewModels
 {
 
     [TableName("Terlapor")]
-   public class Terlapor : Identitas,IDataErrorInfo
+   public class TerlaporViewModel : Identitas,IDataErrorInfo
     {
         
 

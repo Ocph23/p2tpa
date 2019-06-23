@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Main.ViewModels;
 
 namespace Main
 {
@@ -19,6 +20,7 @@ namespace Main
     public enum KondisiFisik {
         Sehat, Sakit, Luka
     }
+
 
 
     public enum KondisiPsikis
@@ -44,7 +46,15 @@ namespace Main
     }
 
 
+    public enum KategoriInstansi
+    {
+        None , DPPPA, P2TP2A, Kepolisian, Kesehatan, Lapas, Sosial,  Lainnya
+    }
 
+    public enum TingakatInstansi
+    {
+        None, Propinsi, Kabupaten, Distrik
+    }
 
 
     public class EnumSource
@@ -94,5 +104,44 @@ namespace Main
         {
             return new List<string> { "NA", "Bekerja", "Pelajar", "Ibu Rumah Tangga", "Swasta/Buruh" , "PNS/TNI/POLRI", "Pedagang/Tani/Nelayan","Tidak Bekerja"};
         }
+
+        internal static List<string> DataInstansi()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static List<Layanan> GetDataLayananKorban()
+        {
+            return new List<Layanan>()
+           {
+               new Layanan(){ Name = "Bantuan Humum"},
+                 new Layanan(){ Name = "Kesehatan"},
+                 new Layanan(){ Name = "Pemulangan"},
+                 new Layanan(){ Name = "Pendampingan Tokoh Agama"},
+                 new Layanan(){ Name = "Penegakan Hukum"},
+                 new Layanan(){ Name = "Pengaduan"},
+                 new Layanan(){ Name = "Rehabilitasi Sosial"},
+                 new Layanan(){ Name = "Reintegrasi Sosial"}
+           };
+        }
+
+        internal static List<Layanan> GetDataLayananTerlapor() => new List<Layanan>()
+           {
+               new Layanan(){ Name = "Pelaporan"},
+                 new Layanan(){ Name = "Pemeriksaan"},
+                 new Layanan(){ Name = "Penyidikan"},
+                 new Layanan(){ Name = "Penyidikan"},
+                 new Layanan(){ Name = "Penangkapan"},
+                 new Layanan(){ Name = "Penanganan"},
+                 new Layanan(){ Name = "Penggeledahan"},
+                 new Layanan(){ Name = "Penyitaan"},
+                 new Layanan(){ Name = "Pra Penuntutan"},
+                 new Layanan(){ Name = "Penuntutan"},
+                 new Layanan(){ Name = "Pengadilan Tingkat I"},
+                 new Layanan(){ Name = "Kasasi"},
+                 new Layanan(){ Name = "Penindaklanjutan Kembali"},
+                 new Layanan(){ Name = "Diversi"},
+
+           };
     }
 }

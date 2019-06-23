@@ -12,7 +12,9 @@ namespace Main.DataAccess
 
     public class DataBasic
     {
+        private static PengaduanServices masterPengaduan;
         private static List<Pengaduan> pengaduans;
+        private static InstansiCollection _instansi;
 
         public static List<DataPenduduk> DataPendudukPerKecamatan()
         {
@@ -106,14 +108,45 @@ namespace Main.DataAccess
         {
             get
             {
-                if(pengaduans==null)
+                return MasterPengaduan.Where(x => x.TanggalLapor.Value.Year == DateTime.Now.Year).ToList(); ;
+            }
+        }
+
+
+        public static PengaduanServices MasterPengaduan
+        {
+            get
+            {
+                if (masterPengaduan == null)
                 {
-                    var pengaduan = new PengaduanServices();
-                    pengaduans = pengaduan.Where(x => x.Tanggal.Year == DateTime.Now.Year).ToList();
+                    masterPengaduan = new PengaduanServices();
 
                 }
 
-                return pengaduans;
+                return masterPengaduan;
+            }
+        }
+
+
+
+        public static InstansiCollection DataInstansi
+        {
+            get
+            {
+                if(_instansi==null)
+                {
+                    _instansi = new InstansiCollection();
+                }
+
+                return _instansi;
+            }
+        }
+
+        public static List<Instansi> GetDataInstansi
+        {
+            get
+            {
+                return DataInstansi.ToList();
             }
         }
 

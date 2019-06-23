@@ -37,7 +37,7 @@ namespace Main.Views
         {
             if(obj!=null)
             {
-                var form = new TambahPengaduan();
+                var form = new TambahPengaduan(false);
                 form.DataContext = obj as Pengaduan;
                 form.ShowDialog();
             }

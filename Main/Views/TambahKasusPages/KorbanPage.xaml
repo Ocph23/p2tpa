@@ -18,8 +18,12 @@
     <Page.Resources>
         <main:EnumToBoolConverter x:Key="EBConverter"/>
     </Page.Resources>
-    <StackPanel>
-        <GroupBox Margin="20" >
+    <Grid VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="50*"/>
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Row="0"  Margin="20"  VerticalAlignment="Top">
             <GroupBox.HeaderTemplate>
                 <DataTemplate>
                     <Grid Margin="3">
@@ -39,20 +43,17 @@
                     </Grid>
                 </DataTemplate>
             </GroupBox.HeaderTemplate>
-            <DataGrid ItemsSource="{Binding Korbans}" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False">
+            <DataGrid ItemsSource="{Binding Korbans}" RowDetailsVisibilityMode="Visible" SelectionMode="Single" CanUserAddRows="False" 
+                      CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Nama" Binding="{Binding Nama}"/>
-                    <DataGridTextColumn Width="50" Header="JK" Binding="{Binding Gender}"/>
-                    <DataGridTextColumn Width="100" Header="Agama" Binding="{Binding Agama}"/>
-                    <DataGridTextColumn Width="150" Header="Pendidikan" Binding="{Binding Pendidikan}"/>
-                    <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding Suku}"/>
-                    <DataGridTextColumn Width="100" Header="Hubungan" Binding="{Binding HubunganDenganTerlapor}"/>
-                    <DataGridTextColumn Header="Alamat" Width="*" Binding="{Binding Alamat}"/>
-                    <DataGridTemplateColumn Header="Action" Width="100" >
+                    <DataGridTemplateColumn Header="Action"  >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <materialDesign:PopupBox   StaysOpen="True" IsEnabled="True">
                                     <StackPanel>
+                                        <Button Margin="2" Content="Tambah Penanganan" Command="{Binding Path=DataContext.AddPenangananCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
                                         <Button Margin="2" Content="Edit" Command="{Binding Path=DataContext.AddKorbanCommand, 
                                              RelativeSource={RelativeSource Mode=FindAncestor, 
                                               AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
@@ -64,10 +65,53 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Nama" Binding="{Binding Nama}"/>
+                    <DataGridTextColumn Width="50" Header="JK" Binding="{Binding Gender}"/>
+                    <DataGridTextColumn Width="100" Header="Agama" Binding="{Binding Agama}"/>
+                    <DataGridTextColumn Width="150" Header="Pendidikan" Binding="{Binding Pendidikan}"/>
+                    <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding Suku}"/>
+                    <DataGridTextColumn Width="100" Header="Hubungan" Binding="{Binding HubunganDenganTerlapor}"/>
+                    <DataGridTextColumn Header="Alamat"  Binding="{Binding Alamat}"/>
+                  
                 </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <Grid >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <DataGrid  RowBackground="#FFA49BB4" SelectionMode="Single" Margin="50,0,30,10" Grid.Row="0"  ItemsSource="{Binding DataPenanganan}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Action">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <materialDesign:PopupBox   StaysOpen="True" IsEnabled="True">
+                                                    <StackPanel>
+                                                        <Button Margin="2" Content="Edit" Command="{Binding Path=DataContext.EditPenangananCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
+                                                        <Button Margin="2" Content="Delte" Command="{Binding Path=DataContext.DeletePenangananCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
+                                                    </StackPanel>
+                                                </materialDesign:PopupBox>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal,StringFormat=dd-MM-yyyy}"/>
+                                    <DataGridTextColumn Header="Instansi" Binding="{Binding Instansi.Name}"/>
+                                    <DataGridTextColumn Header="Layanan" Binding="{Binding Layanan}"/>
+                                    <DataGridTextColumn Header="Jenis Layanan" Binding="{Binding DetailLayanan}"/>
+                                    <DataGridTextColumn  Header="Deskripsi" Binding="{Binding Deskripsi}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
             </DataGrid>
         </GroupBox>
-        <GroupBox Header="Pelaku" Margin="20">
+        <GroupBox Grid.Row="1" Header="Pelaku" VerticalAlignment="Stretch">
             <GroupBox.HeaderTemplate>
                 <DataTemplate>
                     <Grid Margin="3">
@@ -87,8 +131,27 @@
                     </Grid>
                 </DataTemplate>
             </GroupBox.HeaderTemplate>
-            <DataGrid ItemsSource="{Binding Terlapors}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
+            <DataGrid ItemsSource="{Binding Terlapors}" RowDetailsVisibilityMode="Visible" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
                 <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Action"  >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <materialDesign:PopupBox   StaysOpen="True" IsEnabled="True">
+                                    <StackPanel>
+                                        <Button Margin="2" Content="Tambah Proses" Command="{Binding Path=DataContext.AddPenangananCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
+                                        <Button Margin="2" Content="Edit" Command="{Binding Path=DataContext.AddTerlaporCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
+                                        <Button Margin="2" Content="Delte" Command="{Binding Path=DataContext.DeleteCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Nama" Binding="{Binding Nama}"/>
                     <DataGridTextColumn Width="50" Header="JK" Binding="{Binding Gender}"/>
                     <DataGridTextColumn Width="100" Header="Agama" Binding="{Binding Agama}"/>
@@ -96,25 +159,44 @@
                     <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding Suku}"/>
                     <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding HubunganDenganTerlapor}"/>
                     <DataGridTextColumn Header="Alamat" Width="*" Binding="{Binding Alamat}"/>
-                    <DataGridTemplateColumn Header="Action" Width="100" >
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <materialDesign:PopupBox   StaysOpen="True" IsEnabled="True">
-                                    <StackPanel>
-                                        <Button Margin="2" Content="Edit" Command="{Binding Path=DataContext.AddTerlaporCommand, 
-                                             RelativeSource={RelativeSource Mode=FindAncestor, 
-                                              AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
-                                        <Button Margin="2" Content="Delte" Command="{Binding Path=DataContext.DeleteCommand, 
-                                             RelativeSource={RelativeSource Mode=FindAncestor, 
-                                              AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
-                                        <Button Margin="2" Content="Test"/>
-                                    </StackPanel>
-                                </materialDesign:PopupBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                  
                 </DataGrid.Columns>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <Grid MinHeight="100">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <DataGrid RowBackground="#FFA49BB4" SelectionMode="Single" Margin="50,0,30,10" Grid.Row="0"  ItemsSource="{Binding DataPenanganan}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Action">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <materialDesign:PopupBox   StaysOpen="True" IsEnabled="True">
+                                                    <StackPanel>
+                                                        <Button Margin="2" Content="Edit" Command="{Binding Path=DataContext.EditPenangananCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
+                                                        <Button Margin="2" Content="Delte" Command="{Binding Path=DataContext.DeletePenangananCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Page}}}" CommandParameter="{Binding .}"/>
+                                                    </StackPanel>
+                                                </materialDesign:PopupBox>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal,StringFormat=dd-MM-yyyy}"/>
+                                    <DataGridTextColumn Header="Instansi" Binding="{Binding Instansi.Name}"/>
+                                    <DataGridTextColumn Header="Layanan" Binding="{Binding Layanan}"/>
+                                    <DataGridTextColumn Header="Jenis Layanan" Binding="{Binding DetailLayanan}"/>
+                                    <DataGridTextColumn  Header="Deskripsi" Binding="{Binding Deskripsi}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
             </DataGrid>
         </GroupBox>
-    </StackPanel>
+    </Grid>
 </Page>
