@@ -189,6 +189,7 @@
     <Compile Include="EnumCollection.cs" />
     <Compile Include="Models\Identitas.cs" />
     <Compile Include="Models\Instansi.cs" />
+    <Compile Include="ViewModels\HubunganViewModel.cs" />
     <Compile Include="ViewModels\KondisiKorban.cs" />
     <Compile Include="ViewModels\KorbanViewModel.cs" />
     <Compile Include="ViewModels\PelaporViewModel.cs" />
@@ -215,6 +216,9 @@
     </Compile>
     <Compile Include="Views\TambahKasusPages\DampakPage.xaml.cs">
       <DependentUpon>DampakPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TambahKasusPages\HubunganDenganKorban.xaml.cs">
+      <DependentUpon>HubunganDenganKorban.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TambahKasusPages\KondisiPage.xaml.cs">
       <DependentUpon>KondisiPage.xaml</DependentUpon>
@@ -384,6 +388,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TambahKasusPages\DampakPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TambahKasusPages\HubunganDenganKorban.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

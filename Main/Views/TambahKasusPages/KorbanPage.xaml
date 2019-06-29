@@ -157,9 +157,37 @@
                     <DataGridTextColumn Width="100" Header="Agama" Binding="{Binding Agama}"/>
                     <DataGridTextColumn Width="150" Header="Pendidikan" Binding="{Binding Pendidikan}"/>
                     <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding Suku}"/>
-                    <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding HubunganDenganTerlapor}"/>
+                    <DataGridTextColumn Width="100" Header="Hubungan" Binding="{Binding HubunganDenganTerlapor}"/>
+                    <DataGridTemplateColumn Width="auto" Header=":">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <materialDesign:PopupBox   StaysOpen="True" IsEnabled="True">
+                                    <Grid >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel>
+                                            <Label Content="Hubungan Dengan Korban"/>
+                                        </StackPanel>
+                                        <DataGrid Grid.Row="1" ItemsSource="{Binding Hubungan}" AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Nama Korban" Binding="{Binding Korban.Nama}"/>
+                                                <DataGridTemplateColumn Header="Hubungan Dengan Terlapor" >
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <ComboBox SelectedItem="{Binding Nama}" ItemsSource="{Binding DataJenisHubungans}"/>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </Grid>
+                                </materialDesign:PopupBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Alamat" Width="*" Binding="{Binding Alamat}"/>
-                  
                 </DataGrid.Columns>
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
@@ -192,10 +220,12 @@
                                     <DataGridTextColumn Header="Jenis Layanan" Binding="{Binding DetailLayanan}"/>
                                     <DataGridTextColumn  Header="Deskripsi" Binding="{Binding Deskripsi}"/>
                                 </DataGrid.Columns>
+                              
                             </DataGrid>
                         </Grid>
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
+              
             </DataGrid>
         </GroupBox>
     </Grid>

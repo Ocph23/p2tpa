@@ -56,7 +56,26 @@ namespace Main.Views.TambahKasusPages
             this.vm = vm;
             this.Korbans = (CollectionView)CollectionViewSource.GetDefaultView(vm.Korban);
             this.Terlapors = (CollectionView)CollectionViewSource.GetDefaultView( vm.Terlapor);
-           
+            foreach (var korban in vm.Korban)
+            {
+
+                foreach (var terlapor in vm.Terlapor)
+                {
+                    bool isfound = false;
+                    foreach (var hubungan in terlapor.Hubungan)
+                    {
+                        if (hubungan.Korban.Id == korban.Id)
+                        {
+                            isfound = true;
+                            break;
+                        }
+                    }
+
+                    if (!isfound)
+                        terlapor.Hubungan.Add(new HubunganViewModel(korban));
+                }
+            }
+
             AddKorbanCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = AddKorbanAction };
             AddTerlaporCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = AddTerlaporAction };
             DeleteCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = DeleteAction };
@@ -168,7 +187,7 @@ namespace Main.Views.TambahKasusPages
             var formVM = form.DataContext as AddTerlaporViewModel;
             if (formVM.DataValid && obj == null)
             {
-                vm.Terlapor.Add((TerlaporViewModel)formVM);
+                vm.AddTerlapor((TerlaporViewModel)formVM);
             }
             Terlapors.Refresh();
         }
@@ -185,7 +204,7 @@ namespace Main.Views.TambahKasusPages
             var korbanVM = form.DataContext as AddKorbanViewModel;
             if (korbanVM.DataValid && obj==null)
             {
-                vm.Korban.Add((KorbanViewModel)korbanVM);
+                vm.AddKorban((KorbanViewModel)korbanVM);
             }
             Korbans.Refresh();
         }

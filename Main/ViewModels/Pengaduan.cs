@@ -231,6 +231,24 @@ namespace Main.ViewModels
         }
 
 
+        public void AddKorban(KorbanViewModel korban)
+        {
+            foreach(var item in Terlapor)
+            {
+                item.Hubungan.Add(new HubunganViewModel(korban));
+            }
+            this.Korban.Add(korban);
+        }
+
+        public void AddTerlapor(TerlaporViewModel terlapor)
+        {
+            foreach (var item in Korban)
+            {
+                terlapor.Hubungan.Add(new HubunganViewModel(item));
+            }
+            this.Terlapor.Add(terlapor);
+        }
+
 
     }
 
