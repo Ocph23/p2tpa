@@ -22,7 +22,7 @@ namespace Main.Views
 
         private void TambahPengaduan_Loaded(object sender, RoutedEventArgs e)
         {
-            var vm = DataContext as Pengaduan;
+            var vm = DataContext as PengaduanViewModel;
             nav.DataContext = new NavigationPageViewModel(this.MainFrame, vm, IsEditable) { WindowClose = this.Close };
 
         }

@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Main.ViewModels
+namespace Main.Models
 {
     [TableName("Penanganan")]
     public class Penanganan : BaseNotify, IDataErrorInfo
     {
-        public Penanganan( Identitas identitas, string type)
+        public Penanganan(Identitas identitas, string type)
         {
             this.DataIdentias = identitas;
             this.IdentitasType = type;

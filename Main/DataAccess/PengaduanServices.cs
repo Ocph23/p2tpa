@@ -1,4 +1,4 @@
-﻿using Main.ViewModels;
+﻿using Main.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ namespace Main.DataAccess
                                    Catatan = pengaduan.Catatan,
                                    Id = pengaduan.Id,
                                    Nomor = pengaduan.Nomor,
-                                   Pelapor = pelapor,
+                                  
                                    Penerima = pengaduan.Penerima,
                                    Rujukan = pengaduan.Rujukan,
                                    TanggalLapor = pengaduan.TanggalLapor,
@@ -42,22 +42,34 @@ namespace Main.DataAccess
                                    UraianKejadian = pengaduan.UraianKejadian,
                                    TempatLapor = pengaduan.TempatLapor,
                                    Dampak = dampak,
-                                   Kondisi = kondisi
+                                   Kondisi = kondisi,
+                                   Pelapor = pelapor,
                                };
 
                     if (data.Count() >0)
+                    {
                         foreach (var item in data)
                         {
                             var id = item.Id.Value;
                             item.Korban = db.DataKorban.Where(x => x.PengaduanId == id).ToList();
-                            foreach(var korban in item.Korban)
+                            foreach (var korban in item.Korban)
                             {
-                                var penangananKorban = from a in db.Penanganan.Where(x => x.IdentiasId == korban.Id &&
-                               x.IdentitasType == "Korban")
-                                                   join i in db.Instansi.Select().DefaultIfEmpty() on a.InstansiId equals i.Id
-                                                   select new Penanganan {  DataIdentias=korban, Deskripsi=a.Deskripsi, DetailLayanan=a.DetailLayanan,
-                                                    IdPenanganan=a.IdPenanganan, IdentiasId=a.IdentiasId, IdentitasType=a.IdentitasType, InstansiId=a.InstansiId,
-                                                   Instansi=i, Layanan=a.Layanan, Tanggal=a.Tanggal};
+                                var penangananKorban = from a in db.Penanganan.Where(x => x.IdentiasId == korban.Id && x.IdentitasType == "Korban")
+                                                       join i in db.Instansi.Select().DefaultIfEmpty() on a.InstansiId equals i.Id
+                                                       select new Penanganan
+                                                       {
+
+                                                           DataIdentias = korban,
+                                                           Deskripsi = a.Deskripsi,
+                                                           DetailLayanan = a.DetailLayanan,
+                                                           IdPenanganan = a.IdPenanganan,
+                                                           IdentiasId = a.IdentiasId,
+                                                           IdentitasType = a.IdentitasType,
+                                                           InstansiId = a.InstansiId,
+                                                           Instansi = i,
+                                                           Layanan = a.Layanan,
+                                                           Tanggal = a.Tanggal
+                                                       };
 
                                 korban.DataPenanganan = penangananKorban.ToList();
                             }
@@ -85,6 +97,8 @@ namespace Main.DataAccess
                             }
                             list.Add(item);
                         }
+                    }
+                        
                 }
                 catch (Exception ex)
                 {

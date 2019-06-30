@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Main.Models;
 using Main.ViewModels;
 
 namespace Main
@@ -103,6 +104,12 @@ namespace Main
         internal static List<string> DataPekerjaan()
         {
             return new List<string> { "NA", "Bekerja", "Pelajar", "Ibu Rumah Tangga", "Swasta/Buruh" , "PNS/TNI/POLRI", "Pedagang/Tani/Nelayan","Tidak Bekerja"};
+        }
+
+
+        internal static List<string> DaftarKekerasan()
+        {
+            return new List<string> { "Fisik", "Psikis", "Seksual","Eksploitasi", "Trafficking","Penelantaran","Lainnya" };
         }
 
         internal static List<string> DataInstansi()

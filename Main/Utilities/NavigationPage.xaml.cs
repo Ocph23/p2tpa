@@ -1,5 +1,4 @@
-﻿using Main.DataAccess;
-using Main.ViewModels;
+﻿using Main.Models;
 using Main.Views.TambahKasusPages;
 using System;
 using System.Collections.Generic;

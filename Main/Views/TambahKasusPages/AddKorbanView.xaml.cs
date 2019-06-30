@@ -1,17 +1,10 @@
-﻿using Main.ViewModels;
+﻿using AutoMapper;
+using Main.Models;
+using Main.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Main.Views.TambahKasusPages
 {
@@ -34,12 +27,11 @@ namespace Main.Views.TambahKasusPages
                 return;
             var newItem = comboBox.Text;
             var viewmodel = this.DataContext as KorbanViewModel;
-            viewmodel.ListHubunganKorban.Add(newItem);
             comboBox.SelectedItem = newItem;
         }
     }
 
-    public class AddKorbanViewModel  :KorbanViewModel
+    public class AddKorbanViewModel  :Korban
     {
         public CommandHandler SaveCommand { get; }
         public CommandHandler CancelCommand { get; }
@@ -53,7 +45,7 @@ namespace Main.Views.TambahKasusPages
 
         public List<string> Kekerasans { get; set; } = EnumSource.DataPendidikan();
 
-        public AddKorbanViewModel(KorbanViewModel korban)
+        public AddKorbanViewModel(Korban korban)
         {
             SaveCommand = new CommandHandler { CanExecuteAction = ValidateSave, ExecuteAction = SaveAction };
             CancelCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = CancelAction };
@@ -80,6 +72,7 @@ namespace Main.Views.TambahKasusPages
         }
         private bool ValidateSave(object obj)
         {
+
             if (string.IsNullOrEmpty(this.Error))
                 return true;
             return false;

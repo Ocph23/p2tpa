@@ -39,6 +39,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=8.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>packages\AutoMapper.8.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
@@ -174,6 +177,7 @@
     <Compile Include="DataAccess\PengaduanServices.cs" />
     <Compile Include="DbContext.cs" />
     <Compile Include="EnumToBoolConverter.cs" />
+    <Compile Include="Models\HubunganDenganKorban.cs" />
     <Compile Include="Models\Kecamatan.cs" />
     <Compile Include="Models\Korban.cs" />
     <Compile Include="Models\Pelapor.cs" />
@@ -185,16 +189,17 @@
     <Compile Include="Utilities\NavigationPage.xaml.cs">
       <DependentUpon>NavigationPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\DampakKorban.cs" />
+    <Compile Include="Models\DampakKorban.cs" />
     <Compile Include="EnumCollection.cs" />
     <Compile Include="Models\Identitas.cs" />
     <Compile Include="Models\Instansi.cs" />
     <Compile Include="ViewModels\HubunganViewModel.cs" />
-    <Compile Include="ViewModels\KondisiKorban.cs" />
+    <Compile Include="Models\KondisiKorban.cs" />
     <Compile Include="ViewModels\KorbanViewModel.cs" />
     <Compile Include="ViewModels\PelaporViewModel.cs" />
-    <Compile Include="ViewModels\Penanganan.cs" />
-    <Compile Include="ViewModels\Pengaduan.cs" />
+    <Compile Include="Models\Penanganan.cs" />
+    <Compile Include="Models\Pengaduan.cs" />
+    <Compile Include="ViewModels\PengaduanViewModel.cs" />
     <Compile Include="ViewModels\TerlaporViewModel.cs" />
     <Compile Include="Views\AddInstansi.xaml.cs">
       <DependentUpon>AddInstansi.xaml</DependentUpon>
@@ -216,9 +221,6 @@
     </Compile>
     <Compile Include="Views\TambahKasusPages\DampakPage.xaml.cs">
       <DependentUpon>DampakPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\TambahKasusPages\HubunganDenganKorban.xaml.cs">
-      <DependentUpon>HubunganDenganKorban.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TambahKasusPages\KondisiPage.xaml.cs">
       <DependentUpon>KondisiPage.xaml</DependentUpon>
@@ -388,10 +390,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TambahKasusPages\DampakPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\TambahKasusPages\HubunganDenganKorban.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

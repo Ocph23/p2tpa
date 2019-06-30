@@ -1,12 +1,7 @@
-﻿using Main.ViewModels;
+﻿using Main.Models;
 using Ocph.DAL.Provider.SQLite;
 using Ocph.DAL.Repository;
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 
 namespace Main
@@ -34,13 +29,12 @@ namespace Main
         }
 
         public IRepository<Pengaduan> DataPengaduan { get { return new Repository<Pengaduan>(this); } }
-        public IRepository<PelaporViewModel> DataPelapor{ get { return new Repository<PelaporViewModel>(this); } }
-        public IRepository<KorbanViewModel> DataKorban{ get { return new Repository<KorbanViewModel>(this); } }
-        public IRepository<TerlaporViewModel> DataTerlapor { get { return new Repository<TerlaporViewModel>(this); } }
+        public IRepository<Pelapor> DataPelapor{ get { return new Repository<Pelapor>(this); } }
+        public IRepository<Korban> DataKorban{ get { return new Repository<Korban>(this); } }
+        public IRepository<Terlapor> DataTerlapor { get { return new Repository<Terlapor>(this); } }
         public IRepository<DampakKorban> DataDampak { get { return new Repository<DampakKorban>(this); } }
         public IRepository<KondisiKorban> DataKondisiKorban { get { return new Repository<KondisiKorban>(this); } }
         public IRepository<Instansi> Instansi { get { return new Repository<Instansi>(this); } }
-
         public IRepository<Penanganan> Penanganan { get { return new Repository<Penanganan>(this); } }
 
 

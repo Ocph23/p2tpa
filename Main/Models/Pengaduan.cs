@@ -6,21 +6,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 
-namespace Main.ViewModels
+namespace Main.Models
 {
 
     [TableName("pengaduan")]
-    public class Pengaduan : BaseNotify ,IDataErrorInfo
+    public class Pengaduan : BaseNotify 
     {
         private string nomor;
         private string rujukan;
         private string hari;
-        private DateTime? tanggal = DateTime.Now;
-        private PelaporViewModel pelapor;
-        private List<KorbanViewModel> korbans = new List<KorbanViewModel>();
-        private List<TerlaporViewModel> terlapors= new List<TerlaporViewModel>();
-        private KondisiKorban kondisi;
-        private DampakKorban dampak;
         private string penanganan;
         private string uraian;
         private string catatan;
@@ -29,13 +23,26 @@ namespace Main.ViewModels
         private string penerima;
         private int? id;
         private string kodeDistrik;
+        private DateTime? _waktu;
+        private DateTime? _tanggal;
+        private string _jam;
+        private DateTime? tanggal = DateTime.Now;
+        public string hkdt;
+        private string statusLapor;
+        private KondisiKorban kondisi;
+        private DampakKorban dampak;
+        private Pelapor pelapor;
+        private List<Korban> korbans = new List<Korban>();
+        private List<Terlapor> terlapors = new List<Terlapor>();
         private PackIcon _icon;
+      
+
+        private string _TempatKejadian;
 
         [PrimaryKey("id")]
         [DbColumn("id")]
         public int? Id { get => id; set => SetProperty(ref id, value); }
 
-       
         [DbColumn("KodeDistrik")]
         public string KodeDistrik
         {
@@ -110,35 +117,44 @@ namespace Main.ViewModels
         [DbColumn("tempatkejadian")]
         public string TempatKejadian{ get => _TempatKejadian; set => SetProperty(ref _TempatKejadian, value); }
 
+        public List<Korban> Korban { get => korbans; set => SetProperty(ref korbans, value); }
 
-        public string hkdt;
-        private string statusLapor;
-        private string statusLaporText;
-        private string _TempatKejadian;
-        private DateTime? _waktu;
-        private DateTime? _tanggal;
-        private string _jam;
-
-      
-
-        public PelaporViewModel Pelapor { get => pelapor; set => SetProperty(ref pelapor, value); }
-
-        public List<KorbanViewModel> Korban { get => korbans; set => SetProperty(ref korbans, value); }
-
-        public List<TerlaporViewModel> Terlapor { get => terlapors; set => SetProperty(ref terlapors, value); }
+        public List<Terlapor> Terlapor { get => terlapors; set => SetProperty(ref terlapors, value); }
 
         public KondisiKorban Kondisi { get => kondisi; set => SetProperty(ref kondisi, value); }
 
         public DampakKorban Dampak { get => dampak; set => SetProperty(ref dampak, value); }
 
+        
 
-        public List<Kecamatan> Kecamatan { get; set; }
-
+        public Pelapor Pelapor { get => pelapor; set => SetProperty(ref pelapor, value); }
 
         public PackIcon Icon { get => _icon; set => SetProperty(ref _icon, value); }
-        public List<string> StatusPelapors { get; }
 
-        
+        public List<string> StatusPelapors { get; }
+        private string statusLaporText;
+        public string StatusPelaporText
+        {
+            get => statusLaporText;
+            set
+            {
+                SetProperty(ref statusLaporText, value);
+                if (StatusPelapor != null)
+                {
+                    return;
+                }
+                if (!string.IsNullOrEmpty(value))
+                {
+                    StatusPelapors.Add(value);
+                    StatusPelapor = value;
+                }
+
+            }
+        }
+
+
+
+
         public string this[string columnName] => Validate(columnName);
 
         public string Error
@@ -161,17 +177,7 @@ namespace Main.ViewModels
             }
         }
 
-        public Pengaduan()
-        {
-            this.Icon = new PackIcon { Kind = PackIconKind.TimerSand };
-            StatusPelapors = EnumSource.DataStatusPelapor();
-            Kecamatan = DataAccess.DataBasic.GetKecamatan();
-            this.Pelapor = new PelaporViewModel();
-            this.Terlapor = new List<TerlaporViewModel>();
-            this.Korban = new List<KorbanViewModel>();
-            this.Kondisi = new KondisiKorban();
-            this.Dampak = new DampakKorban();
-        }
+
 
         private string Validate(string name)
         {
@@ -179,75 +185,57 @@ namespace Main.ViewModels
                 return "Distrik Tidak Boleh Kosong";
 
             if (name == "Nomor" && string.IsNullOrEmpty(Nomor))
-             return "Nomor Tidak Boleh Kosong";
+                return "Nomor Tidak Boleh Kosong";
 
             if (name == "Rujukan" && string.IsNullOrEmpty(Rujukan))
-                  return "Rujukan Tidak Boleh Kosong";
+                return "Rujukan Tidak Boleh Kosong";
 
             if (name == "Hari" && string.IsNullOrEmpty(JamKejadian))
-                  return "Hari Tidak Boleh Kosong";
+                return "Hari Tidak Boleh Kosong";
 
 
             if (name == "Tanggal" && new DateTime() == TanggalLapor)
-                  return "Tanggal Tidak Boleh Kosong";
+                return "Tanggal Tidak Boleh Kosong";
 
             if (name == "Waktu" && WaktuLapor == new DateTime())
-                  return "Waktu Tidak Boleh Kosong";
+                return "Waktu Tidak Boleh Kosong";
 
             if (name == "Penerima" && string.IsNullOrEmpty(Penerima))
-                  return "Penerima Pengaduan Tidak Boleh Kosong";
+                return "Penerima Pengaduan Tidak Boleh Kosong";
 
             if (name == "Tempat" && string.IsNullOrEmpty(TempatLapor))
-                  return "Tempat Tidak Boleh Kosong";
+                return "Tempat Tidak Boleh Kosong";
 
             if (name == "StatusPelapor" && string.IsNullOrEmpty(StatusPelapor))
                 return "Status Pelapor Tidak Boleh Kosong";
 
 
             if (name == "UraianKejadian" && string.IsNullOrEmpty(UraianKejadian))
-                  return "UraianKejadian Tidak Boleh Kosong";
+                return "UraianKejadian Tidak Boleh Kosong";
 
             return null;
         }
 
 
-        public string StatusPelaporText
+        public void AddKorban(Korban korban)
         {
-            get => statusLaporText;
-            set
+            foreach (var item in Terlapor)
             {
-                SetProperty(ref statusLaporText, value);
-                if (StatusPelapor != null)
-                {
-                    return;
-                }
-                if (!string.IsNullOrEmpty(value))
-                {
-                    StatusPelapors.Add(value);
-                    StatusPelapor = value;
-                }
-
-            }
-        }
-
-
-        public void AddKorban(KorbanViewModel korban)
-        {
-            foreach(var item in Terlapor)
-            {
-                item.Hubungan.Add(new HubunganViewModel(korban));
+                item.Hubungan.Add(new HubunganDenganKorban(korban));
             }
             this.Korban.Add(korban);
         }
 
-        public void AddTerlapor(TerlaporViewModel terlapor)
+        public void AddTerlapor(Terlapor terlapor)
         {
             foreach (var item in Korban)
             {
-                terlapor.Hubungan.Add(new HubunganViewModel(item));
+                terlapor.Hubungan.Add(new HubunganDenganKorban(item));
             }
             this.Terlapor.Add(terlapor);
         }
+
+
 
 
     }

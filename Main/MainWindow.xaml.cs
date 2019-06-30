@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using Main.ViewModels;
 using System;
+using Main.Models;
 
 namespace Main
 {
@@ -44,7 +45,7 @@ namespace Main
             form.Show();
         }
 
-        private void Db_DataReseult(List<ViewModels.Pengaduan> data)
+        private void Db_DataReseult(List<Pengaduan> data)
         {
 
         }

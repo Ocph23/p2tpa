@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+using AutoMapper;
+using Main.Models;
 using Main.ViewModels;
 
 namespace Main.Views
@@ -38,7 +40,7 @@ namespace Main.Views
             if(obj!=null)
             {
                 var form = new TambahPengaduan(false);
-                form.DataContext = obj as Pengaduan;
+                form.DataContext = Mapper.Map<PengaduanViewModel>(obj as Pengaduan);
                 form.ShowDialog();
             }
           

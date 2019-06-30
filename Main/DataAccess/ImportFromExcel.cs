@@ -1,4 +1,5 @@
-﻿using Main.ViewModels;
+﻿using Main.Models;
+using Main.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -283,7 +284,7 @@ namespace Main.DataAccess
             }
         }
 
-        private Task<int> GetIdIdentitas(PelaporViewModel pelapor, DbContext db)
+        private Task<int> GetIdIdentitas(Pelapor pelapor, DbContext db)
         {
             if (!string.IsNullOrEmpty(pelapor.Error))
                 throw new SystemException("Data pelapor tidak Valid");
@@ -295,7 +296,7 @@ namespace Main.DataAccess
             return Task.FromResult(id);
         }
 
-        private Task<int> GetIdIdentitas(KorbanViewModel item, DbContext db)
+        private Task<int> GetIdIdentitas(Korban item, DbContext db)
         {
             if (!string.IsNullOrEmpty(item.Error))
                 throw new SystemException("Data Korban tidak Valid");
@@ -307,7 +308,7 @@ namespace Main.DataAccess
             return Task.FromResult(id);
         }
 
-        private Task<int> GetIdIdentitas(TerlaporViewModel item, DbContext db)
+        private Task<int> GetIdIdentitas(Terlapor item, DbContext db)
         {
             if (!string.IsNullOrEmpty(item.Error))
                 throw new SystemException("Data Terlapor tidak Valid");
@@ -341,7 +342,7 @@ namespace Main.DataAccess
         }
 
 
-        private async void taskKorbanCompleteAsync(Task<List<KorbanViewModel>> obj)
+        private async void taskKorbanCompleteAsync(Task<List<Korban>> obj)
         {
             var datas = await obj;
             App.Current.Dispatcher.Invoke((System.Action)async delegate
@@ -359,7 +360,7 @@ namespace Main.DataAccess
 
         }
 
-        private async void taskTerlaporCompleteAsync(Task<List<TerlaporViewModel>> obj)
+        private async void taskTerlaporCompleteAsync(Task<List<Terlapor>> obj)
         {
             var datas = await obj;
             App.Current.Dispatcher.Invoke((System.Action)async delegate
@@ -378,7 +379,7 @@ namespace Main.DataAccess
 
         }
 
-        private async void taskPelaporCompleteAsync(Task<List<PelaporViewModel>> obj)
+        private async void taskPelaporCompleteAsync(Task<List<Pelapor>> obj)
         {
             var datas = await obj;
             App.Current.Dispatcher.Invoke((System.Action)async delegate
@@ -399,18 +400,18 @@ namespace Main.DataAccess
         }
 
 
-        private Task<List<PelaporViewModel>> ProccessPelapor()
+        private Task<List<Pelapor>> ProccessPelapor()
         {
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Pelapor"];
 
-            List<PelaporViewModel> listPelapor = new List<PelaporViewModel>();
+            List<Pelapor> listPelapor = new List<Pelapor>();
 
             //read pengaduan
             Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "D500"];
             int row = 1;
             for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
-                PelaporViewModel pelaport = new PelaporViewModel();
+                Pelapor pelaport = new Pelapor();
                 var nomor = rngPengaduan.Cells[row, "A"].Value2;
                 if (string.IsNullOrEmpty(nomor))
                     break;
@@ -468,7 +469,7 @@ namespace Main.DataAccess
 
               //  pengaduan.HubunganKorbanDenganTerlapor = rngPengaduan.Cells[row, "M"].Value2;
 
-                pengaduan.Pelapor = new PelaporViewModel();
+                pengaduan.Pelapor = new Pelapor();
                 pengaduan.Pelapor.Nama = rngPengaduan.Cells[row, "I"].Value2;
 
 
@@ -503,16 +504,16 @@ namespace Main.DataAccess
 
         }
 
-        private Task<List<KorbanViewModel>> ProccessKorban()
+        private Task<List<Korban>> ProccessKorban()
         {
 
-            List<KorbanViewModel> listKorban = new List<KorbanViewModel>();
+            List<Korban> listKorban = new List<Korban>();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Korban"];
             Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "M500"];
             int row = 1;
             for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
-                KorbanViewModel data = new KorbanViewModel();
+                Korban data = new Korban();
                 var nomor = rngPengaduan.Cells[row, "A"].Value2;
                 if (string.IsNullOrEmpty(nomor))
                     break;
@@ -546,16 +547,16 @@ namespace Main.DataAccess
 
         }
 
-        private Task<List<TerlaporViewModel>> ProccessTerlapor()
+        private Task<List<Terlapor>> ProccessTerlapor()
         {
-            List<TerlaporViewModel> listTerlapor = new List<TerlaporViewModel>();
+            List<Terlapor> listTerlapor = new List<Terlapor>();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Terlapor"];
             
             Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "L500"];
             int row = 1;
             for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
-                TerlaporViewModel data = new TerlaporViewModel();
+                Terlapor data = new Terlapor();
 
                 var nomor= rngPengaduan.Cells[row, "A"].Value2;
                 if (string.IsNullOrEmpty(nomor))

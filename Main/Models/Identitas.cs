@@ -3,14 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Main.ViewModels
+namespace Main.Models
 {
     public abstract class Identitas : BaseNotify
     {
         public Identitas()
         {
             ListAgama = EnumSource.DataAgama();
-            ListHubunganKorban = EnumSource.HubunganKorbanDenganTerlapor();
+         
             ListStatusPernikahan = EnumSource.DataStatusPernikahan();
             ListPendidikan = EnumSource.DataPendidikan();
             ListPekerjaan = EnumSource.DataPekerjaan();
@@ -85,7 +85,7 @@ namespace Main.ViewModels
 
         public string NoReq { get; set; }
         public List<string> ListAgama { get; set; }
-        public List<string> ListHubunganKorban { get; set; }
+      
         public List<string> ListStatusPernikahan { get; }
         public List<string> ListPendidikan { get;  set; }
 

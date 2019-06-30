@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Main.ViewModels
+namespace Main.Models
 {
 
     [TableName("instansi")]
@@ -21,8 +21,6 @@ namespace Main.ViewModels
         private string alamat;
         private int? id;
         private string distrikName;
-
-   
 
         [PrimaryKey("Id")]
         [DbColumn("Id")]

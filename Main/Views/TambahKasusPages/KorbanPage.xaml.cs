@@ -1,19 +1,11 @@
-﻿using Main.ViewModels;
+﻿using AutoMapper;
+using Main.Models;
+using Main.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Main.Views.TambahKasusPages
 {
@@ -51,9 +43,9 @@ namespace Main.Views.TambahKasusPages
 
         private Pengaduan vm;
 
-        public KOrbanPageViewModel(Pengaduan vm)
+        public KOrbanPageViewModel(Pengaduan model)
         {
-            this.vm = vm;
+            this.vm = model;
             this.Korbans = (CollectionView)CollectionViewSource.GetDefaultView(vm.Korban);
             this.Terlapors = (CollectionView)CollectionViewSource.GetDefaultView( vm.Terlapor);
             foreach (var korban in vm.Korban)
@@ -72,7 +64,7 @@ namespace Main.Views.TambahKasusPages
                     }
 
                     if (!isfound)
-                        terlapor.Hubungan.Add(new HubunganViewModel(korban));
+                        terlapor.Hubungan.Add(new HubunganDenganKorban(korban));
                 }
             }
 
@@ -133,7 +125,7 @@ namespace Main.Views.TambahKasusPages
         private void AddPenangananAction(object obj)
         {
             var typeName = obj.GetType().Name;
-            if (typeName == "TerlaporViewModel"  || typeName=="Terlapor")
+            if (typeName.Contains("Terlapor"))
             {
                 var terlapor = obj as TerlaporViewModel;
                 var form = new PenangananView();
@@ -142,7 +134,7 @@ namespace Main.Views.TambahKasusPages
                 form.ShowDialog();
                 terlapor.DataPenanganan.Add(penanganan);
                 Terlapors.Refresh();
-            }      else if(typeName=="KorbanViewModel" || typeName== "AddKorbanViewModel")
+            }      else if(typeName.Contains("Korban"))
             {
                 var korban = obj as KorbanViewModel;
                 var form = new PenangananView();
@@ -179,15 +171,22 @@ namespace Main.Views.TambahKasusPages
         {
             var form = new AddViewTerlaporView();
             if (obj != null)
-                form.DataContext = new AddTerlaporViewModel(obj as TerlaporViewModel) { WindowClose = form.Close };
+            {
+                var context = Mapper.Map<AddTerlaporViewModel>(obj as Terlapor);
+                context.WindowClose = form.Close;
+                form.DataContext = context;
+            }
             else
+            {
                 form.DataContext = new AddTerlaporViewModel() { WindowClose = form.Close };
+            }
+               
             form.ShowDialog();
 
             var formVM = form.DataContext as AddTerlaporViewModel;
             if (formVM.DataValid && obj == null)
             {
-                vm.AddTerlapor((TerlaporViewModel)formVM);
+                
             }
             Terlapors.Refresh();
         }
@@ -204,7 +203,7 @@ namespace Main.Views.TambahKasusPages
             var korbanVM = form.DataContext as AddKorbanViewModel;
             if (korbanVM.DataValid && obj==null)
             {
-                vm.AddKorban((KorbanViewModel)korbanVM);
+                vm.AddKorban((Korban)korbanVM);
             }
             Korbans.Refresh();
         }
