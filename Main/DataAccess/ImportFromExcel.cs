@@ -369,26 +369,15 @@ namespace Main.DataAccess
                 pengaduan.Nomor = rngPengaduan.Cells[row, "B"].Value2;
                 if (string.IsNullOrEmpty(pengaduan.Nomor))
                     break;
-
                 pengaduan.Tanggal = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "C"].Value2));
                 pengaduan.Waktu = DateTime.FromOADate(Convert.ToDouble(rngPengaduan.Cells[row, "D"].Value2)).TimeOfDay;
                 pengaduan.Rujukan = rngPengaduan.Cells[row, "E"].Value2;
                 pengaduan.Penerima = rngPengaduan.Cells[row, "F"].Value2;
                 pengaduan.Tempat = rngPengaduan.Cells[row, "G"].Value2;
                 pengaduan.StatusPelapor = rngPengaduan.Cells[row, "H"].Value2;
-
                 pengaduan.HubunganKorbanDenganTerlapor = rngPengaduan.Cells[row, "M"].Value2;
-
                 pengaduan.Pelapor = new Pelapor();
                 pengaduan.Pelapor.Nama = rngPengaduan.Cells[row, "I"].Value2;
-
-
-               // pengaduan.Korban = new Korban();
-              //  pengaduan.Korban.Nama = rngPengaduan.Cells[row, "K"].Value2;
-
-             //   pengaduan.Terlapor = new Terlapor();
-             //   pengaduan.Terlapor.Nama = rngPengaduan.Cells[row, "N"].Value2;
-
 
                 pengaduan.Kondisi = new KondisiKorban();
                 pengaduan.Kondisi.Fisik = ConvertEnum<KondisiFisik>(rngPengaduan.Cells[row, "K"].Value2);

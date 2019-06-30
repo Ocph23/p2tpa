@@ -40,7 +40,7 @@
                             <MenuItem Header="Import" Command="{Binding ImportCommand}"/>
                         </MenuItem>
                     </Menu>
-                    <utilities:ComboChips ItemSource="{Binding}"  Width="300"/>
+                   
                 </StackPanel>
                 <ScrollViewer Grid.Row="1">
                     <Grid Margin="5">

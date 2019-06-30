@@ -5,6 +5,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Main.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace Main
 {
@@ -19,8 +20,11 @@ namespace Main
             DataViewCommand    =      new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = DataViewAction };
             TambahPengaduanCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = TambahPengaduanAction };
             ImportCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = ImportAction };
+          
             DataContext = this;
         }
+
+        
 
         private void DataViewAction(object obj)
         {
