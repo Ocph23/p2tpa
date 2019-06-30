@@ -56,9 +56,103 @@ namespace Main.Views.TambahKasusPages
             this.vm = vm;
             this.Korbans = (CollectionView)CollectionViewSource.GetDefaultView(vm.Korban);
             this.Terlapors = (CollectionView)CollectionViewSource.GetDefaultView( vm.Terlapor);
+            foreach (var korban in vm.Korban)
+            {
+
+                foreach (var terlapor in vm.Terlapor)
+                {
+                    bool isfound = false;
+                    foreach (var hubungan in terlapor.Hubungan)
+                    {
+                        if (hubungan.Korban.Id == korban.Id)
+                        {
+                            isfound = true;
+                            break;
+                        }
+                    }
+
+                    if (!isfound)
+                        terlapor.Hubungan.Add(new HubunganViewModel(korban));
+                }
+            }
+
             AddKorbanCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = AddKorbanAction };
             AddTerlaporCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = AddTerlaporAction };
             DeleteCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = DeleteAction };
+            AddPenangananCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = AddPenangananAction };
+            EditPenangananCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = EditPenanganAction };
+            DeletePenangananCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = DeletePenanganAction};
+        }
+
+        private void DeletePenanganAction(object obj)
+        {
+            try
+            {
+                var data = obj as Penanganan;
+                if (data.IdPenanganan > 0)
+                {
+                    using (var db = new DbContext())
+                    {
+                        if (!db.Penanganan.Delete(x => x.IdPenanganan == data.IdPenanganan))
+                        {
+                            throw new SystemException("Data Tidak Berhasil Dihapus");
+
+                        }
+                    }
+                }
+
+                if (data.IdentitasType == "Korban")
+                {
+                    var item = vm.Korban.Find(x => x.Id == data.InstansiId);
+                    if (item != null)
+                        item.DataPenanganan.Remove(data);
+                }
+                else
+                {
+                    var item = vm.Korban.Find(x => x.Id == data.InstansiId);
+                    if (item != null)
+                        item.DataPenanganan.Remove(data);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void EditPenanganAction(object obj)
+        {
+            var data = obj as Penanganan;
+            var form = new PenangananView();
+            data.WindowClose = form.Close;
+            form.DataContext = data;
+            form.ShowDialog();
+        }
+
+        private void AddPenangananAction(object obj)
+        {
+            var typeName = obj.GetType().Name;
+            if (typeName == "TerlaporViewModel"  || typeName=="Terlapor")
+            {
+                var terlapor = obj as TerlaporViewModel;
+                var form = new PenangananView();
+                var penanganan = new Penanganan(terlapor, "Terlapor") { WindowClose = form.Close };
+                form.DataContext = penanganan;
+                form.ShowDialog();
+                terlapor.DataPenanganan.Add(penanganan);
+                Terlapors.Refresh();
+            }      else if(typeName=="KorbanViewModel" || typeName== "AddKorbanViewModel")
+            {
+                var korban = obj as KorbanViewModel;
+                var form = new PenangananView();
+                var penanganan = new Penanganan(korban, "Korban") { WindowClose = form.Close };
+                form.DataContext = penanganan;
+                form.ShowDialog();
+                korban.DataPenanganan.Add(penanganan);
+                Korbans.Refresh();
+            }
+          
         }
 
         private void DeleteAction(object obj)
@@ -67,14 +161,14 @@ namespace Main.Views.TambahKasusPages
             {
                 if(obj.GetType()==typeof(AddKorbanViewModel))
                 {
-                    var data = obj as Korban;
+                    var data = obj as KorbanViewModel;
                     vm.Korban.Remove(data);
                     this.Korbans.Refresh();
                 }
 
                 if (obj.GetType() == typeof(AddTerlaporViewModel))
                 {
-                    var data = obj as Terlapor;
+                    var data = obj as TerlaporViewModel;
                     vm.Terlapor.Remove(data);
                     this.Terlapors.Refresh();
                 }
@@ -85,7 +179,7 @@ namespace Main.Views.TambahKasusPages
         {
             var form = new AddViewTerlaporView();
             if (obj != null)
-                form.DataContext = new AddTerlaporViewModel(obj as Terlapor) { WindowClose = form.Close };
+                form.DataContext = new AddTerlaporViewModel(obj as TerlaporViewModel) { WindowClose = form.Close };
             else
                 form.DataContext = new AddTerlaporViewModel() { WindowClose = form.Close };
             form.ShowDialog();
@@ -93,7 +187,7 @@ namespace Main.Views.TambahKasusPages
             var formVM = form.DataContext as AddTerlaporViewModel;
             if (formVM.DataValid && obj == null)
             {
-                vm.Terlapor.Add((Terlapor)formVM);
+                vm.AddTerlapor((TerlaporViewModel)formVM);
             }
             Terlapors.Refresh();
         }
@@ -102,7 +196,7 @@ namespace Main.Views.TambahKasusPages
         {
             AddKorbanView form = new AddKorbanView();
             if (obj != null)
-                form.DataContext = new AddKorbanViewModel(obj as Korban) { WindowClose = form.Close };
+                form.DataContext = new AddKorbanViewModel(obj as KorbanViewModel) { WindowClose = form.Close };
             else
                 form.DataContext = new AddKorbanViewModel() { WindowClose = form.Close };
             form.ShowDialog();
@@ -110,7 +204,7 @@ namespace Main.Views.TambahKasusPages
             var korbanVM = form.DataContext as AddKorbanViewModel;
             if (korbanVM.DataValid && obj==null)
             {
-                vm.Korban.Add((Korban)korbanVM);
+                vm.AddKorban((KorbanViewModel)korbanVM);
             }
             Korbans.Refresh();
         }
@@ -118,8 +212,9 @@ namespace Main.Views.TambahKasusPages
         public CollectionView Korbans { get; set; }
 
         public CollectionView Terlapors { get; set; }
-
-
+        public CommandHandler AddPenangananCommand { get; }
+        public CommandHandler EditPenangananCommand { get; }
+        public CommandHandler DeletePenangananCommand { get; }
         public CommandHandler AddKorbanCommand { get; }
         public CommandHandler AddTerlaporCommand { get; }
         public CommandHandler DeleteCommand { get; }

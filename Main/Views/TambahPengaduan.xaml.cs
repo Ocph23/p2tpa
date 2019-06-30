@@ -9,28 +9,25 @@ namespace Main.Views
     /// </summary>
     public partial class TambahPengaduan : Window
     {
-       
-        public TambahPengaduan()
+
+        public TambahPengaduan(bool Editable)
         {
             InitializeComponent();
             Loaded += TambahPengaduan_Loaded;
-           // this.DataContext = vm = new Pengaduan();
-            this.Loaded += TambahPengaduan_Loaded1;
+            this.IsEditable = Editable;
+            // this.DataContext = vm = new Pengaduan();
         }
 
-        private void TambahPengaduan_Loaded1(object sender, RoutedEventArgs e)
-        {
-            var vm = DataContext as Pengaduan;
-            nav.DataContext =  new NavigationPageViewModel(this.MainFrame, vm);
-           
-        }
-
-       // public Identitas Model { get; set; }
+        public bool IsEditable { get; }
 
         private void TambahPengaduan_Loaded(object sender, RoutedEventArgs e)
         {
-          //  this.Model = new Identitas();
+            var vm = DataContext as Pengaduan;
+            nav.DataContext = new NavigationPageViewModel(this.MainFrame, vm, IsEditable) { WindowClose = this.Close };
+
         }
+
+      
     }
 
 }

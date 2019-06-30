@@ -1,0 +1,66 @@
+﻿<Window x:Class="Main.Views.TambahKasusPages.PenangananView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:Main.Views.TambahKasusPages"
+        mc:Ignorable="d"
+        Height="589.773" Width="721.591">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Header="{Binding Title}">
+            <ScrollViewer >
+                <StackPanel   Background="White">
+                    <WrapPanel>
+                        <Label Content="Nama"></Label>
+                        <TextBox AcceptsReturn="True" IsReadOnly="True" Text="{Binding DataIdentias.Nama,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                    </WrapPanel>
+                   
+                    <WrapPanel>
+                        <Label Content="Tampat/Tanggal Lahir"></Label>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox AcceptsReturn="True" IsReadOnly="True" Text="{Binding TTL,UpdateSourceTrigger=PropertyChanged,
+                                Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                        </StackPanel>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Alamat"></Label>
+                        <TextBox IsReadOnly="True" AcceptsReturn="True" Text="{Binding DataIdentias.Alamat,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                    </WrapPanel>
+
+                    <WrapPanel>
+                        <Label Content="Tanggal"></Label>
+                        <DatePicker  Width="100" Language="id-ID" SelectedDate="{Binding Tanggal,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  
+                           Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />  </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Instansi"></Label>
+                        <ComboBox ItemsSource="{Binding ListInstansi}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedItem="{Binding Instansi}"
+                                  SelectedValue="{Binding InstansiId,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Pelayanan"></Label>
+                        <ComboBox ItemsSource="{Binding ListLayanan}"  DisplayMemberPath="Name" SelectedValue="{Binding SelectedLayanan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Pelayanan"></Label>
+                        <ComboBox ItemsSource="{Binding SelectedLayanan.DataLayanan}"  SelectedValue="{Binding DetailLayanan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Deskripsi"></Label>
+                        <TextBox AcceptsReturn="True" Text="{Binding Deskripsi,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
+                    </WrapPanel>
+                   
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+        <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
+            <Button Margin="2" Width="100" Command="{Binding SaveCommand}" Content="OK" ></Button>
+            <Button Margin="2" Width="100" Command="{Binding CancelCommand}" Content="Batal" Style="{StaticResource MaterialDesignRaisedAccentButton}" ></Button>
+        </WrapPanel>
+    </Grid>
+</Window>

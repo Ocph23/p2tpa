@@ -21,7 +21,6 @@ namespace Main.Utilities
         }
     }
 
-
     public class NavigationPageViewModel : BaseNotify
     {
         private bool avaliableBack;
@@ -67,9 +66,11 @@ namespace Main.Utilities
         public ICommand BackCommand { get; set; }
         public ICommand NextCommand { get; set; }
         public ICommand CancelCommand { get; set; }
+        public Action WindowClose { get; internal set; }
 
-        public NavigationPageViewModel(Frame frame, Pengaduan vm)
+        public NavigationPageViewModel(Frame frame, Pengaduan vm, bool editabele) 
         {
+            this.IsEditable = editabele;
             FinishCommand = new CommandHandler { CanExecuteAction = x => FinishCommandValidate(), ExecuteAction = x => FinishAction() };
             BackCommand = new CommandHandler { CanExecuteAction = x => BackCommandValidate(), ExecuteAction = x => BackAction() };
             NextCommand = new CommandHandler { CanExecuteAction = x => NextCommandValidate(), ExecuteAction = x => NextAction() };
@@ -79,18 +80,13 @@ namespace Main.Utilities
             this.Pages = new List<Page>()
             {
                 new PengaduanPage(this.vm),
-                new KorbanPage(vm),
                 new KondisiPage(vm),
+                 new KorbanPage(vm),
                 new DampakPage(vm),
-                new KejadianPage(vm),
-                new PenanganDanUraianPage(vm),
-                new PerkembanganDanCatatan(vm),
             };
             currentPage = 0;
             frame.Navigate(Pages[0]);
         }
-
-      
 
         private void NextAction()
         {
@@ -99,7 +95,7 @@ namespace Main.Utilities
 
         private void CancelAction()
         {
-
+            WindowClose();
         }
 
         private bool CancelCommandValidate()
@@ -143,8 +139,16 @@ namespace Main.Utilities
 
             try
             {
-                PengaduanServices service = new PengaduanServices();
-                service.Add(vm);
+                if(!IsEditable)
+                {
+                    DataAccess.DataBasic.MasterPengaduan.Add(vm);
+                }
+                else
+                {
+                    DataAccess.DataBasic.MasterPengaduan.Update(vm);
+                }
+                MessageBox.Show("Success");
+                this.WindowClose();
             }
             catch (Exception ex)
             {
@@ -152,7 +156,6 @@ namespace Main.Utilities
 
             }
 
-            MessageBox.Show("Finish");
         }
 
         private bool FinishCommandValidate()
@@ -181,6 +184,7 @@ namespace Main.Utilities
         private  Pengaduan vm;
         private List<Page> Pages;
         private int currentPage;
+        private bool IsEditable;
 
         private void GoNextPage()
         {

@@ -1,15 +1,14 @@
 ﻿using Ocph.DAL;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Main.ViewModels
 {
 
     [TableName("Terlapor")]
-   public class Terlapor : Identitas,IDataErrorInfo
+   public class TerlaporViewModel : Terlapor,IDataErrorInfo
     {
-        
-
         public string this[string columnName] => Validate(columnName);
         public string Error
         {
@@ -32,8 +31,6 @@ namespace Main.ViewModels
                 return null;
             }
         }
-
-      
 
         public string Validate(string name)
         {
@@ -65,6 +62,25 @@ namespace Main.ViewModels
 
             return null;
         }
+
+       
+
+        public void AddHubungan(HubunganViewModel hubungan)
+        {
+           if(Hubungan==null)
+            {
+                Hubungan = new List<HubunganViewModel>();
+            }
+            Hubungan.Add(hubungan);
+        }
+
+
+        public void  ClearHubungan()
+        {
+            if (this.Hubungan != null)
+                Hubungan.Clear();
+        }
+
 
     }
 }

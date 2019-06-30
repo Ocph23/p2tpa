@@ -34,13 +34,14 @@ namespace Main
         }
 
         public IRepository<Pengaduan> DataPengaduan { get { return new Repository<Pengaduan>(this); } }
-        public IRepository<Pelapor> DataPelapor{ get { return new Repository<Pelapor>(this); } }
-        public IRepository<Korban> DataKorban{ get { return new Repository<Korban>(this); } }
-        public IRepository<Terlapor> DataTerlapor { get { return new Repository<Terlapor>(this); } }
-        public IRepository<Kejadian> DataKejadian { get { return new Repository<Kejadian>(this); } }
+        public IRepository<PelaporViewModel> DataPelapor{ get { return new Repository<PelaporViewModel>(this); } }
+        public IRepository<KorbanViewModel> DataKorban{ get { return new Repository<KorbanViewModel>(this); } }
+        public IRepository<TerlaporViewModel> DataTerlapor { get { return new Repository<TerlaporViewModel>(this); } }
         public IRepository<DampakKorban> DataDampak { get { return new Repository<DampakKorban>(this); } }
         public IRepository<KondisiKorban> DataKondisiKorban { get { return new Repository<KondisiKorban>(this); } }
-        public IRepository<TahapanPerkembangan> DataTahapanPerkembangan { get { return new Repository<TahapanPerkembangan>(this); } }
+        public IRepository<Instansi> Instansi { get { return new Repository<Instansi>(this); } }
+
+        public IRepository<Penanganan> Penanganan { get { return new Repository<Penanganan>(this); } }
 
 
     }

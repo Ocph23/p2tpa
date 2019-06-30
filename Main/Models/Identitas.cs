@@ -9,7 +9,6 @@ namespace Main.ViewModels
     {
         public Identitas()
         {
-
             ListAgama = EnumSource.DataAgama();
             ListHubunganKorban = EnumSource.HubunganKorbanDenganTerlapor();
             ListStatusPernikahan = EnumSource.DataStatusPernikahan();
@@ -79,6 +78,10 @@ namespace Main.ViewModels
 
         [DbColumn("Gender")]
         public Gender Gender { get => gender; set => SetProperty(ref gender, value); }
+
+
+        public List<Penanganan> DataPenanganan { get; set; } = new List<Penanganan>();
+
 
         public string NoReq { get; set; }
         public List<string> ListAgama { get; set; }

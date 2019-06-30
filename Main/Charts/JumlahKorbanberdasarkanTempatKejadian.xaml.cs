@@ -36,7 +36,7 @@ namespace Main.Charts
         {
             var groupPengaduan = (from a in  DataAccess.DataBasic.DataPengaduan
                                  from korban in a.Korban  select new { Pengaduan = a, Korban = korban } )
-                                 .GroupBy(x => x.Pengaduan.Kejadian.Tempat);
+                                 .GroupBy(x => x.Pengaduan.TempatKejadian);
 
             List<string> dataTempat = new List<string>();
             List<int> datas = new List<int>();

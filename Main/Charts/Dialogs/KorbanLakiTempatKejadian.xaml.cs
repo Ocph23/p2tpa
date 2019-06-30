@@ -28,7 +28,7 @@ namespace Main.Charts.Dialogs
 
 
             List<string> labels = new List<string>();
-            foreach (var tempatKejadidan in groupPengaduan.GroupBy(x=>x.Pengaduan.Kejadian.Tempat))
+            foreach (var tempatKejadidan in groupPengaduan.GroupBy(x=>x.Pengaduan.TempatKejadian))
             {
 
                 labels.Add(tempatKejadidan.Key);

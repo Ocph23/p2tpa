@@ -5,8 +5,7 @@ using System.ComponentModel;
 namespace Main.ViewModels
 {
 
-    [TableName("Pelapor")]
-   public class Pelapor:Identitas ,IDataErrorInfo
+   public class PelaporViewModel:Pelapor ,IDataErrorInfo
     {
 
          public string Error

@@ -15,12 +15,12 @@
         </Grid.RowDefinitions>
         <Label Width="auto" Content="Kasus"/>
         <DataGrid Margin="20" Grid.Row="1" ItemsSource="{Binding Datas}" AutoGenerateColumns="False"
-                   >
+             CanUserAddRows="False" CanUserDeleteRows="False"      >
             <DataGrid.Columns>
                 <DataGridTextColumn  Header="Nomor" Binding="{Binding Nomor}"/>
                 <DataGridTextColumn  Header="Distrik" Binding="{Binding Distrik}"/>
-                <DataGridTextColumn   Header="Kejadian" Binding="{Binding Kejadian.Waktu,StringFormat=dd MMMM yyyy}"/>
-                <DataGridTextColumn  Header="Lapor" Binding="{Binding Tanggal,StringFormat=dd MMMM yyyy}"/>
+                <DataGridTextColumn   Header="Kejadian" Binding="{Binding TanggalKejadian,StringFormat=dd MMMM yyyy}"/>
+                <DataGridTextColumn  Header="Lapor" Binding="{Binding TanggalLapor,StringFormat=dd MMMM yyyy}"/>
                 <DataGridTemplateColumn MaxWidth="600" MinWidth="200"  Width="*" Header="Kronologi" >
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -30,7 +30,7 @@
                 </DataGridTemplateColumn>
                 <DataGridTextColumn  Header="Korban" Binding="{Binding Korban[0].Nama}"/>
                 <DataGridTextColumn Header="Pelaku" Binding="{Binding Terlapor[0].Nama}"/>
-                <DataGridTextColumn   Header="TKP" Binding="{Binding Kejadian.Tempat}"/>
+                <DataGridTextColumn   Header="TKP" Binding="{Binding TempatKejadian}"/>
                 <DataGridTemplateColumn Header="Action">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

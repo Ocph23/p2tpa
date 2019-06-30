@@ -4,9 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Main.Views.TambahKasusPages"
-        xmlns:main="clr-namespace:Main" FontSize="12"
+        xmlns:main="clr-namespace:Main"
+        xmlns:utilities="clr-namespace:Main.Utilities" FontSize="12"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="" Height="650" Width="720">
+        Title="" Height="750" Width="720">
     <Window.Resources>
         <main:EnumToBoolConverter x:Key="EBConverter"/>
     </Window.Resources>
@@ -31,7 +32,13 @@
                         <Label Content="Nama Panggilan"></Label>
                         <TextBox Text="{Binding NamaPanggilan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
                     </WrapPanel>
-
+                    <WrapPanel Margin="10,20,0,30">
+                        <Label Content="Jenis Kelamin"></Label>
+                        <RadioButton GroupName="gender" IsChecked="{Binding Path=Gender, Converter={StaticResource EBConverter},
+                            ConverterParameter={x:Static main:Gender.L}}" Content="Laki-Laki" ></RadioButton>
+                        <RadioButton GroupName="gender" IsChecked="{Binding Path=Gender, Converter={StaticResource EBConverter},
+                            ConverterParameter={x:Static main:Gender.P}}" Content="Perempuan" ></RadioButton>
+                    </WrapPanel>
                     <WrapPanel>
                         <Label Content="Tampat/Tanggal Lahir"></Label>
                         <StackPanel Orientation="Horizontal">
@@ -71,6 +78,10 @@
                         <Label Content="Asal Suku"></Label>
                         <RadioButton GroupName="sukuKorban" IsChecked="{Binding Path=Suku, Converter={StaticResource EBConverter}, ConverterParameter='Papua'}" Content="Orang Asli Papua" ></RadioButton>
                         <RadioButton GroupName="sukuKorban" IsChecked="{Binding Path=Suku, Converter={StaticResource EBConverter}, ConverterParameter='Non Papua'}" Content="Non Asli Papua" ></RadioButton>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Kekerasan Yang Dialami"></Label>
+                        <utilities:ComboChips x:Name="cmb" Width="400" ></utilities:ComboChips>
                     </WrapPanel>
                 </StackPanel>
             </ScrollViewer>

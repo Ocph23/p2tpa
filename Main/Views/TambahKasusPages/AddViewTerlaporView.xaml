@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Main.Views.TambahKasusPages"
         xmlns:main="clr-namespace:Main"
-        mc:Ignorable="d"     WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"   
+        WindowStartupLocation="CenterScreen"
         Title="" Height="650" Width="720">
     <Window.Resources>
         <main:EnumToBoolConverter x:Key="EBConverter"/>
+        <main:BooleanToVisibilityConverter x:Key="boolConverter"/>
     </Window.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -31,6 +33,13 @@
                         <TextBox Margin="0,0,5,0" MaxWidth="250" Text="{Binding TempatLahir,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></TextBox>
                         <DatePicker Width="145"   Language="id-ID" SelectedDate="{Binding TanggalLahir,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  
                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                    </WrapPanel>
+                    <WrapPanel Margin="10,20,0,30">
+                        <Label Content="Jenis Kelamin"></Label>
+                        <RadioButton GroupName="gender" IsChecked="{Binding Path=Gender, Converter={StaticResource EBConverter},
+                            ConverterParameter={x:Static main:Gender.L}}" Content="Laki-Laki" ></RadioButton>
+                        <RadioButton GroupName="gender" IsChecked="{Binding Path=Gender, Converter={StaticResource EBConverter},
+                            ConverterParameter={x:Static main:Gender.P}}" Content="Perempuan" ></RadioButton>
                     </WrapPanel>
                     <WrapPanel>
                         <Label Content="Alamat"></Label>

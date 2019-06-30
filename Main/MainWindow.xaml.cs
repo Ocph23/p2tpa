@@ -1,11 +1,10 @@
 ﻿using System.Windows;
 using System.Collections.Generic;
 using MaterialDesignThemes.Wpf;
-using System;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using Main.ViewModels;
-using System.Collections.ObjectModel;
+using System;
 
 namespace Main
 {
@@ -14,23 +13,30 @@ namespace Main
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
-            DataViewCommand    =      new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = DataViewAction };
+            DataViewCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = DataViewAction };
             TambahPengaduanCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = TambahPengaduanAction };
             ImportCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = ImportAction };
-          
+            InstansiCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = InstansiCommandAction };
             DataContext = this;
         }
 
-        
+        private void InstansiCommandAction(object obj)
+        {
+            var form = new Views.InstansiView();
+            form.Show();
+        }
 
         private void DataViewAction(object obj)
         {
             var form = new Views.DataView();
             form.Show();
         }
+
+
 
         private void ImportAction(object obj)
         {
@@ -40,26 +46,27 @@ namespace Main
 
         private void Db_DataReseult(List<ViewModels.Pengaduan> data)
         {
-         
+
         }
 
         public CommandHandler DataViewCommand { get; }
         public CommandHandler TambahPengaduanCommand { get; }
         public CommandHandler ImportCommand { get; private set; }
+        public CommandHandler InstansiCommand { get; }
 
         private void TambahPengaduanAction(object obj)
         {
-            var form = new Views.TambahPengaduan();
+            var form = new Views.TambahPengaduan(false);
             form.DataContext = new Pengaduan();
             form.Show();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            var spiner = new ProgressBar() { Margin= new Thickness(30), IsIndeterminate=true};
+            var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            await DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
-           
+            DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);
 
@@ -69,14 +76,15 @@ namespace Main
 
         private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
         {
-            
+
         }
 
         private async void lakiKasus(object sender, RoutedEventArgs e)
         {
+
             var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            await DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+            DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
 
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);
@@ -89,7 +97,7 @@ namespace Main
         {
             var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            await  DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+            DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
 
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);
@@ -97,6 +105,9 @@ namespace Main
             var view = new Charts.Dialogs.KorbanPerempuanDialog();
             var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
         }
+
+
+
     }
 
 }
