@@ -6,7 +6,7 @@ namespace Main.Models
 {
 
     [TableName("Pelapor")]
-   public class Pelapor:Identitas
+   public class Pelapor:Identitas,IDataErrorInfo
     {
 
 

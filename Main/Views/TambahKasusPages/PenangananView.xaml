@@ -41,6 +41,7 @@
                         <Label Content="Instansi"></Label>
                         <ComboBox ItemsSource="{Binding ListInstansi}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedItem="{Binding Instansi}"
                                   SelectedValue="{Binding InstansiId,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
+                        <Button Margin="3" Height="30" Content="+" Command="{Binding AddInstansiCommand}"></Button>
                     </WrapPanel>
                     <WrapPanel>
                         <Label Content="Pelayanan"></Label>

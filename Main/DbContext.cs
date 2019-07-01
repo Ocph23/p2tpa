@@ -37,6 +37,8 @@ namespace Main
         public IRepository<Instansi> Instansi { get { return new Repository<Instansi>(this); } }
         public IRepository<Penanganan> Penanganan { get { return new Repository<Penanganan>(this); } }
 
+        public IRepository<HubunganDenganKorban> DataHubungan{ get { return new Repository<HubunganDenganKorban>(this); } }
+
 
     }
 }

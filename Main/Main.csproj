@@ -193,9 +193,7 @@
     <Compile Include="EnumCollection.cs" />
     <Compile Include="Models\Identitas.cs" />
     <Compile Include="Models\Instansi.cs" />
-    <Compile Include="ViewModels\HubunganViewModel.cs" />
     <Compile Include="Models\KondisiKorban.cs" />
-    <Compile Include="ViewModels\KorbanViewModel.cs" />
     <Compile Include="ViewModels\PelaporViewModel.cs" />
     <Compile Include="Models\Penanganan.cs" />
     <Compile Include="Models\Pengaduan.cs" />
@@ -439,10 +437,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite.csproj">
-      <Project>{f02685d0-50f1-4b27-a5ef-cd1d68b7f848}</Project>
+    <ProjectReference Include="..\..\DAL\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite.csproj">
+      <Project>{eb8edc4a-91cf-426d-824f-25cd4c0a161a}</Project>
       <Name>Ocph.DAL.SQLite</Name>
     </ProjectReference>
   </ItemGroup>

@@ -1,10 +1,12 @@
-﻿using Ocph.DAL;
+﻿using Main.Views;
+using Ocph.DAL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace Main.Models
 {
@@ -19,10 +21,17 @@ namespace Main.Models
            
             SaveCommand = new CommandHandler() { CanExecuteAction = x => string.IsNullOrEmpty(Error), ExecuteAction = SaveAction };
             CancelCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction =x=> WindowClose() };
-            ListInstansi = DataAccess.DataBasic.GetDataInstansi;
-            
+            AddInstansiCommand = new CommandHandler() { CanExecuteAction=x=> true, ExecuteAction = AddInstansiView };
+            ListInstansi = (CollectionView)CollectionViewSource.GetDefaultView(DataAccess.DataBasic.GetDataInstansi);
         }
 
+        private void AddInstansiView(object obj)
+        {
+            var form = new AddInstansi();
+            form.DataContext = new AddInstansiViewModel() { WindowClose=form.Close};
+            form.ShowDialog();
+            ListInstansi.Refresh();
+        }
 
         public string Title {
             get  {
@@ -37,7 +46,7 @@ namespace Main.Models
 
             SaveCommand = new CommandHandler() { CanExecuteAction = x => string.IsNullOrEmpty(Error), ExecuteAction = SaveAction };
             CancelCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = x => WindowClose() };
-            ListInstansi = DataAccess.DataBasic.GetDataInstansi;
+            ListInstansi = (CollectionView)CollectionViewSource.GetDefaultView(DataAccess.DataBasic.GetDataInstansi);
             Title = $"Penanganan {IdentitasType}";
         }
         private void SaveAction(object obj)
@@ -170,7 +179,7 @@ namespace Main.Models
             }
         }
 
-        public List<Instansi> ListInstansi { get; set; }
+        public CollectionView ListInstansi { get; set; }
 
         public Layanan SelectedLayanan {
             get {
@@ -185,6 +194,7 @@ namespace Main.Models
 
         public CommandHandler SaveCommand { get; }
         public CommandHandler CancelCommand { get; }
+        public CommandHandler AddInstansiCommand { get; }
         public Action WindowClose { get; internal set; }
     }
 

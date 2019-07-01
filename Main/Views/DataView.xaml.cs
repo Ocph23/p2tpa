@@ -40,7 +40,8 @@ namespace Main.Views
             if(obj!=null)
             {
                 var form = new TambahPengaduan(false);
-                form.DataContext = Mapper.Map<PengaduanViewModel>(obj as Pengaduan);
+                var data=Mapper.Map<PengaduanViewModel>(obj as Pengaduan);
+                form.DataContext = data;
                 form.ShowDialog();
             }
           

@@ -16,7 +16,7 @@ namespace Main.Views.TambahKasusPages
         public AddKorbanView()
         {
             InitializeComponent();
-            cmb.ItemSource= EnumSource.DataPendidikan();
+            cmb.ItemSource= EnumSource.DaftarKekerasan();
         }
       
 
@@ -26,7 +26,7 @@ namespace Main.Views.TambahKasusPages
             if (comboBox.SelectedItem != null)
                 return;
             var newItem = comboBox.Text;
-            var viewmodel = this.DataContext as KorbanViewModel;
+            var viewmodel = this.DataContext as Korban;
             comboBox.SelectedItem = newItem;
         }
     }

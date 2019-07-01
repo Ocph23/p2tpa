@@ -13,7 +13,6 @@ namespace Main.DataAccess
     public class DataBasic
     {
         private static PengaduanServices masterPengaduan;
-        private static List<Pengaduan> pengaduans;
         private static InstansiCollection _instansi;
 
         public static List<DataPenduduk> DataPendudukPerKecamatan()

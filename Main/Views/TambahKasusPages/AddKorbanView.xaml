@@ -66,11 +66,6 @@
                         <ComboBox ItemsSource="{Binding ListPendidikan}" SelectedValue="{Binding Pendidikan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"></ComboBox>
                     </WrapPanel>
                     <WrapPanel>
-                        <Label Content="Hubungan Dgn Terlapor"></Label>
-                        <ComboBox LostFocus="statusPernikahanLosfocs" IsEditable="True" ItemsSource="{Binding ListHubunganKorban}" x:Name="cmbHubungan" SelectedValue="{Binding HubunganKorbanDenganTerlapor,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
-                    </WrapPanel>
-
-                    <WrapPanel>
                         <Label Content="Status Pernikahan"></Label>
                         <ComboBox  ItemsSource="{Binding ListStatusPernikahan}" SelectedValue="{Binding Pernikahan,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}"/>
                     </WrapPanel>

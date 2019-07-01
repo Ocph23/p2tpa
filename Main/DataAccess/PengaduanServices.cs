@@ -74,6 +74,8 @@ namespace Main.DataAccess
                                 korban.DataPenanganan = penangananKorban.ToList();
                             }
                             item.Terlapor = db.DataTerlapor.Where(x => x.PengaduanId == id).ToList();
+
+
                             foreach (var terlapor in item.Terlapor)
                             {
                                 var penangananKorban = from a in db.Penanganan.Where(x => x.IdentiasId == terlapor.Id &&
@@ -94,6 +96,16 @@ namespace Main.DataAccess
                                                        };
 
                                 terlapor.DataPenanganan = penangananKorban.ToList();
+
+
+                                var hubs = from a in db.DataHubungan.Where(x => x.TerlaporId == terlapor.Id)
+                                           join b in item.Korban on a.KorbanId equals b.Id
+                                           select new HubunganDenganKorban(terlapor.Id, b)
+                                           { Id = a.Id, Korban = b, KorbanId = a.Id, JenisHubungan = a.JenisHubungan, TerlaporId = a.TerlaporId };
+                                terlapor.Hubungan = hubs.ToList();
+
+
+
                             }
                             list.Add(item);
                         }
@@ -120,12 +132,15 @@ namespace Main.DataAccess
                 var trans = db.BeginTransaction();
                 try
                 {
-
                     if(item.Id==null)
                     {
                         item.Id = db.DataPengaduan.InsertAndGetLastID(item);
                         if (item.Id <= 0)
+                        {
+                            item.Id = null;
                             throw new SystemException("Data Pengaduan Tidak Tersimpan");
+                        }
+                            
                     }
                     else
                     {
@@ -204,6 +219,26 @@ namespace Main.DataAccess
                                     x.TempatLahir
                                 }, data, x => x.Id == data.Id);
                             }
+
+                            foreach( var hub in data.Hubungan)
+                            {
+                                if(hub.Id==null)
+                                {
+
+                                   int? hubId= db.DataHubungan.InsertAndGetLastID(hub);
+                                    if (hubId > 0)
+                                        hub.Id = hubId;
+                                    else
+                                        throw new SystemException("Data Hubungan Tidak Tersimpan");
+
+                                }
+                                else
+                                {
+                                    if(!db.DataHubungan.Update(x=> new {x.JenisHubungan, x.KorbanId},hub, x=>x.Id==hub.Id && x.TerlaporId==data.Id))
+                                        throw new SystemException("Data Hubungan Tidak Tersimpan");
+                                }
+                            }
+
                             foreach (var penanganan in data.DataPenanganan)
                             {
                                 if (penanganan.IdPenanganan == null)

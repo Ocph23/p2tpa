@@ -10,12 +10,11 @@ namespace Main.Models
 {
 
     [TableName("pengaduan")]
-    public class Pengaduan : BaseNotify 
+    public class Pengaduan : BaseNotify  ,IDataErrorInfo
     {
         private string nomor;
         private string rujukan;
         private string hari;
-        private string penanganan;
         private string uraian;
         private string catatan;
         private DateTime? waktu;
@@ -121,17 +120,35 @@ namespace Main.Models
 
         public List<Terlapor> Terlapor { get => terlapors; set => SetProperty(ref terlapors, value); }
 
-        public KondisiKorban Kondisi { get => kondisi; set => SetProperty(ref kondisi, value); }
+        public KondisiKorban Kondisi {
+            get
+            {
+                if (kondisi == null)
+                    kondisi = new KondisiKorban();
+                return kondisi;
+            }
+            set => SetProperty(ref kondisi, value); }
 
-        public DampakKorban Dampak { get => dampak; set => SetProperty(ref dampak, value); }
+        public DampakKorban Dampak {
+            get {
+                if (dampak == null)
+                    dampak = new DampakKorban();
+                return dampak;
+            }
+            set => SetProperty(ref dampak, value); }
 
         
 
-        public Pelapor Pelapor { get => pelapor; set => SetProperty(ref pelapor, value); }
+        public Pelapor Pelapor {
+            get {
+                if (pelapor == null)
+                    pelapor = new Pelapor();
+                return pelapor;
+            } set => SetProperty(ref pelapor, value); }
 
         public PackIcon Icon { get => _icon; set => SetProperty(ref _icon, value); }
 
-        public List<string> StatusPelapors { get; }
+        public List<string> StatusPelapors { get; set; } = EnumSource.DataStatusPelapor();
         private string statusLaporText;
         public string StatusPelaporText
         {
@@ -151,9 +168,6 @@ namespace Main.Models
 
             }
         }
-
-
-
 
         public string this[string columnName] => Validate(columnName);
 
@@ -216,24 +230,6 @@ namespace Main.Models
             return null;
         }
 
-
-        public void AddKorban(Korban korban)
-        {
-            foreach (var item in Terlapor)
-            {
-                item.Hubungan.Add(new HubunganDenganKorban(korban));
-            }
-            this.Korban.Add(korban);
-        }
-
-        public void AddTerlapor(Terlapor terlapor)
-        {
-            foreach (var item in Korban)
-            {
-                terlapor.Hubungan.Add(new HubunganDenganKorban(item));
-            }
-            this.Terlapor.Add(terlapor);
-        }
 
 
 

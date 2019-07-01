@@ -14,7 +14,6 @@ namespace Main.Models
     public class Instansi : BaseNotify    ,IDataErrorInfo
     {
         private string name;
-        private List<string> _data;
         private KategoriInstansi kategori;
         private TingakatInstansi tingkat;
         private Kecamatan kecamatan;

@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace Main.ViewModels
 {
-    public class PengaduanViewModel:Pengaduan,IDataErrorInfo
+    public class PengaduanViewModel:Pengaduan
     {
         public PengaduanViewModel()
         {
@@ -23,7 +23,26 @@ namespace Main.ViewModels
 
         public List<Kecamatan> Kecamatan { get; set; }
 
-     
+
+
+        public void AddKorban(Korban korban)
+        {
+            foreach (var item in Terlapor)
+            {
+                item.Hubungan.Add(new HubunganDenganKorban(item.Id,korban));
+            }
+            this.Korban.Add(korban);
+        }
+
+        public void AddTerlapor(Terlapor terlapor)
+        {
+            foreach (var item in Korban)
+            {
+                terlapor.Hubungan.Add(new HubunganDenganKorban(terlapor.Id, item));
+            }
+            this.Terlapor.Add(terlapor);
+        }
+
 
     }
 }

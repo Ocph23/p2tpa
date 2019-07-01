@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace Main.Models
 {
     [TableName("Korban")]
-    public class Korban :Identitas
+    public class Korban :Identitas  ,IDataErrorInfo
     {
         private string kekerasa;
 

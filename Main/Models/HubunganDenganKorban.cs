@@ -12,17 +12,17 @@ namespace Main.Models
     [TableName("Hubungan")]
    public class HubunganDenganKorban:BaseNotify,IDataErrorInfo
     {
-        public HubunganDenganKorban()
-        {
-        }
-
-        public HubunganDenganKorban(Korban korban)
+        public HubunganDenganKorban() { }
+        public HubunganDenganKorban(int? _terlaporId, Korban korban)
         {
             this.Korban = korban;
+            this.TerlaporId = _terlaporId;
+            this.KorbanId = korban.Id;
         }
         private string nama;
 
         private int? id;
+        private int? terlaporId;
 
         [PrimaryKey("Id")]
         [DbColumn("Id")]
@@ -37,6 +37,14 @@ namespace Main.Models
         {
             get { return nama; }
             set { SetProperty(ref nama, value); }
+        }
+   
+
+        [DbColumn("TerlaporId")]
+        public int? TerlaporId
+        {
+            get { return terlaporId; }
+            set { SetProperty(ref terlaporId, value); }
         }
 
         [DbColumn("KorbanId")]
@@ -73,7 +81,8 @@ namespace Main.Models
                 IDataErrorInfo me = (IDataErrorInfo)this;
                 string error =
                     me[GetPropertyName(() => JenisHubungan)] +
-                    me[GetPropertyName(() => KorbanId)] 
+                    me[GetPropertyName(() => KorbanId)] +
+                     me[GetPropertyName(() => KorbanId)]
                 ;
                 if (!string.IsNullOrEmpty(error))
                     // return "Please check inputted data.";
@@ -81,6 +90,9 @@ namespace Main.Models
                 return null;
             }
         }
+
+       
+
 
         public string this[string columnName] =>Validate(columnName);
 
@@ -93,6 +105,9 @@ namespace Main.Models
 
             if (name == "KorbanId" && KorbanId==null)
                 return "Nama Korban Belum Ada";
+
+            if (name == "TerlaporId" && TerlaporId == null)
+                return "Terlapor Belum Dipilih (Hubungan dengan Korban) ";
 
             return null;
         }

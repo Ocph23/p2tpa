@@ -1,5 +1,7 @@
-﻿using Main.Utilities;
+﻿using Main.Models;
+using Main.Utilities;
 using Main.ViewModels;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace Main.Views
@@ -13,17 +15,18 @@ namespace Main.Views
         public TambahPengaduan(bool Editable)
         {
             InitializeComponent();
-            Loaded += TambahPengaduan_Loaded;
+            Loaded += TambahPengaduan_LoadedAsync;
             this.IsEditable = Editable;
-            // this.DataContext = vm = new Pengaduan();
+            //this.viewmodel = AutoMapper.Mapper.Map<PengaduanViewModel>(new Pengaduan());
+            //this.DataContext = viewmodel; 
         }
 
         public bool IsEditable { get; }
 
-        private void TambahPengaduan_Loaded(object sender, RoutedEventArgs e)
+        private void TambahPengaduan_LoadedAsync(object sender, RoutedEventArgs e)
         {
-            var vm = DataContext as PengaduanViewModel;
-            nav.DataContext = new NavigationPageViewModel(this.MainFrame, vm, IsEditable) { WindowClose = this.Close };
+            var viewmodel = DataContext as PengaduanViewModel;
+            nav.DataContext = new NavigationPageViewModel(this.MainFrame, viewmodel, IsEditable) { WindowClose = this.Close };
 
         }
 

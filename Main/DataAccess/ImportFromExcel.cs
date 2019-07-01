@@ -22,7 +22,7 @@ namespace Main.DataAccess
         Excel.Workbook xlWorkbook = null;
         private Pengaduan _selected;
 
-        public event onResult DataReseult;
+      //  public event onResult DataReseult;
         public ImportFromExcel()
         {
             Excel.Application xlApp = new Excel.Application();

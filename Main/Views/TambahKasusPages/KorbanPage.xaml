@@ -70,7 +70,7 @@
                     <DataGridTextColumn Width="100" Header="Agama" Binding="{Binding Agama}"/>
                     <DataGridTextColumn Width="150" Header="Pendidikan" Binding="{Binding Pendidikan}"/>
                     <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding Suku}"/>
-                    <DataGridTextColumn Width="100" Header="Hubungan" Binding="{Binding HubunganDenganTerlapor}"/>
+                    <DataGridTextColumn Width="100" Header="Kekerasan" Binding="{Binding KekerasanDialami}"/>
                     <DataGridTextColumn Header="Alamat"  Binding="{Binding Alamat}"/>
                   
                 </DataGrid.Columns>
@@ -177,7 +177,7 @@
                                                 <DataGridTemplateColumn Header="Hubungan Dengan Terlapor" >
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox SelectedItem="{Binding JenisHubungan}" ItemsSource="{Binding DataJenisHubungans}"/>
+                                                            <ComboBox SelectedItem="{Binding JenisHubungan}" SelectedValue="{Binding JenisHubungan}" ItemsSource="{Binding DataJenisHubungans}"/>
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>

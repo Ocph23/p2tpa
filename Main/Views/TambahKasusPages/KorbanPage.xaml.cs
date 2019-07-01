@@ -15,7 +15,7 @@ namespace Main.Views.TambahKasusPages
     public partial class KorbanPage : Page
     {
         KOrbanPageViewModel viewmodel;
-        public KorbanPage(Pengaduan vm)
+        public KorbanPage(PengaduanViewModel vm)
         {
             InitializeComponent();
             this.DataContext= viewmodel = new KOrbanPageViewModel(vm);
@@ -41,9 +41,9 @@ namespace Main.Views.TambahKasusPages
     public class KOrbanPageViewModel :BaseNotify  , IDataErrorInfo
     {
 
-        private Pengaduan vm;
+        private PengaduanViewModel vm;
 
-        public KOrbanPageViewModel(Pengaduan model)
+        public KOrbanPageViewModel(PengaduanViewModel model)
         {
             this.vm = model;
             this.Korbans = (CollectionView)CollectionViewSource.GetDefaultView(vm.Korban);
@@ -64,7 +64,7 @@ namespace Main.Views.TambahKasusPages
                     }
 
                     if (!isfound)
-                        terlapor.Hubungan.Add(new HubunganDenganKorban(korban));
+                        terlapor.Hubungan.Add(new HubunganDenganKorban(terlapor.Id, korban));
                 }
             }
 
@@ -95,13 +95,13 @@ namespace Main.Views.TambahKasusPages
 
                 if (data.IdentitasType == "Korban")
                 {
-                    var item = vm.Korban.Find(x => x.Id == data.InstansiId);
+                    var item = vm.Korban.Find(x => x.Nama == data.DataIdentias.Nama);
                     if (item != null)
                         item.DataPenanganan.Remove(data);
                 }
                 else
                 {
-                    var item = vm.Korban.Find(x => x.Id == data.InstansiId);
+                    var item = vm.Korban.Find(x => x.Nama == data.DataIdentias.Nama);
                     if (item != null)
                         item.DataPenanganan.Remove(data);
                 }
@@ -111,6 +111,8 @@ namespace Main.Views.TambahKasusPages
 
                 MessageBox.Show(ex.Message);
             }
+
+            Korbans.Refresh();
         }
 
         private void EditPenanganAction(object obj)
@@ -136,7 +138,7 @@ namespace Main.Views.TambahKasusPages
                 Terlapors.Refresh();
             }      else if(typeName.Contains("Korban"))
             {
-                var korban = obj as KorbanViewModel;
+                var korban = obj as Korban;
                 var form = new PenangananView();
                 var penanganan = new Penanganan(korban, "Korban") { WindowClose = form.Close };
                 form.DataContext = penanganan;
@@ -153,7 +155,7 @@ namespace Main.Views.TambahKasusPages
             {
                 if(obj.GetType()==typeof(AddKorbanViewModel))
                 {
-                    var data = obj as KorbanViewModel;
+                    var data = obj as Korban;
                     vm.Korban.Remove(data);
                     this.Korbans.Refresh();
                 }
@@ -186,7 +188,7 @@ namespace Main.Views.TambahKasusPages
             var formVM = form.DataContext as AddTerlaporViewModel;
             if (formVM.DataValid && obj == null)
             {
-                
+                vm.AddTerlapor(formVM);
             }
             Terlapors.Refresh();
         }
@@ -195,7 +197,7 @@ namespace Main.Views.TambahKasusPages
         {
             AddKorbanView form = new AddKorbanView();
             if (obj != null)
-                form.DataContext = new AddKorbanViewModel(obj as KorbanViewModel) { WindowClose = form.Close };
+                form.DataContext = new AddKorbanViewModel(obj as Korban) { WindowClose = form.Close };
             else
                 form.DataContext = new AddKorbanViewModel() { WindowClose = form.Close };
             form.ShowDialog();

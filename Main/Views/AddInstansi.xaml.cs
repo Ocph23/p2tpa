@@ -53,6 +53,7 @@ namespace Main.Views
 
         private async void SaveAction(object obj)
         {
+            await Task.Delay(200);
             try
             {
                 if (this.Id==null)

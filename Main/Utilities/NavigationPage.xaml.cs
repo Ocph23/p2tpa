@@ -1,4 +1,5 @@
 ﻿using Main.Models;
+using Main.ViewModels;
 using Main.Views.TambahKasusPages;
 using System;
 using System.Collections.Generic;
@@ -67,7 +68,7 @@ namespace Main.Utilities
         public ICommand CancelCommand { get; set; }
         public Action WindowClose { get; internal set; }
 
-        public NavigationPageViewModel(Frame frame, Pengaduan vm, bool editabele) 
+        public NavigationPageViewModel(Frame frame, PengaduanViewModel vm, bool editabele) 
         {
             this.IsEditable = editabele;
             FinishCommand = new CommandHandler { CanExecuteAction = x => FinishCommandValidate(), ExecuteAction = x => FinishAction() };

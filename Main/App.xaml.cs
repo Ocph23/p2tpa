@@ -15,18 +15,21 @@ namespace Main
     /// </summary>
     public partial class App : Application
     {
-
+        [Obsolete]
         public App()
         {
-            this.LoadCompleted();
+            Load();
         }
 
-        private async void LoadCompleted()
+        [Obsolete]
+        private void Load()
         {
             Mapper.Initialize(x => {
+                x.CreateMap<PengaduanViewModel, Pengaduan>().ReverseMap();
                 x.CreateMap<Pengaduan, PengaduanViewModel>();
-                x.CreateMap<PengaduanViewModel, Pengaduan>();
+
             });
+
         }
     }
 }
