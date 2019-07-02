@@ -506,7 +506,6 @@ namespace Main.DataAccess
 
         private Task<List<Korban>> ProccessKorban()
         {
-
             List<Korban> listKorban = new List<Korban>();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Korban"];
             Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "M500"];
@@ -520,7 +519,6 @@ namespace Main.DataAccess
                 data.NoReq = nomor;
                 data.Nama = rngPengaduan.Cells[row, "B"].Value2;
                 data.NamaPanggilan = rngPengaduan.Cells[row, "C"].Value2;
-
                 Gender gender;
                 var success = Enum.TryParse<Gender>(rngPengaduan.Cells[row, "D"].Value2, out gender);
                 if (!success)
@@ -535,12 +533,8 @@ namespace Main.DataAccess
                 data.Agama = rngPengaduan.Cells[row, "K"].Value2;
                 data.Suku = rngPengaduan.Cells[row, "L"].Value2;
                 data.Pernikahan = rngPengaduan.Cells[row, "M"].Value2;
-
                 row++;
-
                 listKorban.Add(data);
-
-
             }
 
             return Task.FromResult(listKorban);
@@ -551,23 +545,19 @@ namespace Main.DataAccess
         {
             List<Terlapor> listTerlapor = new List<Terlapor>();
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Terlapor"];
-            
             Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "L500"];
             int row = 1;
             for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
                 Terlapor data = new Terlapor();
-
                 var nomor= rngPengaduan.Cells[row, "A"].Value2;
                 if (string.IsNullOrEmpty(nomor))
                     break;
                 data.NoReq = nomor;
                 data.Nama = rngPengaduan.Cells[row, "B"].Value2;
                 data.NamaPanggilan = rngPengaduan.Cells[row, "C"].Value2;
-
                 Gender gender;
                 var success = Enum.TryParse<Gender>(rngPengaduan.Cells[row, "D"].Value2, out gender);
-               
                 data.Gender = ConvertEnum<Gender>(rngPengaduan.Cells[row, "D"].Value2);
                 data.TempatLahir = rngPengaduan.Cells[row, "E"].Value2;
                 data.TanggalLahir = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "F"].Value2));
@@ -578,14 +568,9 @@ namespace Main.DataAccess
                 data.Agama = rngPengaduan.Cells[row, "K"].Value2;
                 data.Suku = rngPengaduan.Cells[row, "L"].Value2;
                 row++;
-
                 listTerlapor.Add(data);
-
-
             }
-
             return Task.FromResult(listTerlapor);
-
         }
 
 
@@ -597,7 +582,6 @@ namespace Main.DataAccess
             int row = 1;
             for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
             {
-
                 var NoReg = rngPengaduan.Cells[row, "A"].Value2;
                 if (string.IsNullOrEmpty(NoReg))
                     break;

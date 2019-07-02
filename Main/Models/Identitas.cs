@@ -78,7 +78,8 @@ namespace Main.Models
         public string Pernikahan { get => pernikahan; set => SetProperty(ref pernikahan, value); }
 
         [DbColumn("Gender")]
-        public Gender Gender { get => gender; set => SetProperty(ref gender, value); }
+        public Gender Gender { get => gender;
+            set => SetProperty(ref gender, value); }
 
 
         public List<Penanganan> DataPenanganan { get; set; } = new List<Penanganan>();

@@ -73,7 +73,7 @@
                                     </Grid.RowDefinitions>
                                     <DockPanel Margin="10,10">
                                         <StackPanel DockPanel.Dock="Left">
-                                            <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="12522" FontSize="40" Margin="3" />
+                                            <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding JumlahKasus}" FontSize="40" Margin="3" />
                                             <TextBlock Margin="10,0,0,0" Text="Jumlah Kasus" FontSize="20"  />
                                         </StackPanel>
                                         <Image Height="100" DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/pppa.jpg"/>
@@ -100,8 +100,8 @@
                                     </Grid.RowDefinitions>
                                     <DockPanel Margin="10,10">
                                         <StackPanel DockPanel.Dock="Left">
-                                            <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="12522" FontSize="40" Margin="3" />
-                                            <TextBlock Margin="10,0,0,0" Text="Jumlah Kasus" FontSize="20"  />
+                                            <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding KorbanLaki}" FontSize="40" Margin="3" />
+                                            <TextBlock Margin="10,0,0,0" Text="Korban Laki-Laki" FontSize="20"  />
                                         </StackPanel>
                                         <Image Height="100" DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/pppa.jpg"/>
                                     </DockPanel>
@@ -125,8 +125,8 @@
                                     </Grid.RowDefinitions>
                                     <DockPanel Margin="10,10">
                                         <StackPanel DockPanel.Dock="Left">
-                                            <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="12522" FontSize="40" Margin="3" />
-                                            <TextBlock Margin="10,0,0,0" Text="Jumlah Kasus" FontSize="20"  />
+                                            <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding KorbanPerempuan}" FontSize="40" Margin="3" />
+                                            <TextBlock Margin="10,0,0,0" Text="Korban Perempuan" FontSize="20"  />
                                         </StackPanel>
                                         <Image Height="100" DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/pppa.jpg"/>
                                     </DockPanel>

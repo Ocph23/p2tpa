@@ -1,5 +1,6 @@
 ﻿using LiveCharts;
 using LiveCharts.Wpf;
+using Main.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,40 +35,36 @@ namespace Main.Charts
 
         private void RefreshAction(object obj)
         {
+
+            var result = from p in DataAccess.DataBasic.DataPengaduan
+                         from korban in p.Korban
+                         where korban.ListKekerasanDialami != null
+                         let c = korban.ListKekerasanDialami.Count
+                         group p by
+                            c <=1  ? "1" :
+                            c == 2 ? "2" :
+                            c == 3? "3" : ">3" into counts
+                         select new {  Key = counts.Key, data = counts.Count() };
+
+
+
+
+
             List<string> labels = new List<string>();
-            int satu = 0;
-            int dua = 0;
-            int tiga = 0;
 
-
-
-
-            labels.Add("1 ");
-
-            labels.Add("2 ");
-
-            labels.Add(">3 ");
-
-            SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = "1 Jenis",
-                Values = new ChartValues<int> { satu } } );
-
-            SeriesCollection.Add(new ColumnSeries
+            foreach(var item in result)
             {
-                DataLabels = true,
-                Title = "2 Jenis",
-                Values = new ChartValues<int> { dua }
-            });
+                labels.Add(item.Key);
 
-            SeriesCollection.Add(new ColumnSeries
-            {
-                DataLabels = true,
-                Title = "> 3 Jenis",
-                Values = new ChartValues<int> { tiga }
-            });
+                SeriesCollection.Add(new ColumnSeries
+                {
+                    DataLabels = true,
+                    Title = $"{item.Key} Jenis",
+                    Values = new ChartValues<int> { item.data}
+                });
 
 
-
-
+            }
 
             Labels = labels.ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };

@@ -35,6 +35,14 @@ namespace Main.Views.TambahKasusPages
         {
             viewmodel.AddTerlaporCommand.Execute(null);
         }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var cmb = (ComboBox)sender;
+            var cmbDataContext = (HubunganDenganKorban)cmb.DataContext;
+            cmbDataContext.JenisHubungan = cmb.SelectedItem.ToString();
+            viewmodel.Terlapors.Refresh();
+        }
     }
 
 
@@ -42,6 +50,7 @@ namespace Main.Views.TambahKasusPages
     {
 
         private PengaduanViewModel vm;
+      
 
         public KOrbanPageViewModel(PengaduanViewModel model)
         {
@@ -74,6 +83,13 @@ namespace Main.Views.TambahKasusPages
             AddPenangananCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = AddPenangananAction };
             EditPenangananCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = EditPenanganAction };
             DeletePenangananCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = DeletePenanganAction};
+            EditHubunganCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = EditHubunganAction };
+        }
+
+        private void EditHubunganAction(object obj)
+        {
+            var form = new EditHubunganView(obj);
+            form.ShowDialog();
         }
 
         private void DeletePenanganAction(object obj)
@@ -131,20 +147,39 @@ namespace Main.Views.TambahKasusPages
             {
                 var terlapor = obj as TerlaporViewModel;
                 var form = new PenangananView();
-                var penanganan = new Penanganan(terlapor, "Terlapor") { WindowClose = form.Close };
+                var penanganan = new Penanganan(terlapor, "Terlapor") { IdentiasId=terlapor.Id, WindowClose = form.Close };
                 form.DataContext = penanganan;
                 form.ShowDialog();
-                terlapor.DataPenanganan.Add(penanganan);
-                Terlapors.Refresh();
+
+                if(!string.IsNullOrEmpty( penanganan.Layanan))
+                {
+                    terlapor.DataPenanganan.Add(penanganan);
+                    Terlapors.Refresh();
+                }
+                else
+                {
+                    MessageBox.Show("Data Tidak Valid", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+             
             }      else if(typeName.Contains("Korban"))
             {
                 var korban = obj as Korban;
                 var form = new PenangananView();
-                var penanganan = new Penanganan(korban, "Korban") { WindowClose = form.Close };
+                var penanganan = new Penanganan(korban, "Korban") { IdentiasId=korban.Id, WindowClose = form.Close };
                 form.DataContext = penanganan;
                 form.ShowDialog();
-                korban.DataPenanganan.Add(penanganan);
-                Korbans.Refresh();
+
+                if (penanganan.IdentiasId != null && !string.IsNullOrEmpty(penanganan.Layanan))
+                {
+                    korban.DataPenanganan.Add(penanganan);
+                    Korbans.Refresh();
+                }
+                else
+                {
+                    MessageBox.Show("Data Tidak Valid", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                
             }
           
         }
@@ -190,6 +225,25 @@ namespace Main.Views.TambahKasusPages
             {
                 vm.AddTerlapor(formVM);
             }
+            else if (formVM.DataValid && obj != null)
+            {
+                var terlapor = (Terlapor)obj;
+                var model = (Terlapor)formVM;
+                terlapor.Agama = model.Agama;
+                terlapor.Alamat = model.Alamat;
+                terlapor.Gender = model.Gender;
+                terlapor.KekerasanDialami = model.KekerasanDialami;
+                terlapor.Nama = model.Nama;
+                terlapor.NamaPanggilan = model.NamaPanggilan;
+                terlapor.NIK = model.NIK;
+                terlapor.NoReq = model.NoReq;
+                terlapor.Pekerjaan = model.Pekerjaan;
+                terlapor.Pendidikan = model.Pendidikan;
+                terlapor.Pernikahan = model.Pernikahan;
+                terlapor.Suku = model.Suku;
+                terlapor.TanggalLahir = model.TanggalLahir;
+                terlapor.TempatLahir = model.TempatLahir;
+            }
             Terlapors.Refresh();
         }
 
@@ -207,6 +261,25 @@ namespace Main.Views.TambahKasusPages
             {
                 vm.AddKorban((Korban)korbanVM);
             }
+            else if(korbanVM.DataValid && obj!=null)
+            {
+                var korban = (Korban)obj;
+                var model = (Korban)korbanVM;
+                korban.Agama = model.Agama;
+                korban.Alamat = model.Alamat;
+                korban.Gender = model.Gender;
+                korban.KekerasanDialami = model.KekerasanDialami;
+                korban.Nama = model.Nama;
+                korban.NamaPanggilan = model.NamaPanggilan;
+                korban.NIK = model.NIK;
+                korban.NoReq = model.NoReq;
+                korban.Pekerjaan = model.Pekerjaan;
+                korban.Pendidikan = model.Pendidikan;
+                korban.Pernikahan = model.Pernikahan;
+                korban.Suku = model.Suku;
+                korban.TanggalLahir = model.TanggalLahir;
+                korban.TempatLahir = model.TempatLahir;
+            }
             Korbans.Refresh();
         }
 
@@ -216,6 +289,7 @@ namespace Main.Views.TambahKasusPages
         public CommandHandler AddPenangananCommand { get; }
         public CommandHandler EditPenangananCommand { get; }
         public CommandHandler DeletePenangananCommand { get; }
+        public CommandHandler EditHubunganCommand { get; }
         public CommandHandler AddKorbanCommand { get; }
         public CommandHandler AddTerlaporCommand { get; }
         public CommandHandler DeleteCommand { get; }
@@ -249,5 +323,7 @@ namespace Main.Views.TambahKasusPages
                 return null;
             }
         }
+
+
     }
 }

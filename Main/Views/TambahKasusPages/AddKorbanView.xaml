@@ -76,7 +76,7 @@
                     </WrapPanel>
                     <WrapPanel>
                         <Label Content="Kekerasan Yang Dialami"></Label>
-                        <utilities:ComboChips x:Name="cmb" Width="400" ></utilities:ComboChips>
+                        <utilities:ComboChips x:Name="cmb" Width="400" LostFocus="statusPernikahanLosfocs" ></utilities:ComboChips>
                     </WrapPanel>
                 </StackPanel>
             </ScrollViewer>

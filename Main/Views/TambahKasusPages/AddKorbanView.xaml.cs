@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Main.Models;
+using Main.Utilities;
 using Main.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Linq;
 
 namespace Main.Views.TambahKasusPages
 {
@@ -22,12 +25,14 @@ namespace Main.Views.TambahKasusPages
 
         private void statusPernikahanLosfocs(object sender, RoutedEventArgs e)
         {
-            var comboBox = (ComboBox)sender;
-            if (comboBox.SelectedItem != null)
-                return;
-            var newItem = comboBox.Text;
-            var viewmodel = this.DataContext as Korban;
-            comboBox.SelectedItem = newItem;
+
+            var dataContext = DataContext as AddKorbanViewModel;
+            var comboBox = (ComboChips)sender;
+            dataContext.KekerasanDialami = dataContext.GetListKekerasanFromStringKekerasan(comboBox.Result);
+            comboBox.SelectedItem = null;
+
+            
+            
         }
     }
 
@@ -82,6 +87,7 @@ namespace Main.Views.TambahKasusPages
         {
             WindowClose();
         }
+
 
         public bool DataValid =>ValidateSave(null);
     }

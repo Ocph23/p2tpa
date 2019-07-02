@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
 
 namespace Main.Models
 {
@@ -10,11 +12,27 @@ namespace Main.Models
     {
         private string kekerasa;
 
+
+        [DbColumn("kekerasan")]
         public string KekerasanDialami
         {
-            get { return kekerasa; }
-            set { SetProperty(ref kekerasa , value); }
+            get {
+
+                return GetListKekerasanFromStringKekerasan(ListKekerasanDialami);
+            }
+            set { SetProperty(ref kekerasa , value);
+                ListKekerasanDialami.Clear();
+                foreach(var item in value.Split('#'))
+                {
+                    ListKekerasanDialami.Add(item);
+                }
+
+            }
         }
+
+
+        public List<string> ListKekerasanDialami { get; set; } = new List<string>();
+
 
         public string this[string columnName] => Validate(columnName);
         public string Error
@@ -88,6 +106,27 @@ namespace Main.Models
             return null;
         }
 
+
+
+        public string GetListKekerasanFromStringKekerasan(IEnumerable<string> result)
+        {
+            if (result != null)
+            {
+                StringBuilder sb = new StringBuilder();
+                var i = 0;
+                foreach (var item in result)
+                {
+                    sb.Append($"{item}");
+                    if (i + 1 < result.Count())
+                    {
+                        sb.Append("#");
+                    }
+                    i++;
+                }
+                return sb.ToString();
+            }
+            return string.Empty;
+        }
 
 
     }

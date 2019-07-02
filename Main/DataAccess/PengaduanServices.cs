@@ -33,7 +33,7 @@ namespace Main.DataAccess
                                    KodeDistrik = pengaduan.KodeDistrik,
                                    Catatan = pengaduan.Catatan,
                                    Id = pengaduan.Id,
-                                   Nomor = pengaduan.Nomor,
+                                   Nomor = pengaduan.Nomor, 
                                   
                                    Penerima = pengaduan.Penerima,
                                    Rujukan = pengaduan.Rujukan,
@@ -66,7 +66,7 @@ namespace Main.DataAccess
                                                            IdentiasId = a.IdentiasId,
                                                            IdentitasType = a.IdentitasType,
                                                            InstansiId = a.InstansiId,
-                                                           Instansi = i,
+                                                           Instansi = i, 
                                                            Layanan = a.Layanan,
                                                            Tanggal = a.Tanggal
                                                        };
@@ -224,7 +224,7 @@ namespace Main.DataAccess
                             {
                                 if(hub.Id==null)
                                 {
-
+                                    hub.TerlaporId = data.Id;
                                    int? hubId= db.DataHubungan.InsertAndGetLastID(hub);
                                     if (hubId > 0)
                                         hub.Id = hubId;
