@@ -97,15 +97,25 @@ namespace Main.Models
             }
         }
 
-        [DbColumn("harikejadian")]
+
         public string JamKejadian
         {
-            get => _jam;
+            get {
+                  if(string.IsNullOrEmpty(_jam))
+                {
+                    var typeTime = WaktuKejadian.Value.Hour > 12 ? "PM" : "AM";
+                    _jam = $"{WaktuKejadian.Value.Hour}.{WaktuKejadian.Value.Minute} {typeTime}";
+                }
+                return _jam;
+            }
             set
             {
                 SetProperty(ref _jam, value);
             }
         }
+
+
+
         [DbColumn("tanggalkejadian")]
         public DateTime? TanggalKejadian{ get => _tanggal; set => SetProperty(ref _tanggal, value); }
 

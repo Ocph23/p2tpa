@@ -31,7 +31,7 @@
                                        Is24Hours="{Binding IsChecked, ElementName=Is24HourCheckbox}"
                                        Width="100">
                             <materialDesign:TimePicker.Text>
-                                <Binding Path="ValidatingTime" UpdateSourceTrigger="PropertyChanged">
+                                <Binding Path="Jam" UpdateSourceTrigger="PropertyChanged">
 
                                 </Binding>
                             </materialDesign:TimePicker.Text>

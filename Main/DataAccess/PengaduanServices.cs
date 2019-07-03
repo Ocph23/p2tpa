@@ -34,7 +34,7 @@ namespace Main.DataAccess
                                    Catatan = pengaduan.Catatan,
                                    Id = pengaduan.Id,
                                    Nomor = pengaduan.Nomor,
-                                  
+                                    
                                    Penerima = pengaduan.Penerima,
                                    Rujukan = pengaduan.Rujukan,
                                    TanggalLapor = pengaduan.TanggalLapor,

@@ -27,6 +27,7 @@ namespace Main.Views.TambahKasusPages
         private string tempat;
         private DateTime? tanggal;
         private string catatan;
+        private string _jam;
 
         public DampakViewModel(Pengaduan vm)
         {
@@ -92,6 +93,10 @@ namespace Main.Views.TambahKasusPages
                 vm.WaktuKejadian = value;
             }
         }
+
+        public string Jam { get { return _jam; } set { SetProperty(ref _jam, value); } }
+
+      
 
         public string Tempat { get => tempat; set
             {
