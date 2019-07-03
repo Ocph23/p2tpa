@@ -25,15 +25,11 @@ namespace Main.Charts
         {
             var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.TempatKejadian);
             List<string> dataTempat = new List<string>();
-            List<int> datas = new List<int>();
-            foreach (var kasus in groupPengaduan)
+            foreach (var tempat in EnumSource.DataTempatKejadian())
             {
-                dataTempat.Add(kasus.Key);
-                if (kasus != null)
-                {
-                    datas.Add(kasus.Count());
-                    SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = kasus.Key, Values = new ChartValues<int> { kasus.Count() } });
-                }
+                dataTempat.Add(tempat);
+                var jumlah = groupPengaduan.Where(x => x.Key == tempat).GroupBy(x => x).Count();
+                SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = tempat, Values = new ChartValues<int> { jumlah } });
             }
 
             Labels = dataTempat.ToArray();

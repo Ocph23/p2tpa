@@ -70,7 +70,7 @@
                     <DataGridTextColumn Width="100" Header="Agama" Binding="{Binding Agama}"/>
                     <DataGridTextColumn Width="150" Header="Pendidikan" Binding="{Binding Pendidikan}"/>
                     <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding Suku}"/>
-                    <DataGridTextColumn Width="100" Header="Kekerasan" Binding="{Binding KekerasanDialami}"/>
+                    <DataGridTextColumn Width="auto" Header="Kekerasan" Binding="{Binding KekerasanDialami}"/>
                     <DataGridTextColumn Header="Alamat"  Binding="{Binding Alamat}"/>
                   
                 </DataGrid.Columns>
@@ -157,7 +157,7 @@
                     <DataGridTextColumn Width="100" Header="Agama" Binding="{Binding Agama}"/>
                     <DataGridTextColumn Width="150" Header="Pendidikan" Binding="{Binding Pendidikan}"/>
                     <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding Suku}"/>
-                    <DataGridTextColumn Width="100" Header="Hubungan" Binding="{Binding HubunganText}"/>
+                    <DataGridTextColumn Width="auto" Header="Hubungan" Binding="{Binding HubunganText}"/>
                     <DataGridTemplateColumn Width="auto" Header=":">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -177,7 +177,9 @@
                                                 <DataGridTemplateColumn Header="Hubungan Dengan Terlapor" >
                                                     <DataGridTemplateColumn.CellTemplate>
                                                         <DataTemplate>
-                                                            <ComboBox SelectedItem="{Binding JenisHubungan}" SelectedValue="{Binding JenisHubungan}" ItemsSource="{Binding DataJenisHubungans}"/>
+                                                            <ComboBox SelectionChanged="ComboBox_SelectionChanged" ItemsSource="{Binding DataJenisHubungans}"  SelectedValue="{Binding JenisHubungan, 
+                                                                RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type Page}},
+                                                                UpdateSourceTrigger=PropertyChanged}" />
                                                         </DataTemplate>
                                                     </DataGridTemplateColumn.CellTemplate>
                                                 </DataGridTemplateColumn>
@@ -197,7 +199,8 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <DataGrid RowBackground="#FFA49BB4" SelectionMode="Single" Margin="50,0,30,10" Grid.Row="0"  ItemsSource="{Binding DataPenanganan}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+                            <DataGrid RowBackground="#FFA49BB4" SelectionMode="Single" Margin="50,0,30,10" Grid.Row="0"  ItemsSource="{Binding DataPenanganan}" 
+                                      AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Action">
                                         <DataGridTemplateColumn.CellTemplate>

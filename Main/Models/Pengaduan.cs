@@ -59,21 +59,14 @@ namespace Main.Models
         [DbColumn("penerima")]
         public string Penerima { get => penerima; set => SetProperty(ref penerima, value); }
 
-        [DbColumn("harilapor")]
-        public string JamLapor
-        {
-            get => hari;
-            set
-            {
-                SetProperty(ref hari, value);
-            }
-        }
         [DbColumn("tanggallapor")]
         public DateTime? TanggalLapor { get => tanggal; set => SetProperty(ref tanggal, value); }
 
         [DbColumn("waktulapor")]
-        public DateTime? WaktuLapor { get => waktu; set => SetProperty(ref waktu, value); }
+        public DateTime? WaktuLapor { get => waktu;
+            set => SetProperty(ref waktu, value);
 
+        }
 
         [DbColumn("tempat")]
         public string TempatLapor { get => tempat; set => SetProperty(ref tempat, value); }
@@ -120,7 +113,8 @@ namespace Main.Models
         public DateTime? TanggalKejadian{ get => _tanggal; set => SetProperty(ref _tanggal, value); }
 
         [DbColumn("waktukejadian")]
-        public DateTime? WaktuKejadian{ get => _waktu; set => SetProperty(ref _waktu, value); }
+        public DateTime? WaktuKejadian{ get => _waktu;
+            set => SetProperty(ref _waktu, value); }
 
 
         [DbColumn("tempatkejadian")]

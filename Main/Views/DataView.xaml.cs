@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using AutoMapper;
 using Main.Models;
@@ -24,6 +25,14 @@ namespace Main.Views
             Datas = DataAccess.DataBasic.DataPengaduan;
             EditCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = EditAction };
             DeleteCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = DeleteAction };
+            AddCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = AddAction };
+        }
+
+        private void AddAction(object obj)
+        {
+            var form = new TambahPengaduan(false);
+            form.DataContext = new PengaduanViewModel();
+            form.ShowDialog();
         }
 
         private void DeleteAction(object obj)
@@ -50,5 +59,6 @@ namespace Main.Views
         public List<Pengaduan> Datas { get; }
         public CommandHandler EditCommand { get; }
         public CommandHandler DeleteCommand { get; }
+        public CommandHandler AddCommand { get; }
     }
 }

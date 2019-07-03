@@ -21,13 +21,6 @@ namespace Main.Models
         private HubunganDenganKorban selectedItem;
         private string _hubunganText;
 
-        public HubunganDenganKorban SelectedItem
-        {
-            get { return selectedItem; }
-            set {SetProperty(ref selectedItem , value);
-                HubunganText = "";
-            }
-        }
 
         public List<string> ListHubunganKorban { get; set; }=EnumSource.HubunganKorbanDenganTerlapor();
 
@@ -140,6 +133,6 @@ namespace Main.Models
             }
         }
 
-
+        public string KekerasanDialami { get;  set; }
     }
 }

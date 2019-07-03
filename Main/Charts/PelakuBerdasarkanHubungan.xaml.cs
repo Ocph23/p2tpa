@@ -33,21 +33,25 @@ namespace Main.Charts
 
         private void RefreshAction(object obj)
         {
-            var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.Catatan);
-            List<string> dataHubungan = EnumSource.HubunganKorbanDenganTerlapor();
-            List<int> datas = new List<int>();
-            foreach (var hubungan in dataHubungan)
+            var groupPengaduan = from a in DataAccess.DataBasic.DataPengaduan
+                                 from b in a.Terlapor
+                                 from d in b.Hubungan.DefaultIfEmpty()
+                                 group d by d.JenisHubungan into dGroup
+                                 select new { Key = dGroup.Key, Values = dGroup };
+
+
+            foreach(var item in EnumSource.HubunganKorbanDenganTerlapor())
             {
+                var result = groupPengaduan.Where(x => x.Key == item).FirstOrDefault();
                 var value = 0;
-                var result = groupPengaduan.Where(x => x.Key == hubungan).FirstOrDefault();
-                if (result != null)
-                    value = result.Count();
-
-                SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = hubungan, Values = new ChartValues<int> { value } });
-
+                if(result !=null)
+                {
+                    value = result.Values.Count();
+                }
+                SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = item, Values = new ChartValues<double> { value } });
             }
 
-            Labels = dataHubungan.ToArray();
+            Labels = EnumSource.HubunganKorbanDenganTerlapor().ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
             YFormatter = value => ((int)value).ToString("N");
             XFormatter = value => ((int)value) <= 0 ? "" : ((int)value).ToString("N");

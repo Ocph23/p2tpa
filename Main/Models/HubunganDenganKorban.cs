@@ -23,6 +23,7 @@ namespace Main.Models
 
         private int? id;
         private int? terlaporId;
+        private int? _korbanId;
 
         [PrimaryKey("Id")]
         [DbColumn("Id")]
@@ -48,7 +49,13 @@ namespace Main.Models
         }
 
         [DbColumn("KorbanId")]
-        public int? KorbanId { get { return _korbanId; } set { SetProperty(ref _korbanId, value); } }
+        public int? KorbanId
+        {
+            get {
+                if (_korbanId == null && Korban != null)
+                    _korbanId = Korban.Id;
+                return _korbanId; }
+            set { SetProperty(ref _korbanId, value); } }
 
         private Korban _korban;
 
@@ -58,11 +65,12 @@ namespace Main.Models
             set
             {
                 SetProperty(ref _korban, value);
+
             }
         }
 
         private List<string> jenisHubungans;
-        private int? _korbanId;
+     
 
         public List<string> DataJenisHubungans
         {

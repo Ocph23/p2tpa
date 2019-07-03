@@ -1,5 +1,6 @@
 ﻿using Main.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Controls;
 
@@ -110,6 +111,9 @@ namespace Main.Views.TambahKasusPages
                 vm.Catatan = value;
             }
         }
+
+
+        public List<string> DataTempat { get; set; } = EnumSource.DataTempatKejadian();
 
     }
 }

@@ -1,0 +1,15 @@
+﻿<Window x:Class="Main.Views.TambahKasusPages.EditHubunganView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Main.Views.TambahKasusPages"
+        mc:Ignorable="d"
+        Title="EditHubunganView" Height="206.944" Width="548.611">
+    <Grid>
+        <DataGrid ItemsSource="{Binding Hubungan}">
+            <DataGridTextColumn Header="Nama korban" Binding="{Binding Korban.Nama}"/>
+            <DataGridComboBoxColumn ItemsSource="{Binding Hubungans}" SelectedItemBinding="{Binding JenisHubungan}"></DataGridComboBoxColumn>
+        </DataGrid>
+    </Grid>
+</Window>

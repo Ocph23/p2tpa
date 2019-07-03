@@ -1,6 +1,7 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Main.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,11 +35,26 @@ namespace Main.Charts
 
         private void RefreshAction(object obj)
         {
-            var source = DataAccess.DataBasic.DataPengaduan;
+            var result = from p in DataAccess.DataBasic.DataPengaduan
+                         from b in EnumSource.DaftarKekerasan()
+                         from korban in p.Korban.Where(x=>x.KekerasanDialami.Contains(b)).DefaultIfEmpty()
+                         group p by b into counts
+                            select new { Key = counts.Key, data = counts.Count() };
+
             List<string> labels = new List<string>();
-            List<int> datas = new List<int>();
-            labels.Add("Fisik");
-           
+
+            foreach (var item in result)
+            {
+                labels.Add(item.Key);
+
+                SeriesCollection.Add(new ColumnSeries
+                {
+                    DataLabels = true,
+                    Title = $"{item.Key}",
+                    Values = new ChartValues<int> { item.data }
+                });
+            }
+
             Labels = labels.ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
             YFormatter = value => ((int)value).ToString("N");

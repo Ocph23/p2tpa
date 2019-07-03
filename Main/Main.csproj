@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="AutoMapper, Version=8.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>packages\AutoMapper.8.1.1\lib\net461\AutoMapper.dll</HintPath>
@@ -220,6 +223,9 @@
     <Compile Include="Views\TambahKasusPages\DampakPage.xaml.cs">
       <DependentUpon>DampakPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TambahKasusPages\EditHubunganView.xaml.cs">
+      <DependentUpon>EditHubunganView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TambahKasusPages\KondisiPage.xaml.cs">
       <DependentUpon>KondisiPage.xaml</DependentUpon>
     </Compile>
@@ -391,6 +397,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\TambahKasusPages\EditHubunganView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TambahKasusPages\KondisiPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -438,13 +448,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DAL\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite.csproj">
-      <Project>{eb8edc4a-91cf-426d-824f-25cd4c0a161a}</Project>
-      <Name>Ocph.DAL.SQLite</Name>
-    </ProjectReference>
+    <Resource Include="Images\pppa.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\pppa.jpg" />
+    <ProjectReference Include="..\..\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite.csproj">
+      <Project>{da43b7b6-30bb-4585-b29c-d587766c3878}</Project>
+      <Name>Ocph.DAL.SQLite</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('packages\System.Data.SQLite.Core.1.0.110.0\build\net46\System.Data.SQLite.Core.targets')" />

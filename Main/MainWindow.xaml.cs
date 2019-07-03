@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using Main.ViewModels;
 using System;
 using Main.Models;
+using System.Linq;
 
 namespace Main
 {
@@ -50,6 +51,28 @@ namespace Main
 
         }
 
+        public int JumlahKasus {
+            get { return DataAccess.DataBasic.DataPengaduan.Count; }
+        }
+
+        public int KorbanLaki { get {
+                var groupPengaduan = (from a in DataAccess.DataBasic.DataPengaduan
+                                      from terlapor in a.Terlapor
+                                      select terlapor).GroupBy(x => x.Gender);
+
+                return groupPengaduan.Where(x => x.Key == Gender.L).Count();
+
+            } }
+
+        public int KorbanPerempuan { get {
+                var groupPengaduan = (from a in DataAccess.DataBasic.DataPengaduan
+                                      from terlapor in a.Terlapor
+                                      select terlapor).GroupBy(x => x.Gender);
+
+                return groupPengaduan.Where(x => x.Key == Gender.P).Count();
+            } }
+
+
         public CommandHandler DataViewCommand { get; }
         public CommandHandler TambahPengaduanCommand { get; }
         public CommandHandler ImportCommand { get; private set; }
@@ -66,7 +89,7 @@ namespace Main
         {
             var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            await DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+            DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
 
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);
@@ -85,7 +108,7 @@ namespace Main
 
             var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            await DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+            DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
 
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);
@@ -98,7 +121,7 @@ namespace Main
         {
             var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            await DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+             DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
 
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);

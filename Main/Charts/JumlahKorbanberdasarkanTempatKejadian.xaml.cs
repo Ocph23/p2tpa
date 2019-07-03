@@ -40,14 +40,14 @@ namespace Main.Charts
 
             List<string> dataTempat = new List<string>();
             List<int> datas = new List<int>();
-            foreach (var kasus in groupPengaduan)
+            foreach (var tempat in EnumSource.DataTempatKejadian())
             {
-                dataTempat.Add(kasus.Key);
-                if (kasus != null)
-                {
-                    datas.Add(kasus.GroupBy(x => x.Korban.Id).Count());
-                    SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = kasus.Key, Values = new ChartValues<int> { kasus.Count() } });
-                }
+                dataTempat.Add(tempat);
+                var result = groupPengaduan.Where(x => x.Key == tempat).FirstOrDefault();
+                var jumlah = 0;
+                if (result != null)
+                    jumlah = result.Count();
+                SeriesCollection.Add(new ColumnSeries { DataLabels = true, Title = tempat, Values = new ChartValues<int> { jumlah } });
             }
 
             Labels = dataTempat.ToArray();
