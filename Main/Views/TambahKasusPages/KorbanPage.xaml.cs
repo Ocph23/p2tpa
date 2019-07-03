@@ -3,6 +3,7 @@ using Main.Models;
 using Main.ViewModels;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -39,9 +40,19 @@ namespace Main.Views.TambahKasusPages
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var cmb = (ComboBox)sender;
-            var cmbDataContext = (HubunganDenganKorban)cmb.DataContext;
-            cmbDataContext.JenisHubungan = cmb.SelectedItem.ToString();
-            viewmodel.Terlapors.Refresh();
+            try
+            {
+                var cmbDataContext = (HubunganDenganKorban)cmb.DataContext;
+                if (cmbDataContext != null)
+                {
+                    cmbDataContext.JenisHubungan = cmb.SelectedItem.ToString();
+                    viewmodel.Terlapors.Refresh();
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 
@@ -170,7 +181,7 @@ namespace Main.Views.TambahKasusPages
                 form.DataContext = penanganan;
                 form.ShowDialog();
 
-                if (penanganan.IdentiasId != null && !string.IsNullOrEmpty(penanganan.Layanan))
+                if (!string.IsNullOrEmpty(penanganan.Layanan))
                 {
                     korban.DataPenanganan.Add(penanganan);
                     Korbans.Refresh();
@@ -299,10 +310,10 @@ namespace Main.Views.TambahKasusPages
         private string ValidateError(string columnName)
         {
             if (columnName == "Korbans" && (Korbans == null || Korbans.Count <= 0))
-                return "Korban Harus Minimal  Satu";
+                return "Korban Harus Minimal  Satu,\r";
 
             if (columnName == "Terlapors" && (Terlapors == null || Terlapors.Count <= 0))
-                return "Terlapor  Harus Minimal  Satu";
+                return "Terlapor  Harus Minimal  Satu,\r";
 
             return null;
         }
@@ -316,9 +327,19 @@ namespace Main.Views.TambahKasusPages
                     me[GetPropertyName(() => Korbans)] +
                     me[GetPropertyName(() => Terlapors)] 
                     ;
+                var result = from a in vm.Terlapor
+                             from b in a.Hubungan
+                             select b;
+
+                foreach(var item in result)
+                {
+                    if (string.IsNullOrEmpty(item.JenisHubungan))
+                        error += "Lengkapi Hubungan Korban, ";
+                }
+
 
                 if (!string.IsNullOrEmpty(error))
-                    return "Korban atau Pelaku masing-masing minimal satu";
+                    return error;
                 //return null;
                 return null;
             }

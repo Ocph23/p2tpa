@@ -89,7 +89,7 @@ namespace Main
         {
             var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+            _ = DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
 
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);
@@ -108,7 +108,7 @@ namespace Main
 
             var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-            DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+            _ = DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
 
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);
@@ -121,7 +121,7 @@ namespace Main
         {
             var spiner = new ProgressBar() { Margin = new Thickness(30), IsIndeterminate = true };
             spiner.Style = (Style)FindResource("MaterialDesignCircularProgressBar");
-             DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
+            _ = DialogHost.Show(spiner, "RootDialog", ClosingEventHandler);
 
             await Task.Delay(500);
             DialogHost.CloseDialogCommand.Execute(null, spiner);

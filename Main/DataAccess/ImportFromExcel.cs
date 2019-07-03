@@ -1,45 +1,47 @@
-﻿using Main.Models;
-using Main.ViewModels;
+﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Main.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+using System.Text.RegularExpressions;
+using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Windows.Media;
-using Excel = Microsoft.Office.Interop.Excel;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Text;
+using System.Globalization;
+using AutoMapper;
+using Main.ViewModels;
 
 namespace Main.DataAccess
 {
 
     public delegate void onResult(List<Pengaduan> data);
-    public class ImportFromExcel : BaseNotify, IDisposable
+    public class ImportFromExcel : BaseNotify,IDisposable
     {
 
-        Excel.Application xlApp = new Excel.Application();
-        Excel.Workbook xlWorkbook = null;
-        private Pengaduan _selected;
 
-      //  public event onResult DataReseult;
+
+        private string fileName = Environment.CurrentDirectory + "\\ImportPengaduan.xlsx";
+        private Pengaduan _selected;
+        private ExcelContext excel;
+
         public ImportFromExcel()
         {
-            Excel.Application xlApp = new Excel.Application();
-            var path = Environment.CurrentDirectory + "\\ImportPengaduan.xlsx";
-            xlWorkbook = xlApp.Workbooks.Open(path);
             Pengaduans = new ObservableCollection<Pengaduan>();
             PengaduanViews = (CollectionView)CollectionViewSource.GetDefaultView(Pengaduans);
             SaveCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = SaveToDatabaseAsync };
-            EditCommand = new CommandHandler { CanExecuteAction = x => this.SelectedItem!=null, ExecuteAction = EditCommandAction };
-            ValidateCommand = new CommandHandler { CanExecuteAction = x => this.SelectedItem!=null, ExecuteAction = ValidateAction };
+            EditCommand = new CommandHandler { CanExecuteAction = x => this.SelectedItem != null, ExecuteAction = EditCommandAction };
+            ValidateCommand = new CommandHandler { CanExecuteAction = x => this.SelectedItem != null, ExecuteAction = ValidateAction };
             this.StartAsync();
         }
 
         private void ValidateAction(object obj)
         {
             var data = obj as Pengaduan;
-           
+
             try
             {
                 using (var db = new DbContext())
@@ -51,7 +53,7 @@ namespace Main.DataAccess
 
                 }
                 ValidatePengaduan(data);
-                data.Icon.ToolTip ="Valid";
+                data.Icon.ToolTip = "Valid";
                 data.Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Read;
                 data.Icon.Foreground = Brushes.LightSeaGreen;
             }
@@ -61,11 +63,11 @@ namespace Main.DataAccess
                 if (ex.Message == "Data Sudah Ada")
                 {
                     data.Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.ContentDuplicate;
-                   data.Icon.Foreground = Brushes.Orange;
+                    data.Icon.Foreground = Brushes.Orange;
                 }
                 else
                 {
-                   data.Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Error;
+                    data.Icon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Error;
                     data.Icon.Foreground = Brushes.Red;
                 }
 
@@ -93,6 +95,7 @@ namespace Main.DataAccess
 
         public async void StartAsync()
         {
+            excel = new ExcelContext(fileName);
             await Task.Delay(500);
             await ProccessPengaduan().ContinueWith(taskPengaduanCompleteAsync);
             await ProccessKorban().ContinueWith(taskKorbanCompleteAsync);
@@ -178,7 +181,7 @@ namespace Main.DataAccess
                 var trans = db.BeginTransaction();
                 try
                 {
-                  
+
                     var pengaduanFound = db.DataPengaduan.Where(O => O.KodeDistrik == item.KodeDistrik && O.Nomor == item.Nomor).FirstOrDefault();
                     if (pengaduanFound != null)
                         throw new SystemException("Data Sudah Ada");
@@ -194,7 +197,7 @@ namespace Main.DataAccess
                         throw new SystemException("Data Pelapor Tidak Ditemukan/Tidak Lengkap");
 
 
-                    foreach(var data in item.Korban)
+                    foreach (var data in item.Korban)
                     {
                         data.PengaduanId = item.Id.Value;
                         data.Id = await GetIdIdentitas(data, db);
@@ -217,15 +220,15 @@ namespace Main.DataAccess
                     if (item.Dampak.Id <= 0)
                         throw new SystemException("Data  Dampak Yang Dialami Tidak Tersimpan");
 
-                  
+
 
                     trans.Commit();
-                    return Tuple.Create("Berhasil", item, true);
+                    return System.Tuple.Create("Berhasil", item, true);
                 }
                 catch (Exception ex)
                 {
                     trans.Rollback();
-                    return Tuple.Create(ex.Message, item, false);
+                    return System.Tuple.Create(ex.Message, item, false);
                 }
 
 
@@ -239,10 +242,11 @@ namespace Main.DataAccess
             try
             {
                 StringBuilder sb = new StringBuilder();
-                if (!string.IsNullOrEmpty(item.Error))
+                var pengaduanVM = Mapper.Map<PengaduanViewModel>(item);
+                if (!string.IsNullOrEmpty(pengaduanVM.Error))
                     sb.AppendLine(item.Error);
 
-                if (!string.IsNullOrEmpty(item.Pelapor.Error))
+                if (!string.IsNullOrEmpty(pengaduanVM.Pelapor.Error))
                     sb.AppendLine(item.Pelapor.Error);
 
                 if (item.Korban != null && item.Korban.Count > 0)
@@ -267,7 +271,7 @@ namespace Main.DataAccess
                 else
                     sb.AppendLine("data Terlapor belum ada");
 
-             
+
                 if (!string.IsNullOrEmpty(item.Dampak.Error))
                     sb.AppendLine(item.Dampak.Error);
 
@@ -369,7 +373,7 @@ namespace Main.DataAccess
                     await Task.Delay(10000);
                 foreach (var item in Pengaduans)
                 {
-                    foreach(var data in datas.Where(x => x.NoReq == item.Nomor))
+                    foreach (var data in datas.Where(x => x.NoReq == item.Nomor))
                     {
                         item.Terlapor.Add(data);
                     }
@@ -402,28 +406,23 @@ namespace Main.DataAccess
 
         private Task<List<Pelapor>> ProccessPelapor()
         {
-            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Pelapor"];
-
+            var rngPengaduan = excel.GetRange("Pelapor", "A1:D500");
             List<Pelapor> listPelapor = new List<Pelapor>();
-
-            //read pengaduan
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "D500"];
-            int row = 1;
-            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
+            for (var row = 3; row <= rngPengaduan.Count; row++)
             {
                 Pelapor pelaport = new Pelapor();
-                var nomor = rngPengaduan.Cells[row, "A"].Value2;
+                var nomor = rngPengaduan.Cell(row, "A");
                 if (string.IsNullOrEmpty(nomor))
                     break;
                 pelaport.NoReq = nomor;
-                pelaport.Nama = rngPengaduan.Cells[row, "B"].Value2;
+                pelaport.Nama = rngPengaduan.Cell(row, "B");
 
                 Gender data;
-                var success = Enum.TryParse<Gender>(rngPengaduan.Cells[row, "C"].Value2, out data);
+                var success = Enum.TryParse<Gender>(rngPengaduan.Cell(row, "C"), out data);
                 if (!success)
                     break;
                 pelaport.Gender = data;
-                pelaport.Alamat = rngPengaduan.Cells[row, "D"].Value2;
+                pelaport.Alamat = rngPengaduan.Cell(row, "D");
                 row++;
 
                 listPelapor.Add(pelaport);
@@ -432,108 +431,122 @@ namespace Main.DataAccess
             }
 
             return Task.FromResult(listPelapor);
-
         }
 
         private Task<List<Pengaduan>> ProccessPengaduan()
         {
-            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Pengaduan"];
-            Excel.Range xlRange = xlWorksheet.UsedRange;
 
-            //read pengaduan
+            var rngPengaduan = excel.GetRange("Pengaduan", "A1:AG500");
 
-            int row = 1;
-            var kodeDistrik = xlRange.Cells[2, 3].Value2;
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A7", "AG500"];
+            var kodeDistrik = rngPengaduan.Cell(2, "C");
             if (string.IsNullOrEmpty(kodeDistrik))
                 throw new SystemException("Kode Distrik Tidak Ditemukan");
 
             List<Pengaduan> list = new List<Pengaduan>();
 
-            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
+            for (var row = 7; row <= rngPengaduan.Count; row++)
             {
                 var pengaduan = new Pengaduan();
                 pengaduan.KodeDistrik = kodeDistrik;
-                pengaduan.Nomor = rngPengaduan.Cells[row, "B"].Value2;
+                pengaduan.Nomor = rngPengaduan.Cell(row, "B");
                 if (string.IsNullOrEmpty(pengaduan.Nomor))
                     break;
 
-                pengaduan.TanggalLapor = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "C"].Value2));
-                TimeSpan waktu = DateTime.FromOADate(Convert.ToDouble(rngPengaduan.Cells[row, "D"].Value2)).TimeOfDay;
-                pengaduan.WaktuLapor = new DateTime(pengaduan.TanggalLapor.Value.Year, pengaduan.TanggalLapor.Value.Month,
-                    pengaduan.TanggalLapor.Value.Day, waktu.Hours, waktu.Minutes,0);
-                pengaduan.Rujukan = rngPengaduan.Cells[row, "E"].Value2;
-                pengaduan.Penerima = rngPengaduan.Cells[row, "F"].Value2;
-                pengaduan.TempatLapor = rngPengaduan.Cells[row, "G"].Value2;
-                pengaduan.StatusPelapor = rngPengaduan.Cells[row, "H"].Value2;
+                pengaduan.TanggalLapor = DateTime.FromOADate(Double.Parse(rngPengaduan.Cell(row, "C"), NumberStyles.Any, CultureInfo.InvariantCulture));
+                pengaduan.WaktuLapor = DateTime.FromOADate(Double.Parse(rngPengaduan.Cell(row, "D"), NumberStyles.Any, CultureInfo.InvariantCulture));
+                pengaduan.Rujukan = rngPengaduan.Cell(row, "E");
+                pengaduan.Penerima = rngPengaduan.Cell(row, "F");
+                pengaduan.TempatLapor = rngPengaduan.Cell(row, "G");
+                pengaduan.StatusPelapor = rngPengaduan.Cell(row, "H");
 
-              //  pengaduan.HubunganKorbanDenganTerlapor = rngPengaduan.Cells[row, "M"].Value2;
+                //  pengaduan.HubunganKorbanDenganTerlapor = rngPengaduan.Cell(row, "M");
 
                 pengaduan.Pelapor = new Pelapor();
-                pengaduan.Pelapor.Nama = rngPengaduan.Cells[row, "I"].Value2;
+                pengaduan.Pelapor.Nama = rngPengaduan.Cell(row, "I");
 
 
-               // pengaduan.Korban = new Korban();
-              //  pengaduan.Korban.Nama = rngPengaduan.Cells[row, "K"].Value2;
+                // pengaduan.Korban = new Korban();
+                //  pengaduan.Korban.Nama = rngPengaduan.Cell(row, "K");
 
-             //   pengaduan.Terlapor = new Terlapor();
-             //   pengaduan.Terlapor.Nama = rngPengaduan.Cells[row, "N"].Value2;
+                //   pengaduan.Terlapor = new Terlapor();
+                //   pengaduan.Terlapor.Nama = rngPengaduan.Cell(row, "N");
 
 
                 pengaduan.Kondisi = new KondisiKorban();
-                pengaduan.Kondisi.Fisik = ConvertEnum<KondisiFisik>(rngPengaduan.Cells[row, "K"].Value2);
-                pengaduan.Kondisi.Psikis = ConvertEnum<KondisiPsikis>(rngPengaduan.Cells[row, "L"].Value2);
-                pengaduan.Kondisi.Sex = ConvertEnum<KondisiSex>(rngPengaduan.Cells[row, "M"].Value2);
+                pengaduan.Kondisi.Fisik = ConvertEnum<KondisiFisik>(rngPengaduan.Cell(row, "K"));
+                pengaduan.Kondisi.Psikis = ConvertEnum<KondisiPsikis>(rngPengaduan.Cell(row, "L"));
+                pengaduan.Kondisi.Sex = ConvertEnum<KondisiSex>(rngPengaduan.Cell(row, "M"));
                 if (pengaduan.Kondisi.Sex != KondisiSex.Pendarahan)
-                    pengaduan.Kondisi.SexText = rngPengaduan.Cells[row, "N"].Value2;
+                    pengaduan.Kondisi.SexText = rngPengaduan.Cell(row, "N");
 
                 //Kondisi Korban
                 pengaduan.Dampak = new DampakKorban();
-                pengaduan.Dampak.Fisik = rngPengaduan.Cells[row, "O"].Value2;
-                pengaduan.Dampak.Psikis = rngPengaduan.Cells[row, "P"].Value2;
-                pengaduan.Dampak.Seksual = rngPengaduan.Cells[row, "Q"].Value2;
-                pengaduan.Dampak.Ekonomi = rngPengaduan.Cells[row, "R"].Value2;
-                pengaduan.Dampak.Kesehatan = rngPengaduan.Cells[row, "S"].Value2;
-                pengaduan.Dampak.Lain = rngPengaduan.Cells[row, "T"].Value2;
+                pengaduan.Dampak.Fisik = rngPengaduan.Cell(row, "O");
+                pengaduan.Dampak.Psikis = rngPengaduan.Cell(row, "P");
+                pengaduan.Dampak.Seksual = rngPengaduan.Cell(row, "Q");
+                pengaduan.Dampak.Ekonomi = rngPengaduan.Cell(row, "R");
+                pengaduan.Dampak.Kesehatan = rngPengaduan.Cell(row, "S");
+                pengaduan.Dampak.Lain = rngPengaduan.Cell(row, "T");
 
-               
+
 
                 list.Add(pengaduan);
             }
             return Task.FromResult(list);
-
         }
 
         private Task<List<Korban>> ProccessKorban()
         {
+            var rngPengaduan = excel.GetRange("Korban", "A1:M500");
+
             List<Korban> listKorban = new List<Korban>();
-            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Korban"];
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "M500"];
-            int row = 1;
-            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
+            for (var row = 4; row <= rngPengaduan.Count; row++)
             {
                 Korban data = new Korban();
-                var nomor = rngPengaduan.Cells[row, "A"].Value2;
+                var nomor = rngPengaduan.Cell(row, "A");
                 if (string.IsNullOrEmpty(nomor))
                     break;
                 data.NoReq = nomor;
-                data.Nama = rngPengaduan.Cells[row, "B"].Value2;
-                data.NamaPanggilan = rngPengaduan.Cells[row, "C"].Value2;
+                data.Nama = rngPengaduan.Cell(row, "B");
+                data.NamaPanggilan = rngPengaduan.Cell(row, "C");
                 Gender gender;
-                var success = Enum.TryParse<Gender>(rngPengaduan.Cells[row, "D"].Value2, out gender);
+                var success = Enum.TryParse<Gender>(rngPengaduan.Cell(row, "D"), out gender);
                 if (!success)
                     break;
-                data.Gender = ConvertEnum<Gender>(rngPengaduan.Cells[row, "D"].Value2);
-                data.TempatLahir = rngPengaduan.Cells[row, "E"].Value2;
-                data.TanggalLahir = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "F"].Value2));
-                data.Alamat = rngPengaduan.Cells[row, "G"].Value2;
-                data.NIK = rngPengaduan.Cells[row, "H"].Value2;
-                data.Pekerjaan = rngPengaduan.Cells[row, "I"].Value2;
-                data.Pendidikan = rngPengaduan.Cells[row, "J"].Value2;
-                data.Agama = rngPengaduan.Cells[row, "K"].Value2;
-                data.Suku = rngPengaduan.Cells[row, "L"].Value2;
-                data.Pernikahan = rngPengaduan.Cells[row, "M"].Value2;
-                row++;
+                data.Gender = ConvertEnum<Gender>(rngPengaduan.Cell(row, "D"));
+                data.TempatLahir = rngPengaduan.Cell(row, "E");
+                data.TanggalLahir = DateTime.FromOADate(Double.Parse(rngPengaduan.Cell(row, "F"), NumberStyles.Any, CultureInfo.InvariantCulture));
+                data.Alamat = rngPengaduan.Cell(row, "G");
+                data.NIK = rngPengaduan.Cell(row, "H");
+                data.Pekerjaan = rngPengaduan.Cell(row, "I");
+                data.Pendidikan = rngPengaduan.Cell(row, "J");
+                data.Agama = rngPengaduan.Cell(row, "K");
+                data.Suku = rngPengaduan.Cell(row, "L");
+                data.Pernikahan = rngPengaduan.Cell(row, "M");
+                StringBuilder sb = new StringBuilder();
+              
+                if (rngPengaduan.Cell(row, "N").ToLower() == "1")
+                    sb.Append($"Fisik#");
+
+                if (rngPengaduan.Cell(row, "O").ToLower() == "1")
+                    sb.Append($"Psikis#");
+
+                if (rngPengaduan.Cell(row, "P").ToLower() == "1")
+                    sb.Append($"Seksual#");
+
+                if (rngPengaduan.Cell(row, "Q").ToLower() == "1")
+                    sb.Append($"Exploitasi#");
+
+                if (rngPengaduan.Cell(row, "R").ToLower() == "1")
+                    sb.Append($"Trafficking#");
+
+                if (rngPengaduan.Cell(row, "S").ToLower() == "1")
+                    sb.Append($"Penelantara#");
+
+                if (rngPengaduan.Cell(row, "T").ToLower() == "1")
+                    sb.Append($"Lainnya#");
+
+                data.KekerasanDialami = sb.ToString().Substring(0,sb.Length-1);
                 listKorban.Add(data);
             }
 
@@ -543,31 +556,54 @@ namespace Main.DataAccess
 
         private Task<List<Terlapor>> ProccessTerlapor()
         {
+            var rngPengaduan = excel.GetRange("Terlapor", "A1:T500");
             List<Terlapor> listTerlapor = new List<Terlapor>();
-            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Terlapor"];
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "L500"];
-            int row = 1;
-            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
+            for (var row = 4; row <= rngPengaduan.Count; row++)
             {
                 Terlapor data = new Terlapor();
-                var nomor= rngPengaduan.Cells[row, "A"].Value2;
+                var nomor = rngPengaduan.Cell(row, "A");
                 if (string.IsNullOrEmpty(nomor))
                     break;
                 data.NoReq = nomor;
-                data.Nama = rngPengaduan.Cells[row, "B"].Value2;
-                data.NamaPanggilan = rngPengaduan.Cells[row, "C"].Value2;
+                data.Nama = rngPengaduan.Cell(row, "B");
+                data.NamaPanggilan = rngPengaduan.Cell(row, "C");
                 Gender gender;
-                var success = Enum.TryParse<Gender>(rngPengaduan.Cells[row, "D"].Value2, out gender);
-                data.Gender = ConvertEnum<Gender>(rngPengaduan.Cells[row, "D"].Value2);
-                data.TempatLahir = rngPengaduan.Cells[row, "E"].Value2;
-                data.TanggalLahir = DateTime.FromOADate(Convert.ToInt64(rngPengaduan.Cells[row, "F"].Value2));
-                data.Alamat = rngPengaduan.Cells[row, "G"].Value2;
-                data.NIK = rngPengaduan.Cells[row, "H"].Value2;
-                data.Pekerjaan = rngPengaduan.Cells[row, "I"].Value2;
-                data.Pendidikan = rngPengaduan.Cells[row, "J"].Value2;
-                data.Agama = rngPengaduan.Cells[row, "K"].Value2;
-                data.Suku = rngPengaduan.Cells[row, "L"].Value2;
-                row++;
+                var success = Enum.TryParse<Gender>(rngPengaduan.Cell(row, "D"), out gender);
+                data.Gender = ConvertEnum<Gender>(rngPengaduan.Cell(row, "D"));
+                data.TempatLahir = rngPengaduan.Cell(row, "E");
+                data.TanggalLahir = DateTime.FromOADate(Double.Parse(rngPengaduan.Cell(row, "F"), NumberStyles.Any, CultureInfo.InvariantCulture));
+                data.Alamat = rngPengaduan.Cell(row, "G");
+                data.NIK = rngPengaduan.Cell(row, "H");
+                data.Pekerjaan = rngPengaduan.Cell(row, "I");
+                data.Pendidikan = rngPengaduan.Cell(row, "J");
+                data.Agama = rngPengaduan.Cell(row, "K");
+                data.Suku = rngPengaduan.Cell(row, "L");
+                
+                var hub1 = rngPengaduan.Cell(row, "N");
+                if(!string.IsNullOrEmpty(hub1))
+                {
+                    data.Hubungan.Add(new HubunganDenganKorban(0, new Korban() {Nama= rngPengaduan.Cell(row, "M") }));
+                }
+
+                var hub2 = rngPengaduan.Cell(row, "P");
+                if (!string.IsNullOrEmpty(hub2))
+                {
+                    data.Hubungan.Add(new HubunganDenganKorban(0, new Korban() { Nama = rngPengaduan.Cell(row, "O") }));
+                }
+
+                var hub3 = rngPengaduan.Cell(row, "R");
+                if (!string.IsNullOrEmpty(hub3))
+                {
+                    data.Hubungan.Add(new HubunganDenganKorban(0, new Korban() { Nama = rngPengaduan.Cell(row, "Q") }));
+                }
+
+                var hub4 = rngPengaduan.Cell(row, "T");
+                if (!string.IsNullOrEmpty(hub4))
+                {
+                    data.Hubungan.Add(new HubunganDenganKorban(0, new Korban() { Nama = rngPengaduan.Cell(row, "S") }));
+                }
+
+
                 listTerlapor.Add(data);
             }
             return Task.FromResult(listTerlapor);
@@ -576,26 +612,21 @@ namespace Main.DataAccess
 
         private Task<List<Tuple<string, string, string>>> ProccessUraian()
         {
+            var rngPengaduan = excel.GetRange("Uraian&Catatan", "A1:C500");
             List<Tuple<string, string, string>> list = new List<Tuple<string, string, string>>();
-            Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["Uraian&Catatan"];
-            Excel.Range rngPengaduan = (Excel.Range)xlWorksheet.Range["A3", "C500"];
-            int row = 1;
-            for (var i = 1; i <= rngPengaduan.Rows.Count; i++)
+            for (var row = 3; row <= rngPengaduan.Count; row++)
             {
-                var NoReg = rngPengaduan.Cells[row, "A"].Value2;
+                var NoReg = rngPengaduan.Cell(row, "A");
                 if (string.IsNullOrEmpty(NoReg))
                     break;
-                var uraian = rngPengaduan.Cells[row, "B"].Value2 == null ? string.Empty : rngPengaduan.Cells[row, "B"].Value2;
-                var catatan = rngPengaduan.Cells[row, "C"].Value2 == null ? string.Empty : rngPengaduan.Cells[row, "C"].Value2;
-                row++;
-
-                var data = Tuple.Create(NoReg, uraian, catatan);
+                var uraian = rngPengaduan.Cell(row, "B") == null ? string.Empty : rngPengaduan.Cell(row, "B");
+                var catatan = rngPengaduan.Cell(row, "C") == null ? string.Empty : rngPengaduan.Cell(row, "C");
+                var data = System.Tuple.Create(NoReg, uraian, catatan);
                 list.Add(data);
-
-
             }
 
             return Task.FromResult(list);
+                     
 
         }
 
@@ -608,7 +639,9 @@ namespace Main.DataAccess
 
         public void Dispose()
         {
-            this.xlWorkbook.Close();
+            excel.Dispose();
         }
     }
+
+
 }

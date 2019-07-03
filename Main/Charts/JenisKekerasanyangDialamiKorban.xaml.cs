@@ -37,21 +37,25 @@ namespace Main.Charts
         {
             var result = from p in DataAccess.DataBasic.DataPengaduan
                          from b in EnumSource.DaftarKekerasan()
-                         from korban in p.Korban.Where(x=>x.KekerasanDialami.Contains(b)).DefaultIfEmpty()
-                         group p by b into counts
-                            select new { Key = counts.Key, data = counts.Count() };
+                         from korban in p.Korban.Where(x=>x.KekerasanDialami.Contains(b))
+                         group korban by b into counts
+                            select new { Key = counts.Key, value = counts.Count() };
 
             List<string> labels = new List<string>();
 
-            foreach (var item in result)
+            foreach (var item in EnumSource.DaftarKekerasan())
             {
-                labels.Add(item.Key);
+                labels.Add(item);
+                var value = 0;
+                var data = result.Where(x => x.Key == item).FirstOrDefault();
+                if (data != null)
+                    value = data.value;
 
                 SeriesCollection.Add(new ColumnSeries
                 {
                     DataLabels = true,
-                    Title = $"{item.Key}",
-                    Values = new ChartValues<int> { item.data }
+                    Title = $"{item}",
+                    Values = new ChartValues<int> { value }
                 });
             }
 
@@ -59,6 +63,18 @@ namespace Main.Charts
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
             YFormatter = value => ((int)value).ToString("N");
             XFormatter = value => ((int)value) <= 0 ? "" : ((int)value).ToString("N");
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
       

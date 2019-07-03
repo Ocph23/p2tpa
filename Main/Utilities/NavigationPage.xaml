@@ -19,7 +19,7 @@
             <Button Content="Kembali" Command="{Binding BackCommand}"
                     Visibility="{Binding Path=AvaliableBack,
                 Converter={StaticResource BoolToVis}}"/>
-            <Button Content="Lanjukan" Command="{Binding NextCommand}"
+            <Button  ToolTip="{Binding Path=ErrorMessage}" ToolTipService.ShowOnDisabled="true" Content="Lanjut" Command="{Binding NextCommand}"
                     Visibility="{Binding Path=AvaliableNext,
                 Converter={StaticResource BoolToVis}}"/>
             <Button Content="Selesai" Command="{Binding FinishCommand}" 

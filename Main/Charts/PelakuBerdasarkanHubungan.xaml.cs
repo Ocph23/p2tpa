@@ -34,7 +34,7 @@ namespace Main.Charts
         private void RefreshAction(object obj)
         {
             var groupPengaduan = from a in DataAccess.DataBasic.DataPengaduan
-                                 from b in a.Terlapor
+                                 from b in a.Terlapor.Where(x=>x.Hubungan.Count()>0)
                                  from d in b.Hubungan.DefaultIfEmpty()
                                  group d by d.JenisHubungan into dGroup
                                  select new { Key = dGroup.Key, Values = dGroup };

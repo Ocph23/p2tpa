@@ -25,19 +25,16 @@
                 <StackPanel Margin="10,0"  Background="White">
                     <WrapPanel>
                         <Label Content="Waktu Kajadian"></Label>
-                        <materialDesign:TimePicker Language="id-ID" SelectedTime="{Binding Waktu,Mode=TwoWay}" Height="37" Margin="5"
-                                       materialDesign:HintAssist.Hint="Waktu"
-                                       IsInvalidTextAllowed="True"
+                        <DatePicker MinWidth="200"  SelectedDateFormat="Long" Language="id-ID" 
+                                    SelectedDate="{Binding Tanggal,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
+                            Width="100"  materialDesign:HintAssist.Hint="Tanggal"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+
+                        <materialDesign:TimePicker Language="id-ID" Height="36" SelectedTime="{Binding Waktu, Mode=TwoWay}"
+                                       materialDesign:HintAssist.Hint="Validates"
+                                       IsInvalidTextAllowed="False"
                                        Is24Hours="{Binding IsChecked, ElementName=Is24HourCheckbox}"
                                        Width="100">
-                            <materialDesign:TimePicker.Text>
-                                <Binding Path="Jam" UpdateSourceTrigger="PropertyChanged">
-
-                                </Binding>
-                            </materialDesign:TimePicker.Text>
                         </materialDesign:TimePicker>
-                        <DatePicker MinWidth="200"  SelectedDateFormat="Long" Language="id-ID" SelectedDate="{Binding Tanggal,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}" 
-                            Width="100"  materialDesign:HintAssist.Hint="Tanggal"  Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
 
                     </WrapPanel>
                     <WrapPanel>

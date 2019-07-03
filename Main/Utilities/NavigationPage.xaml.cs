@@ -37,6 +37,15 @@ namespace Main.Utilities
         }
 
 
+        private string errorMessage;
+
+        public string ErrorMessage
+        {
+            get { return errorMessage; }
+            set { SetProperty(ref errorMessage ,value); }
+        }
+
+
         public bool AvaliableBack
         {
             get
@@ -109,6 +118,7 @@ namespace Main.Utilities
             {
                 var context = Pages[currentPage].DataContext;
                 IDataErrorInfo errorInfo = context as IDataErrorInfo;
+                ErrorMessage = errorInfo.Error;
                 if (string.IsNullOrEmpty(errorInfo.Error))
                     return AvaliableNext;
             }

@@ -8,7 +8,7 @@ namespace Main.Models
 {
 
     [TableName("Terlapor")]
-   public class Terlapor : Identitas
+   public class Terlapor : Identitas , IDataErrorInfo
     {
         private List<HubunganDenganKorban> _hubungan = new List<HubunganDenganKorban>();
         
@@ -18,7 +18,6 @@ namespace Main.Models
             set { _hubungan = value; }
         }
 
-        private HubunganDenganKorban selectedItem;
         private string _hubunganText;
 
 

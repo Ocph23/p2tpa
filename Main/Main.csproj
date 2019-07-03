@@ -45,6 +45,9 @@
     <Reference Include="AutoMapper, Version=8.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>packages\AutoMapper.8.1.1\lib\net461\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.9.0.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>packages\Open-XML-SDK.2.9.0\lib\net46\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
     </Reference>
@@ -58,10 +61,6 @@
       <HintPath>packages\MaterialDesignThemes.2.5.1\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <HintPath>packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="ResponsiveGrid.Wpf, Version=0.3.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\ResponsiveGrid.0.3.3\lib\net45\ResponsiveGrid.Wpf.dll</HintPath>
     </Reference>
@@ -76,7 +75,16 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\System.IO.Packaging.4.5.0\lib\net46\System.IO.Packaging.dll</HintPath>
+    </Reference>
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -175,6 +183,7 @@
     <Compile Include="CommandHandler.cs" />
     <Compile Include="DataAccess\DasboardDataAccess.cs" />
     <Compile Include="DataAccess\DataBasic.cs" />
+    <Compile Include="DataAccess\ExcelContext.cs" />
     <Compile Include="DataAccess\ImportFromExcel.cs" />
     <Compile Include="DataAccess\InstansiCollection.cs" />
     <Compile Include="DataAccess\PengaduanServices.cs" />
@@ -451,8 +460,8 @@
     <Resource Include="Images\pppa.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite.csproj">
-      <Project>{da43b7b6-30bb-4585-b29c-d587766c3878}</Project>
+    <ProjectReference Include="..\..\DAL\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite\Ocph.DAL.SQLite.csproj">
+      <Project>{1855efda-bc20-4563-b911-5cb70cea9d2b}</Project>
       <Name>Ocph.DAL.SQLite</Name>
     </ProjectReference>
   </ItemGroup>

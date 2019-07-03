@@ -23,8 +23,6 @@ namespace Main.DataAccess
                                join kondisi in db.DataKondisiKorban.Select().DefaultIfEmpty() on pengaduan.Id equals kondisi.PengaduanId
                                select new Pengaduan()
                                {        
-                                   JamKejadian = pengaduan.JamKejadian,
-                                   JamLapor = pengaduan.JamLapor,
                                    StatusPelapor = pengaduan.StatusPelapor,
                                    StatusPelaporText = pengaduan.StatusPelaporText,
                                    TanggalKejadian = pengaduan.TanggalKejadian,
@@ -144,7 +142,7 @@ namespace Main.DataAccess
                     }
                     else
                     {
-                        if(!db.DataPengaduan.Update(x=> new { x.Catatan, x.JamKejadian,x.JamLapor,x.KodeDistrik,x.Nomor,x.Penerima,x.Rujukan,x.StatusPelapor,
+                        if(!db.DataPengaduan.Update(x=> new { x.Catatan,x.KodeDistrik,x.Nomor,x.Penerima,x.Rujukan,x.StatusPelapor,
                         x.TanggalKejadian,x.TanggalLapor,x.TempatKejadian,x.TempatLapor,x.UraianKejadian,x.WaktuKejadian,x.WaktuLapor},item,x=>x.Id==item.Id))
                             throw new SystemException("Data Pengaduan Tidak Tersimpan");
                     }
@@ -332,8 +330,6 @@ namespace Main.DataAccess
                     {
                         if (!db.DataPengaduan.Update(x => new {
                             x.Catatan,
-                            x.JamKejadian,
-                            x.JamLapor,
                             x.KodeDistrik,
                             x.Nomor,
                             x.Penerima,
@@ -345,7 +341,7 @@ namespace Main.DataAccess
                             x.TempatLapor,
                             x.UraianKejadian,
                             x.WaktuKejadian,
-                            x.WaktuLapor
+                            x.WaktuLapor, x.StatusPelaporText
                         }, item, x => x.Id == item.Id))
                             throw new SystemException("Data Pengaduan Tidak Tersimpan");
                     }

@@ -14,7 +14,6 @@ namespace Main.Models
     {
         private string nomor;
         private string rujukan;
-        private string hari;
         private string uraian;
         private string catatan;
         private DateTime? waktu;
@@ -24,7 +23,6 @@ namespace Main.Models
         private string kodeDistrik;
         private DateTime? _waktu;
         private DateTime? _tanggal;
-        private string _jam;
         private DateTime? tanggal = DateTime.Now;
         public string hkdt;
         private string statusLapor;
@@ -33,7 +31,7 @@ namespace Main.Models
         private Pelapor pelapor;
         private List<Korban> korbans = new List<Korban>();
         private List<Terlapor> terlapors = new List<Terlapor>();
-        private PackIcon _icon;
+        private PackIcon _icon = new PackIcon();
       
 
         private string _TempatKejadian;
@@ -89,25 +87,6 @@ namespace Main.Models
 
             }
         }
-
-
-        public string JamKejadian
-        {
-            get {
-                  if(string.IsNullOrEmpty(_jam))
-                {
-                    var typeTime = WaktuKejadian.Value.Hour > 12 ? "PM" : "AM";
-                    _jam = $"{WaktuKejadian.Value.Hour}.{WaktuKejadian.Value.Minute} {typeTime}";
-                }
-                return _jam;
-            }
-            set
-            {
-                SetProperty(ref _jam, value);
-            }
-        }
-
-
 
         [DbColumn("tanggalkejadian")]
         public DateTime? TanggalKejadian{ get => _tanggal; set => SetProperty(ref _tanggal, value); }
@@ -208,9 +187,7 @@ namespace Main.Models
             if (name == "Rujukan" && string.IsNullOrEmpty(Rujukan))
                 return "Rujukan Tidak Boleh Kosong";
 
-            if (name == "Hari" && string.IsNullOrEmpty(JamKejadian))
-                return "Hari Tidak Boleh Kosong";
-
+           
 
             if (name == "Tanggal" && new DateTime() == TanggalLapor)
                 return "Tanggal Tidak Boleh Kosong";
