@@ -9,6 +9,8 @@ namespace  Main
 
     public  class  BaseNotify: INotifyPropertyChanged
     {
+        public string MyTitle { get;  set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public  bool SetProperty<T>(ref T backingStore, T value,

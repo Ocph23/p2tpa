@@ -33,6 +33,7 @@
                             <MenuItem Header="Data" Command="{Binding DataViewCommand}"/>
                             <MenuItem Header="Tambah" Command="{Binding TambahPengaduanCommand}"/>
                         </MenuItem>
+                        <MenuItem Header="Report" Foreground="White" FontWeight="Bold" Command="{Binding ReportCommand}"/>
                         <MenuItem Header="Export Import" Foreground="White" FontWeight="Bold">
                             <MenuItem Header="Export"/>
                             <MenuItem Header="Import" Command="{Binding ImportCommand}"/>
@@ -143,7 +144,7 @@
                             <Charts:ProyeksiTerhadapPendduk ></Charts:ProyeksiTerhadapPendduk>
                         </materialDesign:Card>
                         <materialDesign:Card Padding="20" Margin="3" Grid.Row="2" >
-                            <Charts:RasioPerempuanKorbanKekerasan />
+                            <Charts:RasioPerempuanKorbanKekerasan x:Name="ratioChart" />
                         </materialDesign:Card>
                         <Grid MinHeight="100" Grid.Row="4" >
                             <Grid.ColumnDefinitions>

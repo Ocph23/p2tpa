@@ -223,6 +223,14 @@ namespace Main.DataAccess
                                 if(hub.Id==null)
                                 {
                                     hub.TerlaporId = data.Id;
+                                    if(hub.KorbanId==null)
+                                    {
+                                        var korban = item.Korban.Where(x => x.Nama == hub.Korban.Nama).FirstOrDefault();
+                                        if(korban!=null)
+                                        {
+                                            hub.KorbanId = korban.Id;
+                                        }
+                                    }
                                    int? hubId= db.DataHubungan.InsertAndGetLastID(hub);
                                     if (hubId > 0)
                                         hub.Id = hubId;

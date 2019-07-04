@@ -15,7 +15,6 @@ namespace Main
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow()
         {
             InitializeComponent();
@@ -23,7 +22,26 @@ namespace Main
             TambahPengaduanCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = TambahPengaduanAction };
             ImportCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = ImportAction };
             InstansiCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = InstansiCommandAction };
+            ReportCommand= new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = ReportCommandAction };
             DataContext = this;
+            Refresh();
+        }
+
+        private void ReportCommandAction(object obj)
+        {
+            var form = new Reports.ReportFilter();
+            form.ShowDialog();
+        }
+
+        private void Refresh()
+        {
+            var groupPengaduan = (from a in DataAccess.DataBasic.DataPengaduan
+                                  from korban in a.Korban
+                                  select korban);
+
+            KorbanPerempuan= groupPengaduan.Where(x => x.Gender == Gender.P).Count();
+            KorbanLaki = groupPengaduan.Where(x => x.Gender== Gender.L).Count();
+            ratioChart.RefreshChartCommand.Execute(null);
         }
 
         private void InstansiCommandAction(object obj)
@@ -38,12 +56,22 @@ namespace Main
             form.Show();
         }
 
-
-
         private void ImportAction(object obj)
         {
             var form = new Views.ImportView();
-            form.Show();
+            form.ShowDialog();
+            var vm = form.DataContext as DataAccess.ImportFromExcel;
+            if(vm.Restart)
+            {
+                var result =MessageBox.Show("Restart Aplikasi Untuk Melihat Perubahan Hasil Import", "Yakin ?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if(result== MessageBoxResult.Yes)
+                {
+
+                    System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+                    Application.Current.Shutdown();
+                }
+            }
+
         }
 
         private void Db_DataReseult(List<Pengaduan> data)
@@ -55,28 +83,16 @@ namespace Main
             get { return DataAccess.DataBasic.DataPengaduan.Count; }
         }
 
-        public int KorbanLaki { get {
-                var groupPengaduan = (from a in DataAccess.DataBasic.DataPengaduan
-                                      from terlapor in a.Terlapor
-                                      select terlapor).GroupBy(x => x.Gender);
+        public int KorbanLaki { get; set; }
 
-                return groupPengaduan.Where(x => x.Key == Gender.L).Count();
-
-            } }
-
-        public int KorbanPerempuan { get {
-                var groupPengaduan = (from a in DataAccess.DataBasic.DataPengaduan
-                                      from terlapor in a.Terlapor
-                                      select terlapor).GroupBy(x => x.Gender);
-
-                return groupPengaduan.Where(x => x.Key == Gender.P).Count();
-            } }
+        public int KorbanPerempuan { get; set; }
 
 
         public CommandHandler DataViewCommand { get; }
         public CommandHandler TambahPengaduanCommand { get; }
         public CommandHandler ImportCommand { get; private set; }
         public CommandHandler InstansiCommand { get; }
+        public CommandHandler ReportCommand { get; }
 
         private void TambahPengaduanAction(object obj)
         {

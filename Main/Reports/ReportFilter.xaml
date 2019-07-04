@@ -1,0 +1,106 @@
+﻿<Window x:Class="Main.Reports.ReportFilter"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Main.Reports"
+        xmlns:main="clr-namespace:Main"
+        mc:Ignorable="d"
+        Title="Report" Height="660.188" Width="629">
+    <Window.Resources>
+        <main:EnumToBoolConverter x:Key="EBConverter"/>
+    </Window.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Header="Report">
+            <ScrollViewer >
+                <StackPanel   Background="White">
+                    <WrapPanel>
+                        <Label Content="Jenis Report"></Label>
+                        <ComboBox ItemsSource="{Binding JenisReports}"  DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding JenisReport, Mode=TwoWay,
+                            UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                    </WrapPanel>
+
+                    <WrapPanel>
+                        <Label Content="Basis Periode"></Label>
+                        <ComboBox ItemsSource="{Binding BasisPeriodes}" IsEditable="True"  DisplayMemberPath="Value" SelectedValuePath="Key"
+                                  SelectedValue="{Binding BasisPeriode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                    </WrapPanel>
+
+                    <Separator/>
+                    <StackPanel >
+                        <Label HorizontalAlignment="Left" Content="Periode Laporan"></Label>
+                        <WrapPanel>
+                            <RadioButton VerticalAlignment="Center" Width="150" GroupName="gender" IsChecked="{Binding Path=PeriodeLaporan, Converter={StaticResource EBConverter},
+                            ConverterParameter={x:Static main:PeriodeLaporanType.Tanggal}}" Content="Tanggal" ></RadioButton>
+                            <DatePicker  Width="100" Language="id-ID" SelectedDate="{Binding TanggalDari,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  
+                           Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                            <Label VerticalAlignment="Bottom" Content="s/d" Width="auto"/>
+                            <DatePicker  Width="100" Language="id-ID" SelectedDate="{Binding TanggalSampai,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  
+                           Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                        </WrapPanel>
+                        <WrapPanel>
+                            <RadioButton VerticalAlignment="Center" Width="150" GroupName="gender" IsChecked="{Binding Path=PeriodeLaporan, Converter={StaticResource EBConverter},
+                            ConverterParameter={x:Static main:PeriodeLaporanType.Triwulan}}" Content="Triwulan" ></RadioButton>
+                            <ComboBox Width="55" ItemsSource="{Binding Triwulans}"  IsEditable="True"
+                                      SelectedItem="{Binding DariTriwulan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+                            <Label VerticalAlignment="Bottom" Content="s/d" Width="auto"/>
+                            <ComboBox Width="55" ItemsSource="{Binding Triwulans}" 
+                                      SelectedItem="{Binding SampaiTriwulan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                            <ComboBox Margin="2,0" Width="90" ItemsSource="{Binding Tahuns}" Text="{Binding PekerjaanText}" IsEditable="True"
+                                      SelectedItem="{Binding Tahun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <RadioButton VerticalAlignment="Center" Width="150" GroupName="gender" IsChecked="{Binding Path=PeriodeLaporan, Converter={StaticResource EBConverter},
+                            ConverterParameter={x:Static main:PeriodeLaporanType.Semester}}" Content="Semester" ></RadioButton>
+                            <ComboBox Width="55" ItemsSource="{Binding Semesters}" Text="{Binding PekerjaanText}" IsEditable="True"
+                                      SelectedItem="{Binding DariSemester, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+
+                            <Label VerticalAlignment="Bottom" Content="s/d" Width="auto"/>
+                            <ComboBox Width="55" ItemsSource="{Binding Semesters}" Text="{Binding PekerjaanText}" IsEditable="True"
+                                      SelectedItem="{Binding SampaiSemester, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                            <ComboBox Margin="2,0" Width="90" ItemsSource="{Binding Tahuns}" Text="{Binding Tahun}" IsEditable="True"
+                                      SelectedItem="{Binding Tahun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                        </WrapPanel>
+                    </StackPanel>
+                    <Separator/>
+                    <WrapPanel>
+                        <Label Content="Jenis Kelamin Korban" Width="150"></Label>
+                        <ComboBox ItemsSource="{Binding Genders}" Text="{Binding PekerjaanText}"  SelectedValuePath="Key" DisplayMemberPath="Value"
+                                  SelectedValue="{Binding Gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Status Usia Korban" Width="150"></Label>
+                        <ComboBox ItemsSource="{Binding ListPekerjaan}" Text="{Binding PekerjaanText}"
+                                  SelectedItem="{Binding Pekerjaan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Basis Report" Width="150"></Label>
+                        <ComboBox ItemsSource="{Binding BaseReports}" DisplayMemberPath="Value" SelectedValuePath="Key"
+                                  SelectedValue="{Binding BaseReport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Kategori Instansi" Width="150"></Label>
+                        <ComboBox ItemsSource="{Binding DataKategoriInstansi}"
+                                  SelectedItem="{Binding KategoriInstansi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Instansi" Width="150"></Label>
+                        <ComboBox ItemsSource="{Binding DataInstansi}" DisplayMemberPath="Name"
+                                  SelectedItem="{Binding Instansi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                    </WrapPanel>
+
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+        <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
+            <Button Margin="2" Width="100" Command="{Binding ShowCommand}" Content="Tampilkan" ></Button>
+            <Button Margin="2" Width="100" Command="{Binding CancelCommand}" Content="Batal" Style="{StaticResource MaterialDesignRaisedAccentButton}" ></Button>
+        </WrapPanel>
+    </Grid>
+</Window>

@@ -10,10 +10,14 @@ namespace Main
 {
 
 
+    public enum PeriodeLaporanType
+    {
+        Tanggal, Triwulan, Semester
+    }
 
     public enum Gender
     {
-        L, P, None
+        None, L, P
     }
 
 
@@ -136,7 +140,7 @@ namespace Main
            {
                new Layanan(){ Name = "Pelaporan"},
                  new Layanan(){ Name = "Pemeriksaan"},
-                 new Layanan(){ Name = "Penyidikan"},
+                 new Layanan(){ Name = "Penyelidikan"},
                  new Layanan(){ Name = "Penyidikan"},
                  new Layanan(){ Name = "Penangkapan"},
                  new Layanan(){ Name = "Penanganan"},

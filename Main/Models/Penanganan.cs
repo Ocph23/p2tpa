@@ -69,7 +69,7 @@ namespace Main.Models
         public string IdentitasType { get => identitasType; set => SetProperty(ref identitasType, value); }
 
         [DbColumn("InstansiId")]
-        public int InstansiId {
+        public int? InstansiId {
             get => instansiId;
             set => SetProperty(ref instansiId, value); }
 
@@ -118,14 +118,14 @@ namespace Main.Models
             {
                 IDataErrorInfo me = (IDataErrorInfo)this;
                 string error =
-                    me[GetPropertyName(() => IdentiasId)] +
+                    me[GetPropertyName(() => IdentiasId)]+
+                    me[GetPropertyName(() => InstansiId)] +
                     me[GetPropertyName(() => Tanggal)] +
-                    me[GetPropertyName(() => IdentitasType)] +
-                    me[GetPropertyName(() => Deskripsi)] 
+                    me[GetPropertyName(() => IdentitasType)]
                     ;
 
                 if (!string.IsNullOrEmpty(error))
-                    return error;
+                    return $"Penanganan.{error}";
                 //return null;
                 return null;
             }
@@ -138,6 +138,9 @@ namespace Main.Models
                 return "Identitas Type Tidak Boleh 0";
 
 
+            if (name == "InstansiId" && InstansiId < 0)
+                return "Instansi Harus Diisi";
+ 
             if (name == "Tanggal" && Tanggal== new DateTime())
                 return "Minimal Pilih Salah Satu";
 
@@ -145,9 +148,6 @@ namespace Main.Models
             if (name == "IdentitasType" && string.IsNullOrEmpty(IdentitasType))
                 return "Pilih Jenis Identitas ";
 
-
-            if (name == "Deskripsi" && string.IsNullOrEmpty(Deskripsi))
-                return "Deskripsi Tidak Boleh Kosong";
 
             return null;
         }
@@ -164,7 +164,7 @@ namespace Main.Models
         private string layanan;
         private Identitas dataIdentitas;
         private Layanan _selectedLayanan;
-        private int instansiId;
+        private int? instansiId;
         private Instansi _instansiSelected;
         private string _title;
 
@@ -196,6 +196,7 @@ namespace Main.Models
         public CommandHandler CancelCommand { get; }
         public CommandHandler AddInstansiCommand { get; }
         public Action WindowClose { get; internal set; }
+        public string Nama { get; internal set; }
     }
 
 }

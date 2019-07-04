@@ -55,7 +55,7 @@ namespace Main.Models
 
 
                 if (!string.IsNullOrEmpty(error))
-                    return "Please check inputted data.";
+                    return error;
                 return null;
             }
         }

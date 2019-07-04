@@ -10,8 +10,6 @@ namespace Main.DataAccess
 {
     public class ExcelContext : IDisposable
     {
-        private string fileName;
-        private string sheetName;
        public SpreadsheetDocument document { get; set; }
 
         public DataRows GetRange(string sheetName, string range)
