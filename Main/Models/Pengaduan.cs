@@ -133,6 +133,8 @@ namespace Main.Models
 
         public List<string> StatusPelapors { get; set; } = EnumSource.DataStatusPelapor();
         private string statusLaporText;
+        private Kecamatan _distrik;
+
         public string StatusPelaporText
         {
             get => statusLaporText;
@@ -174,7 +176,7 @@ namespace Main.Models
             }
         }
 
-
+        public Kecamatan Distrik {get => _distrik; set => SetProperty(ref _distrik, value);}
 
         private string Validate(string name)
         {

@@ -6,48 +6,51 @@
         xmlns:local="clr-namespace:Main.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="InstansiView" Height="450" Width="700">
+        Title=" " Height="500" Width="700">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Label Width="auto" Content="Kasus"/>
-        <DataGrid Margin="20" Grid.Row="1" ItemsSource="{Binding DataInstansi}" AutoGenerateColumns="False"
+        <GroupBox Margin="10" Grid.Row="1"  >
+            <GroupBox.Header>
+                <Grid>
+                    <Label HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Content="Data Instansi" Foreground="White"/>
+                    <Button Grid.Row="2" HorizontalAlignment="Right"  Command="{Binding AddItemCommand}" Width="30" Height="30" 
+                            Style="{StaticResource MaterialDesignFloatingActionAccentButton}" ToolTip="MaterialDesignFloatingActionAccentButton">
+                        <materialDesign:PackIcon Kind="Add" Height="24" Width="24" />
+                    </Button>
+                </Grid>
+            </GroupBox.Header>
+            <DataGrid ItemsSource="{Binding DataInstansi}" AutoGenerateColumns="False"
              CanUserAddRows="False" CanUserDeleteRows="False" >
-            <DataGrid.Columns>
-                <DataGridTextColumn  Header="Nomor" Binding="{Binding Name}"/>
-                <DataGridTextColumn  Header="Kategori" Binding="{Binding Kategori}"/>
-                <DataGridTextColumn   Header="Tingkat" Binding="{Binding Tingkat}"/>
-                <DataGridTextColumn  Header="Distrik" Binding="{Binding DistrikName}"/>
-                <DataGridTextColumn Width="*" Header="Alamat" Binding="{Binding Alamat}"/>
-                <DataGridTemplateColumn Header="Action">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <materialDesign:PopupBox  VerticalAlignment="Top" StaysOpen="True" IsEnabled="True">
-                                <StackPanel >
-                                    <Button Height="35" Content="Edit" Command="{Binding Path=DataContext.EditItemCommand, 
+                <DataGrid.Columns>
+                    <DataGridTextColumn  Header="Nomor" Binding="{Binding Name}"/>
+                    <DataGridTextColumn  Header="Kategori" Binding="{Binding Kategori}"/>
+                    <DataGridTextColumn   Header="Tingkat" Binding="{Binding Tingkat}"/>
+                    <DataGridTextColumn  Header="Distrik" Binding="{Binding DistrikName}"/>
+                    <DataGridTextColumn Width="*" Header="Alamat" Binding="{Binding Alamat}"/>
+                    <DataGridTemplateColumn Header="Action">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <materialDesign:PopupBox  VerticalAlignment="Top" StaysOpen="True" IsEnabled="True">
+                                    <StackPanel >
+                                        <Button Height="35" Content="Edit" Command="{Binding Path=DataContext.EditItemCommand, 
                                              RelativeSource={RelativeSource Mode=FindAncestor, 
                                               AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
-                                    <Button Height="35" Content="Delete" Command="{Binding Path=DataContext.DeleteItemCommand, 
+                                        <Button Height="35" Content="Delete" Command="{Binding Path=DataContext.DeleteItemCommand, 
                                              RelativeSource={RelativeSource Mode=FindAncestor, 
                                               AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
-                                   
-                                </StackPanel>
-                            </materialDesign:PopupBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Button Grid.Row="2" HorizontalAlignment="Right" Margin="5" Command="{Binding AddItemCommand}"
-      Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
-      ToolTip="MaterialDesignFloatingActionAccentButton">
-            <materialDesign:PackIcon
-        Kind="Add"
-        Height="24"
-        Width="24" />
-        </Button>
+
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+      
     </Grid>
 </Window>

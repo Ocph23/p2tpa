@@ -8,7 +8,7 @@
          xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:main="clr-namespace:Main"
         xmlns:utilities="clr-namespace:Main.Utilities"
-        MinWidth="800"
+        MinWidth="550" MinHeight="600" Width="800" WindowStartupLocation="CenterScreen"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
      TextElement.FontSize="13"
@@ -16,11 +16,11 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="PENGADUAN KORBAN PEREMPUAN"   WindowState="Maximized">
+        Title=" " >
     <Window.Resources>
         <main:EnumToBoolConverter x:Key="EBConverter"/>
     </Window.Resources>
-    <Grid Margin="20">
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
@@ -30,8 +30,8 @@
                 <Frame NavigationUIVisibility="Hidden" x:Name="MainFrame"></Frame>
             </StackPanel>
         </ScrollViewer>
-        <WrapPanel Grid.Row="1" Margin="15" HorizontalAlignment="Right">
-            <utilities:NavigationPage x:Name="nav"></utilities:NavigationPage>
+        <WrapPanel Grid.Row="1"  HorizontalAlignment="Right">
+            <utilities:NavigationPage x:Name="nav" Margin="1"></utilities:NavigationPage>
         </WrapPanel>
     </Grid>
 </Window>

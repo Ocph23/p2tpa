@@ -51,7 +51,7 @@ namespace Main.Reports.Models
         public int KawinCerai { get; set; }
 
         public int Total { get; set; }
-
-
+        public string Gender { get;  set; }
+        public int PekPelajar { get; internal set; }
     }
 }

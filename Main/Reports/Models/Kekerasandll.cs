@@ -34,6 +34,5 @@ namespace Main.Reports.Models
         public int JenisReintegrasi { get; set; }
         public int JenisPemulangan { get; set; }
         public int JenisTokohAgama { get; set; }
-      
     }
 }

@@ -5,10 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Main.Reports"
         xmlns:main="clr-namespace:Main"
-        mc:Ignorable="d"
-        Title="Report" Height="660.188" Width="629">
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title=" " Height="500" Width="550">
     <Window.Resources>
         <main:EnumToBoolConverter x:Key="EBConverter"/>
+        <Style TargetType="Label">
+            <Setter Property="Width" Value="100"/>
+        </Style>
+
+        <Style TargetType="RadioButton">
+            <Setter Property="Width" Value="100"/>
+        </Style>
     </Window.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -21,13 +28,13 @@
                 <StackPanel   Background="White">
                     <WrapPanel>
                         <Label Content="Jenis Report"></Label>
-                        <ComboBox ItemsSource="{Binding JenisReports}"  DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding JenisReport, Mode=TwoWay,
+                        <ComboBox ItemsSource="{Binding JenisReports}" Width="300"  DisplayMemberPath="Value" SelectedValuePath="Key" SelectedValue="{Binding JenisReport, Mode=TwoWay,
                             UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                     </WrapPanel>
 
                     <WrapPanel>
                         <Label Content="Basis Periode"></Label>
-                        <ComboBox ItemsSource="{Binding BasisPeriodes}" IsEditable="True"  DisplayMemberPath="Value" SelectedValuePath="Key"
+                        <ComboBox ItemsSource="{Binding BasisPeriodes}" Width="300" IsEditable="True"  DisplayMemberPath="Value" SelectedValuePath="Key"
                                   SelectedValue="{Binding BasisPeriode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                     </WrapPanel>
 
@@ -35,61 +42,147 @@
                     <StackPanel >
                         <Label HorizontalAlignment="Left" Content="Periode Laporan"></Label>
                         <WrapPanel>
-                            <RadioButton VerticalAlignment="Center" Width="150" GroupName="gender" IsChecked="{Binding Path=PeriodeLaporan, Converter={StaticResource EBConverter},
+                            <RadioButton x:Name="rbTanggal" VerticalAlignment="Center" GroupName="gender" 
+                                         IsChecked="{Binding Path=PeriodeLaporan, Converter={StaticResource EBConverter},
                             ConverterParameter={x:Static main:PeriodeLaporanType.Tanggal}}" Content="Tanggal" ></RadioButton>
-                            <DatePicker  Width="100" Language="id-ID" SelectedDate="{Binding TanggalDari,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  
-                           Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                            <DatePicker  Width="100" Language="id-ID" SelectedDate="{Binding TanggalDari,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"   >
+                                <DatePicker.Style>
+                                    <Style TargetType="DatePicker" BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=rbTanggal, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DatePicker.Style>
+                            </DatePicker>
                             <Label VerticalAlignment="Bottom" Content="s/d" Width="auto"/>
-                            <DatePicker  Width="100" Language="id-ID" SelectedDate="{Binding TanggalSampai,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  
-                           Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                            <DatePicker  Width="100" Language="id-ID" SelectedDate="{Binding TanggalSampai,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True}"  >
+                                <DatePicker.Style>
+                                    <Style TargetType="DatePicker" BasedOn="{StaticResource MaterialDesignFloatingHintDatePicker}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=rbTanggal, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DatePicker.Style>
+                            </DatePicker>
                         </WrapPanel>
                         <WrapPanel>
-                            <RadioButton VerticalAlignment="Center" Width="150" GroupName="gender" IsChecked="{Binding Path=PeriodeLaporan, Converter={StaticResource EBConverter},
+                            <RadioButton x:Name="rbTriwulan" VerticalAlignment="Center"  GroupName="gender" IsChecked="{Binding Path=PeriodeLaporan, Converter={StaticResource EBConverter},
                             ConverterParameter={x:Static main:PeriodeLaporanType.Triwulan}}" Content="Triwulan" ></RadioButton>
-                            <ComboBox Width="55" ItemsSource="{Binding Triwulans}"  IsEditable="True"
-                                      SelectedItem="{Binding DariTriwulan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
-
+                            <ComboBox Width="55" ItemsSource="{Binding Triwulans}"  IsEditable="False"
+                                      SelectedItem="{Binding DariTriwulan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                <ComboBox.Style>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=rbTriwulan, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.Style>
+                            </ComboBox>
                             <Label VerticalAlignment="Bottom" Content="s/d" Width="auto"/>
                             <ComboBox Width="55" ItemsSource="{Binding Triwulans}" 
-                                      SelectedItem="{Binding SampaiTriwulan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                      SelectedItem="{Binding SampaiTriwulan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                <ComboBox.Style>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=rbTriwulan, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.Style>
+                            </ComboBox>
                             <ComboBox Margin="2,0" Width="90" ItemsSource="{Binding Tahuns}" Text="{Binding PekerjaanText}" IsEditable="True"
-                                      SelectedItem="{Binding Tahun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                      SelectedItem="{Binding Tahun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                <ComboBox.Style>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=rbTriwulan, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.Style>
+                            </ComboBox>
                         </WrapPanel>
                         <WrapPanel>
-                            <RadioButton VerticalAlignment="Center" Width="150" GroupName="gender" IsChecked="{Binding Path=PeriodeLaporan, Converter={StaticResource EBConverter},
+                            <RadioButton x:Name="rbSemester" VerticalAlignment="Center"  GroupName="gender" IsChecked="{Binding Path=PeriodeLaporan, Converter={StaticResource EBConverter},
                             ConverterParameter={x:Static main:PeriodeLaporanType.Semester}}" Content="Semester" ></RadioButton>
                             <ComboBox Width="55" ItemsSource="{Binding Semesters}" Text="{Binding PekerjaanText}" IsEditable="True"
-                                      SelectedItem="{Binding DariSemester, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                      SelectedItem="{Binding DariSemester, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                <ComboBox.Style>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=rbSemester, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.Style>
+                            </ComboBox>
 
                             <Label VerticalAlignment="Bottom" Content="s/d" Width="auto"/>
                             <ComboBox Width="55" ItemsSource="{Binding Semesters}" Text="{Binding PekerjaanText}" IsEditable="True"
-                                      SelectedItem="{Binding SampaiSemester, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                      SelectedItem="{Binding SampaiSemester, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                <ComboBox.Style>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=rbSemester, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.Style>
+                            </ComboBox>
                             <ComboBox Margin="2,0" Width="90" ItemsSource="{Binding Tahuns}" Text="{Binding Tahun}" IsEditable="True"
-                                      SelectedItem="{Binding Tahun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
+                                      SelectedItem="{Binding Tahun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                <ComboBox.Style>
+                                    <Style TargetType="ComboBox" BasedOn="{StaticResource ResourceKey={x:Type ComboBox}}">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=rbSemester, Path=IsChecked}" Value="True">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ComboBox.Style>
+                            </ComboBox>
                         </WrapPanel>
                     </StackPanel>
                     <Separator/>
-                    <WrapPanel>
+                    <WrapPanel Visibility="Collapsed">
                         <Label Content="Jenis Kelamin Korban" Width="150"></Label>
                         <ComboBox ItemsSource="{Binding Genders}" Text="{Binding PekerjaanText}"  SelectedValuePath="Key" DisplayMemberPath="Value"
                                   SelectedValue="{Binding Gender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                     </WrapPanel>
-                    <WrapPanel>
+                    <WrapPanel Visibility="Collapsed">
                         <Label Content="Status Usia Korban" Width="150"></Label>
                         <ComboBox ItemsSource="{Binding ListPekerjaan}" Text="{Binding PekerjaanText}"
                                   SelectedItem="{Binding Pekerjaan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                     </WrapPanel>
-                    <WrapPanel>
+                    <WrapPanel Visibility="Collapsed">
                         <Label Content="Basis Report" Width="150"></Label>
                         <ComboBox ItemsSource="{Binding BaseReports}" DisplayMemberPath="Value" SelectedValuePath="Key"
                                   SelectedValue="{Binding BaseReport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                     </WrapPanel>
-                    <WrapPanel>
+                    <WrapPanel Visibility="Collapsed">
                         <Label Content="Kategori Instansi" Width="150"></Label>
                         <ComboBox ItemsSource="{Binding DataKategoriInstansi}"
                                   SelectedItem="{Binding KategoriInstansi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>
                     </WrapPanel>
-                    <WrapPanel>
+                    <WrapPanel Visibility="Collapsed">
                         <Label Content="Instansi" Width="150"></Label>
                         <ComboBox ItemsSource="{Binding DataInstansi}" DisplayMemberPath="Name"
                                   SelectedItem="{Binding Instansi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"/>

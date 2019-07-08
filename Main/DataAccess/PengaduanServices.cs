@@ -18,21 +18,22 @@ namespace Main.DataAccess
                     var aaa = db.DataPengaduan.Select();
 
                     var data = from pengaduan in db.DataPengaduan.Select()
+                               join dis in  DataBasic.GetKecamatan() on pengaduan.KodeDistrik equals dis.Id
                                join pelapor in db.DataPelapor.Select().DefaultIfEmpty() on pengaduan.Id equals pelapor.PengaduanId
                                join dampak in db.DataDampak.Select().DefaultIfEmpty() on pengaduan.Id equals dampak.PengaduanId
                                join kondisi in db.DataKondisiKorban.Select().DefaultIfEmpty() on pengaduan.Id equals kondisi.PengaduanId
                                select new Pengaduan()
-                               {        
+                               {         
                                    StatusPelapor = pengaduan.StatusPelapor,
                                    StatusPelaporText = pengaduan.StatusPelaporText,
                                    TanggalKejadian = pengaduan.TanggalKejadian,
                                    TempatKejadian = pengaduan.TempatKejadian,
                                    WaktuKejadian = pengaduan.WaktuKejadian,
-                                   KodeDistrik = pengaduan.KodeDistrik,
+                                   KodeDistrik = pengaduan.KodeDistrik, 
+                                   Distrik = dis,
                                    Catatan = pengaduan.Catatan,
                                    Id = pengaduan.Id,
                                    Nomor = pengaduan.Nomor, 
-                                  
                                    Penerima = pengaduan.Penerima,
                                    Rujukan = pengaduan.Rujukan,
                                    TanggalLapor = pengaduan.TanggalLapor,
@@ -177,6 +178,9 @@ namespace Main.DataAccess
 
                              foreach(var penanganan in data.DataPenanganan)
                             {
+
+                                penanganan.IdentiasId = data.Id;
+
                                 if(penanganan.IdPenanganan==null)
                                 {
                                     penanganan.IdPenanganan=db.Penanganan.InsertAndGetLastID(penanganan);
@@ -247,6 +251,7 @@ namespace Main.DataAccess
 
                             foreach (var penanganan in data.DataPenanganan)
                             {
+                                penanganan.IdentiasId = data.Id;
                                 if (penanganan.IdPenanganan == null)
                                 {
                                     penanganan.IdPenanganan = db.Penanganan.InsertAndGetLastID(penanganan);

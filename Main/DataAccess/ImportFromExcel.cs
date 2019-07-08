@@ -14,6 +14,7 @@ using System.Text;
 using System.Globalization;
 using AutoMapper;
 using Main.ViewModels;
+using System.Windows;
 
 namespace Main.DataAccess
 {
@@ -21,12 +22,13 @@ namespace Main.DataAccess
     public delegate void onResult(List<Pengaduan> data);
     public class ImportFromExcel : BaseNotify,IDisposable
     {
-        private string fileName = Environment.CurrentDirectory + "\\ImportPengaduan.xlsx";
+        private string fileName;
         private Pengaduan _selected;
         private ExcelContext excel;
 
-        public ImportFromExcel()
+        public ImportFromExcel(string resultFile)
         {
+            fileName = resultFile;
             Pengaduans = new ObservableCollection<Pengaduan>();
             PengaduanViews = (CollectionView)CollectionViewSource.GetDefaultView(Pengaduans);
             SaveCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = SaveToDatabaseAsync };
@@ -92,14 +94,24 @@ namespace Main.DataAccess
 
         public async void StartAsync()
         {
-            excel = new ExcelContext(fileName);
-            await Task.Delay(500);
-            await ProccessInstasi();
-            await ProccessPengaduan().ContinueWith(taskPengaduanCompleteAsync);
-            await ProccessPelapor().ContinueWith(taskPelaporCompleteAsync);
-            await ProccessKorban().ContinueWith(taskKorbanCompleteAsync);
-            await ProccessTerlapor().ContinueWith(taskTerlaporCompleteAsync);
-            PengaduanViews.Refresh();
+            try
+            {
+                await Task.Delay(2000);
+                excel = new ExcelContext(fileName);
+                await Task.Delay(500);
+                await ProccessInstasi();
+                await ProccessPengaduan().ContinueWith(taskPengaduanCompleteAsync);
+                await ProccessPelapor().ContinueWith(taskPelaporCompleteAsync);
+                await ProccessKorban().ContinueWith(taskKorbanCompleteAsync);
+                await ProccessTerlapor().ContinueWith(taskTerlaporCompleteAsync);
+                PengaduanViews.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                await Task.Delay(1000);
+                WindowClose();
+            }
         }
 
       
@@ -160,6 +172,7 @@ namespace Main.DataAccess
         public CommandHandler EditCommand { get; }
         public CommandHandler ValidateCommand { get; }
         public bool Restart { get; internal set; }
+        public Action WindowClose { get; internal set; }
 
         private async Task completeSaveAsync(Task<Tuple<string, Pengaduan, bool>> obj)
         {
@@ -327,6 +340,16 @@ namespace Main.DataAccess
 
         }
 
+
+        private bool progressVisible =true;
+
+        public bool ProgressVisible
+        {
+            get { return progressVisible; }
+            set { SetProperty(ref progressVisible ,value); }
+        }
+
+
         private async void taskTerlaporCompleteAsync(Task<List<Terlapor>> obj)
         {
             var datas = await obj;
@@ -341,9 +364,9 @@ namespace Main.DataAccess
                         item.Terlapor.Add(data);
                     }
                 }
+
+                ProgressVisible = false;
             });
-
-
         }
 
         private async void taskPelaporCompleteAsync(Task<List<Pelapor>> obj)
@@ -368,37 +391,44 @@ namespace Main.DataAccess
 
         private Task ProccessInstasi()
         {
-            var rngPengaduan = excel.GetRange("Instansi", "A3:D100");
-          
-            for (var row = 3; row <= rngPengaduan.Count; row++)
+            try
             {
-                Instansi instansi = new  Instansi();
-                var nama = rngPengaduan.Cell(row, "A");
-                if (string.IsNullOrEmpty(nama))
-                    break;
-                instansi.Name = nama;
+                var rngPengaduan = excel.GetRange("Instansi", "A3:D100");
 
-                KategoriInstansi kategori;
-                var success = Enum.TryParse<KategoriInstansi>(rngPengaduan.Cell(row, "B"), out kategori);
-                if (!success)
-                    break;
-                instansi.Kategori =kategori;
+                for (var row = 3; row <= rngPengaduan.Count; row++)
+                {
+                    Instansi instansi = new Instansi();
+                    var nama = rngPengaduan.Cell(row, "A");
+                    if (string.IsNullOrEmpty(nama))
+                        break;
+                    instansi.Name = nama;
+
+                    KategoriInstansi kategori;
+                    var success = Enum.TryParse<KategoriInstansi>(rngPengaduan.Cell(row, "B"), out kategori);
+                    if (!success)
+                        break;
+                    instansi.Kategori = kategori;
 
 
-                TingakatInstansi tingkat;
-                success = Enum.TryParse<TingakatInstansi>(rngPengaduan.Cell(row, "C"), out tingkat);
-                if (!success)
-                    break;
+                    TingakatInstansi tingkat;
+                    success = Enum.TryParse<TingakatInstansi>(rngPengaduan.Cell(row, "C"), out tingkat);
+                    if (!success)
+                        break;
 
-                instansi.Tingkat = tingkat;
-                instansi.Alamat = rngPengaduan.Cell(row, "D");
+                    instansi.Tingkat = tingkat;
+                    instansi.Alamat = rngPengaduan.Cell(row, "D");
 
-                var isFound = DataAccess.DataBasic.DataInstansi.Where(x => x.Name.ToLower() == nama.ToLower()).FirstOrDefault();
-                if(isFound==null)
-                    DataAccess.DataBasic.DataInstansi.Add(instansi);
+                    var isFound = DataAccess.DataBasic.DataInstansi.Where(x => x.Name.ToLower() == nama.ToLower()).FirstOrDefault();
+                    if (isFound == null)
+                        DataAccess.DataBasic.DataInstansi.Add(instansi);
+                }
+
+                return Task.FromResult(0);
             }
-
-            return Task.FromResult(0);
+            catch (Exception)
+            {
+                throw new SystemException("Format Template Salah, Hubungi Admin");
+            }
         }
 
 
@@ -536,13 +566,13 @@ namespace Main.DataAccess
                     sb.Append($"Seksual#");
 
                 if (rngPengaduan.Cell(row, "Q").ToLower() == "1")
-                    sb.Append($"Exploitasi#");
+                    sb.Append($"Eksploitasi#");
 
                 if (rngPengaduan.Cell(row, "R").ToLower() == "1")
                     sb.Append($"Trafficking#");
 
                 if (rngPengaduan.Cell(row, "S").ToLower() == "1")
-                    sb.Append($"Penelantara#");
+                    sb.Append($"Penelantaran#");
 
                 if (rngPengaduan.Cell(row, "T").ToLower() == "1")
                     sb.Append($"Lainnya#");

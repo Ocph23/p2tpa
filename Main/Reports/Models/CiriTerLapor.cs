@@ -70,7 +70,7 @@ namespace Main.Reports.Models
 
 
         public int Total { get; set; }
-
-
+        public int PekPelajar { get; internal set; }
+        public string Gender { get; internal set; }
     }
 }

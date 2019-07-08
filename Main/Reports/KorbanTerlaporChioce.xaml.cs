@@ -12,23 +12,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Main.Views
+namespace Main.Reports
 {
     /// <summary>
-    /// Interaction logic for ImportView.xaml
+    /// Interaction logic for KorbanTerlaporChioce.xaml
     /// </summary>
-    public partial class ImportView : Window
+    public partial class KorbanTerlaporChioce : Window
     {
-        public ImportView(string resultFile)
+        public KorbanTerlaporChioce()
         {
             InitializeComponent();
-            var vm = new DataAccess.ImportFromExcel(resultFile) { WindowClose=this.Close};
-            this.DataContext = vm;
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

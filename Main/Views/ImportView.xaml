@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Main.Views"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d" WindowState="Maximized"
-        Title="ImportView" Height="450" Width="800">
+        Title=" " Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -16,150 +16,160 @@
         <StackPanel>
 
         </StackPanel>
-        <DataGrid Margin="20" Grid.Row="1" Name="dataGrid" ToolTip="Click Kanan Untuk Menampilkan Menu" ItemsSource="{Binding PengaduanViews}" SelectedItem="{Binding SelectedItem}" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" ScrollViewer.HorizontalScrollBarVisibility="Visible">
-            <DataGrid.Columns >
-                <DataGridTemplateColumn Header="Status"  >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <materialDesign:PackIcon  ToolTip="{Binding Icon.ToolTip}"  Kind="{Binding Icon.Kind}" Foreground="{Binding Icon.Foreground}" Height="20" Width="30" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn  Header="Registrasi" Binding="{Binding Nomor}"/>
-                <DataGridTextColumn Header="Rujukan" Binding="{Binding Rujukan}"/>
-                <DataGridTextColumn Header="Tanggal" Binding="{Binding Tanggal,StringFormat=dd MMMM yyyy}"/>
-                <DataGridTextColumn Header="Waktu" Binding="{Binding Waktu}"/>
-                <DataGridTextColumn Header="Tempat" Binding="{Binding Tempat}"/>
-                <DataGridTextColumn Header="Penerima" Binding="{Binding Penerima}"/>
-                <DataGridTextColumn Header="Yang Melapor" Binding="{Binding StatusPelapor}"/>
-                <DataGridTemplateColumn  Header="Pelapor" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Pelapor.Nama}">
-                                <TextBlock.ToolTip>
-                                    <StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Nama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Pelapor.Nama}" FontSize="13"></TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Jenis Kelamin" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Pelapor.Gender}" FontSize="13"></TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Alamat" FontSize="10"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Pelapor.Alamat}" FontSize="14"></TextBlock>
-                                        </StackPanel>
+    
+        <GroupBox Margin="20" Grid.Row="1" Header="IMPORT DATA DARI EXCEL">
+            <DataGrid  Name="dataGrid" ToolTip="Click Kanan Untuk Menampilkan Menu" ItemsSource="{Binding PengaduanViews}" SelectedItem="{Binding SelectedItem}" CanUserAddRows="False" CanUserDeleteRows="True" AutoGenerateColumns="False" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                <DataGrid.Columns >
+                    <DataGridTemplateColumn Header="Status"  >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <materialDesign:PackIcon  ToolTip="{Binding Icon.ToolTip}"  Kind="{Binding Icon.Kind}" Foreground="{Binding Icon.Foreground}" Height="20" Width="30" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn  Header="Registrasi" Binding="{Binding Nomor}"/>
+                    <DataGridTextColumn Header="Rujukan" Binding="{Binding Rujukan}"/>
+                    <DataGridTextColumn Header="Tanggal Lapor" Binding="{Binding TanggalLapor,StringFormat=dd MMMM yyyy}"/>
+                    <DataGridTextColumn Header="Tanggal Kejadian" Binding="{Binding TanggalKejadian,StringFormat=dd MMMM yyyy}"/>
+                    <DataGridTextColumn Header="Tempat Kejadian" Binding="{Binding TempatKejadian}"/>
+                  
+                    <DataGridTextColumn Header="Yang Melapor" Binding="{Binding StatusPelapor}"/>
+                    <DataGridTemplateColumn  Header="Pelapor" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Pelapor.Nama}">
+                                    <TextBlock.ToolTip>
+                                        <StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Nama" FontSize="9"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Pelapor.Nama}" FontSize="13"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Jenis Kelamin" FontSize="9"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Pelapor.Gender}" FontSize="13"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Alamat" FontSize="10"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Pelapor.Alamat}" FontSize="14"></TextBlock>
+                                            </StackPanel>
 
-                                    </StackPanel>
-                                </TextBlock.ToolTip>
+                                        </StackPanel>
+                                    </TextBlock.ToolTip>
                             </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn Header="Korban" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Korban[0].Nama}">
-                                <TextBlock.ToolTip>
-                                    <StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Nama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban[0].Nama}" FontSize="13"></TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Jenis Kelamin" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban[0].Gender}" FontSize="13"></TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="TTL" FontSize="9"></TextBlock>
-                                            <WrapPanel>
-                                                <TextBlock Text="{Binding Path=Korban[0].TempatLahir}" FontSize="13"></TextBlock>
-                                                <TextBlock Text=", " FontSize="13"></TextBlock>
-                                                <TextBlock Text="{Binding Path=Korban[0].TanggalLahir,StringFormat=dd MM yyyy}" FontSize="13"></TextBlock>
-                                            </WrapPanel>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Alamat" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban[0].Alamat}" FontSize="13"></TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Agama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban[0].Agama}" FontSize="13"></TextBlock>
-                                        </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Korban" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Korban[0].Nama}">
+                                    <TextBlock.ToolTip>
+                                        <StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Nama" FontSize="9"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Korban[0].Nama}" FontSize="13"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Jenis Kelamin" FontSize="9"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Korban[0].Gender}" FontSize="13"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="TTL" FontSize="9"></TextBlock>
+                                                <WrapPanel>
+                                                    <TextBlock Text="{Binding Path=Korban[0].TempatLahir}" FontSize="13"></TextBlock>
+                                                    <TextBlock Text=", " FontSize="13"></TextBlock>
+                                                    <TextBlock Text="{Binding Path=Korban[0].TanggalLahir,StringFormat=dd MM yyyy}" FontSize="13"></TextBlock>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Alamat" FontSize="9"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Korban[0].Alamat}" FontSize="13"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Agama" FontSize="9"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Korban[0].Agama}" FontSize="13"></TextBlock>
+                                            </StackPanel>
 
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Pendidikan" FontSize="10"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban[0].Pendidikan}" FontSize="14"></TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Suku" FontSize="10"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Korban[0].Suku}" FontSize="14"></TextBlock>
-                                        </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Pendidikan" FontSize="10"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Korban[0].Pendidikan}" FontSize="14"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Suku" FontSize="10"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Korban[0].Suku}" FontSize="14"></TextBlock>
+                                            </StackPanel>
 
-                                    </StackPanel>
-                                </TextBlock.ToolTip>
+                                        </StackPanel>
+                                    </TextBlock.ToolTip>
                             </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
 
-                </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Hubungan Dengan Terlapor" Binding="{Binding HubunganKorbanDenganTerlapor}"/>
-                <DataGridTemplateColumn Header="Terlapor" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Terlapor[0].Nama}">
-                                <TextBlock.ToolTip>
-                                    <StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Nama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor[0].Nama}" FontSize="13"></TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Nama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor[0].Gender}" FontSize="13"></TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="TTL" FontSize="9"></TextBlock>
-                                            <WrapPanel>
-                                                <TextBlock Text="{Binding Path=Terlapor[0].TempatLahir}" FontSize="13"></TextBlock>
-                                                <TextBlock Text="{Binding Path=Terlapor[0].TanggalLahir}" FontSize="13"></TextBlock>
-                                            </WrapPanel>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Alamat" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor[0].Alamat}" FontSize="13"></TextBlock>
-                                        </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Agama" FontSize="9"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor[0].Agama}" FontSize="13"></TextBlock>
-                                        </StackPanel>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Terlapor" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Terlapor[0].Nama}">
+                                    <TextBlock.ToolTip>
+                                        <StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Nama" FontSize="9"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Terlapor[0].Nama}" FontSize="13"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Nama" FontSize="9"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Terlapor[0].Gender}" FontSize="13"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="TTL" FontSize="9"></TextBlock>
+                                                <WrapPanel>
+                                                    <TextBlock Text="{Binding Path=Terlapor[0].TempatLahir}" FontSize="13"></TextBlock>
+                                                    <TextBlock Text="{Binding Path=Terlapor[0].TanggalLahir}" FontSize="13"></TextBlock>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Alamat" FontSize="9"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Terlapor[0].Alamat}" FontSize="13"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Agama" FontSize="9"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Terlapor[0].Agama}" FontSize="13"></TextBlock>
+                                            </StackPanel>
 
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Pendidikan" FontSize="10"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor[0].Pendidikan}" FontSize="14"></TextBlock>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Pendidikan" FontSize="10"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Terlapor[0].Pendidikan}" FontSize="14"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Suku" FontSize="10"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Terlapor[0].Suku}" FontSize="14"></TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Margin="5">
+                                                <TextBlock Text="Hubungan Dengan Korban" FontSize="10"></TextBlock>
+                                                <TextBlock Text="{Binding Path=Terlapor[0].HubunganText}" FontSize="14"></TextBlock>
+                                            </StackPanel>
                                         </StackPanel>
-                                        <StackPanel Margin="5">
-                                            <TextBlock Text="Suku" FontSize="10"></TextBlock>
-                                            <TextBlock Text="{Binding Path=Terlapor[0].Suku}" FontSize="14"></TextBlock>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                </TextBlock.ToolTip>
+                                    </TextBlock.ToolTip>
                             </TextBlock>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
 
-                </DataGridTemplateColumn>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Penerima Laporan" Binding="{Binding Penerima}"/>
+                    <DataGridTextColumn Header="Tempat Kejadian" Width="*" Binding="{Binding UraianKejadian}"/>
 
-            </DataGrid.Columns>
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Edit" Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItem}"/>
-                    <MenuItem Header="Validasi Data" Command="{Binding ValidateCommand}" CommandParameter="{Binding SelectedItem}"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-        </DataGrid>
+                </DataGrid.Columns>
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Edit" Command="{Binding EditCommand}" CommandParameter="{Binding SelectedItem}"/>
+                        <MenuItem Header="Validasi Data" Command="{Binding ValidateCommand}" CommandParameter="{Binding SelectedItem}"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
+
+        </GroupBox>
+        <ProgressBar IsIndeterminate="{Binding ProgressVisible, UpdateSourceTrigger=PropertyChanged}"   Grid.Row="1" 
+                     Height="30" Width="30" Style="{StaticResource MaterialDesignCircularProgressBar}"></ProgressBar>
         <WrapPanel Grid.Row="2" HorizontalAlignment="Right">
             <Button Name="Save" Margin="2" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=Save}" Content="Validasi" Height="39" Width="99"></Button>
             <Button Margin="2" Click="Button_Click" Content="Batal" Height="39" Width="99"></Button>

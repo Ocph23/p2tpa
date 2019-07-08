@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Main.Views"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" Title="Data Kasus"
-        mc:Ignorable="d" WindowState="Maximized"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" mc:Ignorable="d" WindowState="Maximized"
         Height="450" Width="800">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -13,52 +12,56 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Label Width="auto" Content="Kasus"/>
-        <DataGrid Margin="20" Grid.Row="1" ItemsSource="{Binding Datas}" AutoGenerateColumns="False"
-             CanUserAddRows="False" CanUserDeleteRows="False"      >
-            <DataGrid.Columns>
-                <DataGridTextColumn  Header="Nomor" Binding="{Binding Nomor}"/>
-                <DataGridTextColumn  Header="Distrik" Binding="{Binding Distrik}"/>
-                <DataGridTextColumn   Header="Kejadian" Binding="{Binding TanggalKejadian,StringFormat=dd MMMM yyyy}"/>
-                <DataGridTextColumn  Header="Lapor" Binding="{Binding TanggalLapor,StringFormat=dd MMMM yyyy}"/>
-                <DataGridTemplateColumn MaxWidth="600" MinWidth="200"  Width="*" Header="Kronologi" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding UraianKejadian}" TextWrapping="Wrap"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn  Header="Korban" Binding="{Binding Korban[0].Nama}"/>
-                <DataGridTextColumn Header="Pelaku" Binding="{Binding Terlapor[0].Nama}"/>
-                <DataGridTextColumn   Header="TKP" Binding="{Binding TempatKejadian}"/>
-                <DataGridTemplateColumn Header="Action">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <materialDesign:PopupBox  VerticalAlignment="Top" StaysOpen="True" IsEnabled="True">
-                                <StackPanel >
-                                    <Button Height="35" Content="Print" Command="{Binding Path=DataContext.PrintCommand, 
+        <GroupBox Grid.Row="1" >
+            <GroupBox.Header>
+                <Grid>
+                    <Label HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="15" FontWeight="Bold" Content="Data Pengaduan" Foreground="White"/>
+                    <Button Grid.Row="2" HorizontalAlignment="Right"  Command="{Binding AddCommand}" Width="30" Height="30" 
+                            Style="{StaticResource MaterialDesignFloatingActionAccentButton}" ToolTip="MaterialDesignFloatingActionAccentButton">
+                        <materialDesign:PackIcon Kind="Add" Height="24" Width="24" />
+                    </Button>
+                </Grid>
+            </GroupBox.Header>
+            <DataGrid Margin="5"  ItemsSource="{Binding Datas}" AutoGenerateColumns="False"
+             CanUserAddRows="False" CanUserDeleteRows="False" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn  Header="Registrasi" Binding="{Binding Nomor}"/>
+                    <DataGridTextColumn  Header="Distrik" Binding="{Binding Distrik.Nama}"/>
+                    <DataGridTextColumn  Header="Tanggal Lapor" Binding="{Binding TanggalLapor,StringFormat=dd MMMM yyyy}"/>
+                    <DataGridTextColumn   Header="Tanggal Kejadian" Binding="{Binding TanggalKejadian,StringFormat=dd MMMM yyyy}"/>
+                    <DataGridTextColumn  Header="Registrasi" Binding="{Binding TempatKejadian}"/>
+                    <DataGridTextColumn Width="*" MaxWidth="200" Header="Korban" Binding="{Binding Korban[0].Nama}"/>
+                    <DataGridTextColumn Width="*" MaxWidth="200" Header="Pelaku" Binding="{Binding Terlapor[0].Nama}"/>
+                    <DataGridTextColumn  Header="TKP" Binding="{Binding TempatKejadian}"/>
+                    <DataGridTemplateColumn  MinWidth="200" MaxWidth="500" Width="*" Header="Kronologi" >
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding UraianKejadian}" TextWrapping="Wrap"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Action">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <materialDesign:PopupBox  VerticalAlignment="Top" StaysOpen="True" IsEnabled="True">
+                                    <StackPanel >
+                                        <Button Height="35" Content="Print" Command="{Binding Path=DataContext.PrintCommand, 
                                              RelativeSource={RelativeSource Mode=FindAncestor, 
                                               AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
-                                    <Button Height="35" Content="Lihat" Command="{Binding Path=DataContext.EditCommand, 
+                                        <Button Height="35" Content="Lihat" Command="{Binding Path=DataContext.EditCommand, 
                                              RelativeSource={RelativeSource Mode=FindAncestor, 
                                               AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
-                                    <Button Height="35" Content="Hapus" Command="{Binding Path=DataContext.DeleteCommand, 
+                                        <Button Height="35" Content="Hapus" Command="{Binding Path=DataContext.DeleteCommand, 
                                              RelativeSource={RelativeSource Mode=FindAncestor, 
                                               AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
-                                </StackPanel>
-                            </materialDesign:PopupBox>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Button Grid.Row="2" HorizontalAlignment="Right" Margin="5" Command="{Binding AddCommand}"
-      Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
-      ToolTip="MaterialDesignFloatingActionAccentButton">
-            <materialDesign:PackIcon
-        Kind="Add"
-        Height="24"
-        Width="24" />   
-        </Button>
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+      
     </Grid>
 </Window>

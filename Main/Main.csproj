@@ -201,22 +201,30 @@
     <Compile Include="CommandHandler.cs" />
     <Compile Include="DataAccess\DasboardDataAccess.cs" />
     <Compile Include="DataAccess\DataBasic.cs" />
+    <Compile Include="DataAccess\DataExtention.cs" />
     <Compile Include="DataAccess\ExcelContext.cs" />
     <Compile Include="DataAccess\ImportFromExcel.cs" />
     <Compile Include="DataAccess\InstansiCollection.cs" />
     <Compile Include="DataAccess\PengaduanServices.cs" />
     <Compile Include="DbContext.cs" />
     <Compile Include="EnumToBoolConverter.cs" />
+    <Compile Include="Flash.xaml.cs">
+      <DependentUpon>Flash.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\HubunganDenganKorban.cs" />
     <Compile Include="Models\Kecamatan.cs" />
     <Compile Include="Models\Korban.cs" />
     <Compile Include="Models\Pelapor.cs" />
     <Compile Include="Models\Terlapor.cs" />
     <Compile Include="Reports\HelperPrint.cs" />
+    <Compile Include="Reports\KorbanTerlaporChioce.xaml.cs">
+      <DependentUpon>KorbanTerlaporChioce.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Reports\Models\CiriTerlapor.cs" />
     <Compile Include="Reports\Models\CiriKorbanDanPelaku.cs" />
     <Compile Include="Reports\Models\Kekerasandll.cs" />
     <Compile Include="Reports\Models\KorbanAnakDewasaTerlayani.cs" />
+    <Compile Include="Reports\Models\ReportHeader.cs" />
     <Compile Include="Reports\ReportDialog.xaml.cs">
       <DependentUpon>ReportDialog.xaml</DependentUpon>
     </Compile>
@@ -387,6 +395,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Flash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -399,6 +411,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Reports\KorbanTerlaporChioce.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Reports\ReportDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -496,12 +512,17 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\Layout\CiriKorban.rdlc" />
     <EmbeddedResource Include="Reports\Layout\CiriTerlapor.rdlc" />
+    <EmbeddedResource Include="Reports\Layout\DewasaAnakTerlayani.rdlc" />
+    <EmbeddedResource Include="Reports\Layout\GenderTelayani.rdlc" />
     <EmbeddedResource Include="Reports\Layout\Kekerasandll.rdlc" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Main.Reports.Models.CiriKorbanDanPelaku.datasource" />
     <None Include="Properties\DataSources\Main.Reports.Models.CiriTerlapor.datasource" />
+    <None Include="Properties\DataSources\Main.Reports.Models.KasusDanKorbanTerlayani.datasource" />
     <None Include="Properties\DataSources\Main.Reports.Models.Kekerasandll.datasource" />
+    <None Include="Properties\DataSources\Main.Reports.Models.KorbanAnakDewasaTerlayani.datasource" />
+    <None Include="Properties\DataSources\Main.Reports.Models.ReportHeader.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -517,6 +538,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\logobd.png" />
+    <Resource Include="Images\man.png" />
+    <Resource Include="Images\women.png" />
+    <Resource Include="Images\Case.png" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

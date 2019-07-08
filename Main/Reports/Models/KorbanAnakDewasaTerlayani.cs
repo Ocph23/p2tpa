@@ -17,8 +17,8 @@ namespace Main.Reports.Models
 
         public double KorbanAnak { get; set; }
         public double KorbanDewasa { get; set; }
-        public double TerlayaniNa { get; set; }
 
+        public double TerlayaniNa { get; set; }
         public double TerlayaniAnak { get; set; }
         public double TerlayaniDewasa { get; set; }
 

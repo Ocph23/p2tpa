@@ -12,22 +12,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Main.Views
+namespace Main
 {
     /// <summary>
-    /// Interaction logic for ImportView.xaml
+    /// Interaction logic for Flash.xaml
     /// </summary>
-    public partial class ImportView : Window
+    public partial class Flash : Window
     {
-        public ImportView(string resultFile)
+        public Flash()
         {
             InitializeComponent();
-            var vm = new DataAccess.ImportFromExcel(resultFile) { WindowClose=this.Close};
-            this.DataContext = vm;
+            this.Loaded += Flash_Loaded;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private async void Flash_Loaded(object sender, RoutedEventArgs e)
         {
+            await Task.Delay(5000);
+            CloseFlashAsync();
+        }
+
+        private void CloseFlashAsync()
+        {
+            var form = new MainWindow();
+            form.Show();
             this.Close();
         }
     }

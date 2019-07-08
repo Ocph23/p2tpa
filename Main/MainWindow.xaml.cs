@@ -58,19 +58,33 @@ namespace Main
 
         private void ImportAction(object obj)
         {
-            var form = new Views.ImportView();
-            form.ShowDialog();
-            var vm = form.DataContext as DataAccess.ImportFromExcel;
-            if(vm.Restart)
-            {
-                var result =MessageBox.Show("Restart Aplikasi Untuk Melihat Perubahan Hasil Import", "Yakin ?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if(result== MessageBoxResult.Yes)
-                {
 
-                    System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
-                    Application.Current.Shutdown();
+            Microsoft.Win32.OpenFileDialog openFileDlg = new Microsoft.Win32.OpenFileDialog();
+            openFileDlg.Filter = "Sparesheet (.xlsx)|*.xlsx";
+            openFileDlg.InitialDirectory = @"Documents";
+            // Launch OpenFileDialog by calling ShowDialog method
+            Nullable<bool> resultDialog = openFileDlg.ShowDialog();
+            // Get the selected file name and display in a TextBox.
+            // Load content of file in a TextBlock
+            if (resultDialog == true)
+            {
+                var resultFile = openFileDlg.FileName;
+
+                var form = new Views.ImportView(resultFile);
+                form.ShowDialog();
+                var vm = form.DataContext as DataAccess.ImportFromExcel;
+                if (vm.Restart)
+                {
+                    var result = MessageBox.Show("Restart Aplikasi Untuk Melihat Perubahan Hasil Import", "Yakin ?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (result == MessageBoxResult.Yes)
+                    {
+
+                        System.Diagnostics.Process.Start(Application.ResourceAssembly.Location);
+                        Application.Current.Shutdown();
+                    }
                 }
             }
+
 
         }
 

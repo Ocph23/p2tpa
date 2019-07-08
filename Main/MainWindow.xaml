@@ -7,8 +7,7 @@
     xmlns:Charts="clr-namespace:Main.Charts"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     x:Class="Main.MainWindow"
-        mc:Ignorable="d" WindowState="Maximized" Name="mywin"
-        Title="MainWindow" Height="750" Width="1024">
+        mc:Ignorable="d" WindowState="Maximized" Name="mywin" Height="750" Width="1024">
     <Window.Resources>
         <DataTemplate DataType="{x:Type system:DateTime}">
             <StackPanel Margin="16">
@@ -28,19 +27,14 @@
                 </Grid.RowDefinitions>
                 <StackPanel>
                     <Menu Height="auto" Background="#FFDD4B39">
-                        <MenuItem Header="Home" Foreground="White" FontWeight="Bold"/>
+                        <MenuItem Header="E-CAPEK" FontSize="35" Foreground="White" FontWeight="Bold"/>
                         <MenuItem Header="Pengaduan" Foreground="White" FontWeight="Bold">
                             <MenuItem Header="Data" Command="{Binding DataViewCommand}"/>
                             <MenuItem Header="Tambah" Command="{Binding TambahPengaduanCommand}"/>
                         </MenuItem>
                         <MenuItem Header="Report" Foreground="White" FontWeight="Bold" Command="{Binding ReportCommand}"/>
-                        <MenuItem Header="Export Import" Foreground="White" FontWeight="Bold">
-                            <MenuItem Header="Export"/>
-                            <MenuItem Header="Import" Command="{Binding ImportCommand}"/>
-                        </MenuItem>
-                        <MenuItem Header="Instansi" Foreground="White" FontWeight="Bold">
-                            <MenuItem Header="Instansi" Command="{Binding InstansiCommand}"/>
-                        </MenuItem>
+                        <MenuItem Foreground="White" FontWeight="Bold" Header="Import" Command="{Binding ImportCommand}"/>
+                        <MenuItem Foreground="White" FontWeight="Bold" Header="Instansi" Command="{Binding InstansiCommand}"/>
                     </Menu>
                   
                 </StackPanel>
@@ -77,7 +71,7 @@
                                             <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding JumlahKasus}" FontSize="40" Margin="3" />
                                             <TextBlock Margin="10,0,0,0" Text="Jumlah Kasus" FontSize="20"  />
                                         </StackPanel>
-                                        <Image Height="100" DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/pppa.jpg"/>
+                                        <Image  DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/Case.png" Height="65" Opacity="0.695"/>
 
                                     </DockPanel>
 
@@ -104,7 +98,7 @@
                                             <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding KorbanLaki}" FontSize="40" Margin="3" />
                                             <TextBlock Margin="10,0,0,0" Text="Korban Laki-Laki" FontSize="20"  />
                                         </StackPanel>
-                                        <Image Height="100" DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/pppa.jpg"/>
+                                        <Image  DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/man.png"  Height="65" Opacity="0.695"/>
                                     </DockPanel>
 
 
@@ -129,7 +123,7 @@
                                             <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding KorbanPerempuan}" FontSize="40" Margin="3" />
                                             <TextBlock Margin="10,0,0,0" Text="Korban Perempuan" FontSize="20"  />
                                         </StackPanel>
-                                        <Image Height="100" DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/pppa.jpg"/>
+                                        <Image Height="65" Opacity="0.695" DockPanel.Dock="Right" HorizontalAlignment="Right" Source="Images/women.png"  />
                                     </DockPanel>
                                     <Grid Grid.Row="2" Background="#FF875608">
                                         <Button Content="More Info " Click="perempuankasus" FontSize="10" Style="{StaticResource MaterialDesignToolForegroundButton}"   
