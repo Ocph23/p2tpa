@@ -15,16 +15,19 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel>
-            <Button Style="{DynamicResource btnRefresh}" Command="{Binding RefreshChartCommand}"/>
-            <Label Width="auto" HorizontalContentAlignment="Center" Content="{Binding Title}"></Label>
-        </StackPanel>
+        <Grid >
+            <Label Width="auto" HorizontalContentAlignment="Left" Content="{Binding Title}"></Label>
+            <WrapPanel HorizontalAlignment="Right">
+                <Button Style="{DynamicResource btnRefresh}" Command="{Binding RefreshChartCommand}" Background="{x:Null}"/>
+                <Button Style="{DynamicResource btnPrint}" Command="{Binding PrintCommand}"/>
+            </WrapPanel>
+        </Grid>
         <lvc:CartesianChart Grid.Row="1" ScrollHorizontalTo="100"  Series="{Binding SeriesCollection}" LegendLocation="Bottom" >
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Jumlah" ></lvc:Axis>
             </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Pendidikan" Labels="{Binding Labels}">
+                <lvc:Axis Title="Pendidikan" >
                     <lvc:Axis.Separator>
                         <lvc:Separator IsEnabled="False" Step="1"></lvc:Separator>
                     </lvc:Axis.Separator>

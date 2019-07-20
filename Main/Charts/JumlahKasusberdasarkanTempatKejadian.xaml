@@ -15,19 +15,19 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0">
-            <Label Width="auto" HorizontalContentAlignment="Center" Content="{Binding Title}"></Label>
-        </StackPanel>
-        <lvc:CartesianChart Grid.Row="1"    Series="{Binding SeriesCollection}" LegendLocation="Bottom" >
+        <Grid >
+            <Label Width="auto" HorizontalContentAlignment="Left" Content="{Binding Title}"></Label>
+            <WrapPanel HorizontalAlignment="Right">
+                <Button Style="{DynamicResource btnRefresh}" Command="{Binding RefreshChartCommand}" Background="{x:Null}"/>
+                <Button Style="{DynamicResource btnPrint}" Command="{Binding PrintCommand}"/>
+            </WrapPanel>
+        </Grid>
+        <lvc:CartesianChart Grid.Row="1"   Series="{Binding SeriesCollection}" LegendLocation="Bottom" >
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Jumlah" Width="250"  LabelFormatter="{Binding YFormatter}"></lvc:Axis>
             </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis  Title="Tempat Kejadian" Labels="{Binding Labels}" LabelFormatter="{Binding XFormatter}">
-                    <lvc:Axis.Separator>
-                        <lvc:Separator IsEnabled="False" Step="1"  ></lvc:Separator>
-                    </lvc:Axis.Separator>
-                </lvc:Axis>
+                <lvc:Axis  Title="Tempat Kejadian" Labels="{Binding Labels}" LabelFormatter="{Binding XFormatter}" />
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
     </Grid>

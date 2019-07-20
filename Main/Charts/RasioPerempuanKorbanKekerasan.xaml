@@ -15,10 +15,13 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel>
-            <Label Width="auto" HorizontalContentAlignment="Center" Content="{Binding Title}"></Label>
-            <Label Content="(per 100.000 perempuan)"></Label>
-        </StackPanel>
+        <Grid >
+            <Label Width="auto" HorizontalContentAlignment="Left" Content="{Binding Title}"></Label>
+            <WrapPanel HorizontalAlignment="Right">
+                <Button Style="{DynamicResource btnRefresh}" Command="{Binding RefreshChartCommand}" Background="{x:Null}"/>
+                <Button Style="{DynamicResource btnPrint}" Command="{Binding PrintCommand}"/>
+            </WrapPanel>
+        </Grid>
         <lvc:CartesianChart Grid.Row="1" ScrollHorizontalTo="100"  Series="{Binding SeriesCollection}" LegendLocation="Bottom" >
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Jumlah" LabelFormatter="{Binding YFormatter}"></lvc:Axis>

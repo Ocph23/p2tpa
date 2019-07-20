@@ -33,8 +33,6 @@ namespace Main.Models
         private int pengaduanid;
         private int? id;
 
-
-
         [PrimaryKey("Id")]
         [DbColumn("Id")]
         public int? Id { get => id; set => SetProperty(ref id, value); }
@@ -76,6 +74,8 @@ namespace Main.Models
 
         [DbColumn("Pernikahan")]
         public string Pernikahan { get => pernikahan; set => SetProperty(ref pernikahan, value); }
+
+      
 
         [DbColumn("Gender")]
         public Gender Gender { get => gender;

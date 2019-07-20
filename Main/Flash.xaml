@@ -23,12 +23,13 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Margin="10">
             <Label Padding="1" FontSize="25" FontWeight="Bold" Width="auto" HorizontalAlignment="Center" Content="APLIKASI E-CAPEK"/>
-            <Label Padding="1" FontSize="25" FontWeight="Bold" Width="auto" HorizontalAlignment="Center"  Content="KABUPATEN BOVEN DIGOEL"/>
+            <Label Padding="1" FontSize="25" FontWeight="Bold" Width="auto" HorizontalAlignment="Center"  Content="KABUPATEN BOVEN DIGOEL - PAPUA"/>
 
         </StackPanel>
       
         <StackPanel Grid.Row="1" VerticalAlignment="Center">
             <Image Height="150" Source="Images/logobd.png" />
+            <Label FontWeight="Bold" FontSize="10" Width="auto" Margin="20" HorizontalContentAlignment="Center" Padding="1" Content="DINAS PEMBERDAYAAN PEREMPUAN DAN PERLINDUNGAN ANAK"/>
         </StackPanel>
         <ProgressBar Grid.Row="1" Style="{StaticResource MaterialDesignCircularProgressBar}"  Value="0" IsIndeterminate="True" Height="30" Width="30"/>
         <Separator Grid.Row="2" Margin="5"/>
@@ -39,10 +40,8 @@
             </Grid.ColumnDefinitions>
             <Image Height="65" HorizontalAlignment="Left" Source="Images/pppa.jpg"/>
             <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="10">
-                <Label FontWeight="Bold" FontSize="10" Width="auto" Padding="1" Content="KEMENTRIAN PEMBERDAYAAN PEREMPUAN DAN PERLINDUNGAN ANAK"/>
-                <Label Width="auto" Padding="1" Content="KABUPATEN BOVEN DIGOEL"/>
-                <Label Width="auto" Padding="1" Content="PROVINSI PAPUA"/>
-                <Label Width="auto" Padding="1" Content="REPUBLIK INDONESIA"/>
+                <Label FontWeight="Bold" FontSize="10" Width="auto" Padding="1" Content="KEMENTRIAN PEMBERDAYAAN PEREMPUAN "/>
+                <Label FontWeight="Bold" FontSize="10" Width="auto" Padding="1" Content="DAN PERLINDUNGAN ANAK"/>
             </StackPanel>
         </Grid>
     </Grid>

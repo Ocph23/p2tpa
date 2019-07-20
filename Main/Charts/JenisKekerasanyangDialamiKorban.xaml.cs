@@ -2,6 +2,9 @@
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using Main.Models;
+using Main.Reports;
+using Main.Reports.Models;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,17 +27,34 @@ namespace Main.Charts
     /// </summary>
     public partial class JenisKekerasanyangDialamiKorban : ChartMaster
     {
+
+
         public JenisKekerasanyangDialamiKorban()
         {
             InitializeComponent();
             this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
+            this.PrintCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = PrintAction };
             this.RefreshChartCommand.Execute(null);
             Title = "Jenis Kekerasan yang Dialami Korban";
             this.DataContext = this;
         }
 
+        public CommandHandler PrintCommand { get; }
+        List<GrafikModel> datgrafirk = new List<GrafikModel>();
+
+        private void PrintAction(object obj)
+        {
+            var header = new ReportHeader { Title = Title, Tahun = DateTime.Now.Year };
+
+            HelperPrint.PrintWithFormActionTwoSource("Print Preview",
+                  new ReportDataSource { Name = "Header", Value = new List<ReportHeader>() { header } },
+                new ReportDataSource { Name = "DataSet1", Value = datgrafirk },
+               "Main.Reports.Layout.GrafikBarLayout.rdlc", null);
+        }
+
         private void RefreshAction(object obj)
         {
+            SeriesCollection.Clear();
             var result = from p in DataAccess.DataBasic.DataPengaduan
                          from b in EnumSource.DaftarKekerasan()
                          from korban in p.Korban.Where(x=>x.KekerasanDialami.Contains(b))
@@ -42,10 +62,11 @@ namespace Main.Charts
                             select new { Key = counts.Key, value = counts.Count() };
 
             List<string> labels = new List<string>();
-
+            datgrafirk.Clear();
+            int number = 0;
             foreach (var item in EnumSource.DaftarKekerasan())
             {
-                labels.Add(item);
+                labels.Add("");
                 var value = 0;
                 var data = result.Where(x => x.Key == item).FirstOrDefault();
                 if (data != null)
@@ -57,6 +78,10 @@ namespace Main.Charts
                     Title = $"{item}",
                     Values = new ChartValues<int> { value }
                 });
+
+                number++;
+                datgrafirk.Add(new GrafikModel { NilaiText=number.ToString(), Kategori = item, Series = item, Nilai = value, Title = Title });
+                
             }
 
             Labels = labels.ToArray();

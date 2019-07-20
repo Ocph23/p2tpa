@@ -37,16 +37,27 @@
     </Style>
 
     <Style x:Key="btnRefresh" TargetType="Button" BasedOn="{StaticResource ResourceKey={x:Type Button}}">
-        <Setter Property="Margin" Value="1"></Setter>
         <Setter Property="HorizontalAlignment" Value="Right"></Setter>
-        <Setter Property="Width" Value="25"></Setter>
-        <Setter Property="Height" Value="25"></Setter>
-        <Setter Property="Foreground" Value="Green"></Setter>
-        <Setter Property="Background" Value="#FFB8B8B8"></Setter>
+        <Setter Property="Foreground" Value="LightGreen"></Setter>
+        <Setter Property="Margin" Value="1"></Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <materialDesign:PackIcon Padding="1" Kind="Refresh" Background="#FFB8B8B8"  Height="24" Width="24" />
+                    <materialDesign:PackIcon Padding="1" Kind="Refresh" Background="#FFB8B8B8"  Height="30" Width="30" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="btnPrint" TargetType="Button" BasedOn="{StaticResource ResourceKey={x:Type Button}}">
+        <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+        <Setter Property="Foreground" Value="Orange"></Setter>
+        <Setter Property="Background" Value="White"></Setter>
+        <Setter Property="Margin" Value="1"></Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <materialDesign:PackIcon Padding="1" Kind="Printer" Background="#FFB8B8B8"  Height="30" Width="30" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

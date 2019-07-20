@@ -1,6 +1,9 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Main.Reports;
+using Main.Reports.Models;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,13 +30,26 @@ namespace Main.Charts
         {
             InitializeComponent();
             this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
+            this.PrintCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = PrintAction };
             this.RefreshChartCommand.Execute(null);
             Title = "Korban Berdasarkan Usia";
             this.DataContext = this;
         }
+        public CommandHandler PrintCommand { get; }
+        List<GrafikModel> datgrafirk = new List<GrafikModel>();
 
+        private void PrintAction(object obj)
+        {
+            var header = new ReportHeader { Title = Title, Tahun = DateTime.Now.Year };
+
+            HelperPrint.PrintWithFormActionTwoSource("Print Preview",
+                  new ReportDataSource { Name = "Header", Value = new List<ReportHeader>() { header } },
+                new ReportDataSource { Name = "DataSet1", Value = datgrafirk.OrderBy(x=>x.Series) },
+               "Main.Reports.Layout.GrafikBarLayout.rdlc", null);
+        }
         private void RefreshAction(object obj)
         {
+            SeriesCollection.Clear();
             List<string> labels = new List<string>();
             labels.Add("0-5");
             labels.Add("6-12");
@@ -43,7 +59,7 @@ namespace Main.Charts
             labels.Add("45-59");
             labels.Add("60+");
             List<int> datas = new List<int>();
-
+            datgrafirk.Clear();
             var result = from p in DataAccess.DataBasic.DataPengaduan
                          from korban in p.Korban
                          where korban.TanggalLahir != null
@@ -56,7 +72,8 @@ namespace Main.Charts
                             age < 45 ? "25-44":
                             age <60 ?"45-59": "60+" into ages
                          select new { Age = ages.Key, Persons = ages };
-
+            datgrafirk.Clear();
+            int number = 0;
             foreach(var item in labels)
             {
 
@@ -70,14 +87,15 @@ namespace Main.Charts
                     Title = item,
                     Values = new ChartValues<int> { value}
                 });
+                number++;
+                datgrafirk.Add(new GrafikModel { NilaiText = number.ToString(), Kategori = item, Series = item, Nilai = value, Title = Title });
             }
 
            
 
-            Labels = labels.ToArray();
+          // Labels = labels.ToArray();
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
             YFormatter = value => ((int)value).ToString("N");
-            XFormatter = value => ((int)value) <= 0 ? "" : ((int)value).ToString("N");
         }
     }
 }

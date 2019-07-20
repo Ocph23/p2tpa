@@ -15,13 +15,19 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Label Width="auto" HorizontalContentAlignment="Center" Content="{Binding Title}"></Label>
+        <Grid >
+            <Label Width="auto" HorizontalContentAlignment="Left" Content="{Binding Title}"></Label>
+            <WrapPanel HorizontalAlignment="Right">
+                <Button Style="{DynamicResource btnRefresh}" Command="{Binding RefreshChartCommand}" Background="{x:Null}"/>
+                <Button Style="{DynamicResource btnPrint}" Command="{Binding PrintCommand}"/>
+            </WrapPanel>
+        </Grid>
         <lvc:CartesianChart Grid.Row="1" ScrollHorizontalTo="100"  Series="{Binding SeriesCollection}" LegendLocation="Bottom" >
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Jumlah" ></lvc:Axis>
             </lvc:CartesianChart.AxisY>
             <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title=" " Labels="{Binding Labels}">
+                <lvc:Axis Title="Jenis Kekerasan" Labels="{Binding Labels}">
                     <lvc:Axis.Separator>
                         <lvc:Separator IsEnabled="True"></lvc:Separator>
                     </lvc:Axis.Separator>
