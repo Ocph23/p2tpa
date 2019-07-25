@@ -199,16 +199,17 @@ namespace Main.Views.TambahKasusPages
         {
             if(obj!=null)
             {
-                if(obj.GetType()==typeof(AddKorbanViewModel))
+                string objType = obj.GetType().Name;
+                if(objType.Contains("Korban"))
                 {
                     var data = obj as Korban;
                     vm.Korban.Remove(data);
                     this.Korbans.Refresh();
                 }
 
-                if (obj.GetType() == typeof(AddTerlaporViewModel))
+                if (objType.Contains("Terlapor"))
                 {
-                    var data = obj as TerlaporViewModel;
+                    var data = obj as Terlapor;
                     vm.Terlapor.Remove(data);
                     this.Terlapors.Refresh();
                 }

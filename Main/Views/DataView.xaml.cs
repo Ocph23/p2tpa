@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Data;
 using AutoMapper;
 using Main.Models;
 using Main.ViewModels;
@@ -22,7 +24,7 @@ namespace Main.Views
     {
         public DataViewModel()
         {
-            Datas = DataAccess.DataBasic.DataPengaduan;
+            Datas = CollectionViewSource.GetDefaultView(DataAccess.DataBasic.MasterPengaduan);
             EditCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = EditAction };
             DeleteCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = DeleteAction };
             AddCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = AddAction };
@@ -33,14 +35,27 @@ namespace Main.Views
             var form = new TambahPengaduan(false);
             form.DataContext = new PengaduanViewModel();
             form.ShowDialog();
+
+            Datas.Refresh();
+
         }
 
-        private void DeleteAction(object obj)
+        private  void DeleteAction(object obj)
         {
             MessageBoxResult dialog = MessageBox.Show("Yakin Hapus Data Ini ? ", "Perhatian", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if(dialog== MessageBoxResult.Yes)
             {
-                //Delete
+                try
+                {
+                    DataAccess.DataBasic.MasterPengaduan.Remove(obj as Pengaduan);
+                    MessageBox.Show("Berhasil !", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Datas.Refresh();
+                  
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -56,7 +71,7 @@ namespace Main.Views
           
         }
 
-        public List<Pengaduan> Datas { get; }
+        public ICollectionView Datas { get; set; }
         public CommandHandler EditCommand { get; }
         public CommandHandler DeleteCommand { get; }
         public CommandHandler AddCommand { get; }

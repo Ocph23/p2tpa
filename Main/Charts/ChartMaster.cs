@@ -1,4 +1,5 @@
 ﻿using LiveCharts;
+using Main.DataAccess;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,6 +20,20 @@ namespace Main
         public Func<object, object> XFormatter { get; set; }
         public Func<object, object> YFormatter { get; set; }
         public Func<ChartPoint, string> PointLabel { get; set; }
+
+
+        public PengaduanServices service = DataBasic.MasterPengaduan;
+
+        public ChartMaster()
+        {
+            service.OnChange += Service_OnChange;
+        }
+
+        private void Service_OnChange(bool isChange)
+        {
+            RefreshChartCommand.Execute(null);
+        }
+
         public string Title
         {
             get { return _title; }

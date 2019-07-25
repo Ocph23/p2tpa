@@ -48,17 +48,13 @@ namespace Main.Charts
             int number = 0;
             foreach (var kec in dataKec)
             {
-             
                 var kasus = groupPengaduan.Where(x => x.Key == kec.Id).FirstOrDefault();
                 var pekerja = datapeng.Where(x => x.Id == kec.Id).FirstOrDefault();
-
-
-
 
                 var model = new GrafikModel { Kategori = kec.Nama, Series = kec.Nama };
                 if (pekerja != null && kasus != null)
                 {
-                    var data = (Convert.ToDouble(pekerja.Menganggur) / kec.Total) * 100;
+                    var data = Math.Round((Convert.ToDouble(pekerja.Menganggur) / kec.Total) * 100,2);
                     model.Nilai = data;
                     listPekerja.Add(data);
                 }
@@ -68,10 +64,9 @@ namespace Main.Charts
                     listPekerja.Add(0);
                 }
 
-
                 if (kasus != null)
                 {
-                    var data = (Convert.ToDouble(kasus.Count()) / kec.Total) * 100;
+                    var data =Math.Round( (Convert.ToDouble(kasus.Count()) / kec.Total) * 100,2);
                    
                     listKasus.Add(data);
                     jumKasus.Add(kasus.Count());

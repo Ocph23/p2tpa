@@ -155,7 +155,7 @@ namespace Main.Utilities
                 }
                 else
                 {
-                    DataAccess.DataBasic.MasterPengaduan.Update(vm);
+                    DataAccess.DataBasic.MasterPengaduan.Add(vm);
                 }
                 MessageBox.Show("Success");
                 this.WindowClose();

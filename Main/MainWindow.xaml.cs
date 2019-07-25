@@ -7,6 +7,7 @@ using Main.ViewModels;
 using System;
 using Main.Models;
 using System.Linq;
+using Main.DataAccess;
 
 namespace Main
 {
@@ -15,6 +16,8 @@ namespace Main
     /// </summary>
     public partial class MainWindow : Window
     {
+        private PengaduanServices pengaduanService;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -24,6 +27,13 @@ namespace Main
             InstansiCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = InstansiCommandAction };
             ReportCommand= new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = ReportCommandAction };
             DataContext = this;
+            pengaduanService = DataAccess.DataBasic.MasterPengaduan;
+            pengaduanService.OnChange += PengaduanService_OnChange;
+            Refresh();
+        }
+
+        private void PengaduanService_OnChange(bool isChange)
+        {
             Refresh();
         }
 
@@ -39,8 +49,9 @@ namespace Main
                                   from korban in a.Korban
                                   select korban);
 
-            KorbanPerempuan= groupPengaduan.Where(x => x.Gender == Gender.P).Count();
-            KorbanLaki = groupPengaduan.Where(x => x.Gender== Gender.L).Count();
+            this.korbanPerem.Text= groupPengaduan.Where(x => x.Gender == Gender.P).Count().ToString();
+            this.korbanLaki.Text = groupPengaduan.Where(x => x.Gender== Gender.L).Count().ToString();
+            jmlKasus.Text = DataAccess.DataBasic.DataPengaduan.Count.ToString();
             ratioChart.RefreshChartCommand.Execute(null);
         }
 
@@ -92,14 +103,6 @@ namespace Main
         {
 
         }
-
-        public int JumlahKasus {
-            get { return DataAccess.DataBasic.DataPengaduan.Count; }
-        }
-
-        public int KorbanLaki { get; set; }
-
-        public int KorbanPerempuan { get; set; }
 
 
         public CommandHandler DataViewCommand { get; }

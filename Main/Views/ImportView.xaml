@@ -172,7 +172,7 @@
                      Height="30" Width="30" Style="{StaticResource MaterialDesignCircularProgressBar}"></ProgressBar>
         <WrapPanel Grid.Row="2" HorizontalAlignment="Right">
             <Button Name="Save" Margin="2" Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=Save}" Content="Validasi" Height="39" Width="99"></Button>
-            <Button Margin="2" Click="Button_Click" Content="Batal" Height="39" Width="99"></Button>
+            <Button Margin="2" Click="Button_Click" Content="Keluar" Height="39" Width="99"></Button>
         </WrapPanel>
     </Grid>
 </Window>

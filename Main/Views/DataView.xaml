@@ -25,6 +25,22 @@
             <DataGrid Margin="5"  ItemsSource="{Binding Datas}" AutoGenerateColumns="False"
              CanUserAddRows="False" CanUserDeleteRows="False" >
                 <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <materialDesign:PopupBox  VerticalAlignment="Top" StaysOpen="True" IsEnabled="True">
+                                    <StackPanel >
+                                        <Button Height="35" Content="Lihat" Command="{Binding Path=DataContext.EditCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
+                                        <Button Height="35" Content="Hapus" Command="{Binding Path=DataContext.DeleteCommand, 
+                                             RelativeSource={RelativeSource Mode=FindAncestor, 
+                                              AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
+                                    </StackPanel>
+                                </materialDesign:PopupBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn  Header="Registrasi" Binding="{Binding Nomor}"/>
                     <DataGridTextColumn  Header="Distrik" Binding="{Binding Distrik.Nama}"/>
                     <DataGridTextColumn  Header="Tanggal Lapor" Binding="{Binding TanggalLapor,StringFormat=dd MMMM yyyy}"/>
@@ -40,25 +56,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Action">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <materialDesign:PopupBox  VerticalAlignment="Top" StaysOpen="True" IsEnabled="True">
-                                    <StackPanel >
-                                        <Button Height="35" Content="Print" Command="{Binding Path=DataContext.PrintCommand, 
-                                             RelativeSource={RelativeSource Mode=FindAncestor, 
-                                              AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
-                                        <Button Height="35" Content="Lihat" Command="{Binding Path=DataContext.EditCommand, 
-                                             RelativeSource={RelativeSource Mode=FindAncestor, 
-                                              AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
-                                        <Button Height="35" Content="Hapus" Command="{Binding Path=DataContext.DeleteCommand, 
-                                             RelativeSource={RelativeSource Mode=FindAncestor, 
-                                              AncestorType={x:Type Window}}}" CommandParameter="{Binding .}"/>
-                                    </StackPanel>
-                                </materialDesign:PopupBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                   
                 </DataGrid.Columns>
             </DataGrid>
         </GroupBox>

@@ -3,12 +3,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Main.DataAccess
 {
+    public delegate void CollectionChange(bool isChange); 
     public class PengaduanServices : ICollection<Pengaduan>
     {
         ArrayList list = new ArrayList();
+
+        public event CollectionChange OnChange;
         public PengaduanServices()
         {
             using (var db = new DbContext())
@@ -30,7 +34,7 @@ namespace Main.DataAccess
                                    TempatKejadian = pengaduan.TempatKejadian,
                                    WaktuKejadian = pengaduan.WaktuKejadian,
                                    KodeDistrik = pengaduan.KodeDistrik, 
-                                   Distrik = dis,
+                                   Distrik = dis, 
                                    Catatan = pengaduan.Catatan,
                                    Id = pengaduan.Id,
                                    Nomor = pengaduan.Nomor, 
@@ -126,12 +130,31 @@ namespace Main.DataAccess
 
         public void Add(Pengaduan item)
         {
+            if(item.Id==null)
+            {
+                if (Save(item))
+                {
+                    item.Distrik = DataBasic.GetKecamatan().Where(x => x.Id == item.KodeDistrik).FirstOrDefault();
+                    this.list.Add(item);
+                    if (OnChange != null)
+                        OnChange(true);
+                }
+                 
+            }
+            else
+            {
+                Save(item);
+            }
+        }
+
+        private bool Save(Pengaduan item)
+        {
             using (var db = new DbContext())
             {
                 var trans = db.BeginTransaction();
                 try
                 {
-                    if(item.Id==null)
+                    if (item.Id == null)
                     {
                         item.Id = db.DataPengaduan.InsertAndGetLastID(item);
                         if (item.Id <= 0)
@@ -139,20 +162,33 @@ namespace Main.DataAccess
                             item.Id = null;
                             throw new SystemException("Data Pengaduan Tidak Tersimpan");
                         }
-                            
+
                     }
                     else
                     {
-                        if(!db.DataPengaduan.Update(x=> new { x.Catatan,x.KodeDistrik,x.Nomor,x.Penerima,x.Rujukan,x.StatusPelapor,
-                        x.TanggalKejadian,x.TanggalLapor,x.TempatKejadian,x.TempatLapor,x.UraianKejadian,x.WaktuKejadian,x.WaktuLapor},item,x=>x.Id==item.Id))
+                        if (!db.DataPengaduan.Update(x => new {
+                            x.Catatan,
+                            x.KodeDistrik,
+                            x.Nomor,
+                            x.Penerima,
+                            x.Rujukan,
+                            x.StatusPelapor,
+                            x.TanggalKejadian,
+                            x.TanggalLapor,
+                            x.TempatKejadian,
+                            x.TempatLapor,
+                            x.UraianKejadian,
+                            x.WaktuKejadian,
+                            x.WaktuLapor
+                        }, item, x => x.Id == item.Id))
                             throw new SystemException("Data Pengaduan Tidak Tersimpan");
                     }
-                    
 
-                     if(item.Korban!=null)
-                        foreach(var data in item.Korban)
+
+                    if (item.Korban != null)
+                        foreach (var data in item.Korban)
                         {
-                            if (data.Id==null)
+                            if (data.Id == null)
                             {
                                 data.PengaduanId = item.Id.Value;
                                 data.Id = db.DataKorban.InsertAndGetLastID(data);
@@ -176,29 +212,29 @@ namespace Main.DataAccess
                                 }, data, x => x.Id == data.Id);
                             }
 
-                             foreach(var penanganan in data.DataPenanganan)
+
+
+                            foreach (var penanganan in data.DataPenanganan)
                             {
 
                                 penanganan.IdentiasId = data.Id;
 
-                                if(penanganan.IdPenanganan==null)
+                                if (penanganan.IdPenanganan == null)
                                 {
-                                    penanganan.IdPenanganan=db.Penanganan.InsertAndGetLastID(penanganan);
+                                    penanganan.IdPenanganan = db.Penanganan.InsertAndGetLastID(penanganan);
                                 }
                                 else
                                 {
-                                    db.Penanganan.Update(x=> new {x.Deskripsi,x.DetailLayanan,x.InstansiId,x.Layanan,x.Tanggal},penanganan,x=>x.IdPenanganan==penanganan.IdPenanganan);
+                                    db.Penanganan.Update(x => new { x.Deskripsi, x.DetailLayanan, x.InstansiId, x.Layanan, x.Tanggal }, penanganan, x => x.IdPenanganan == penanganan.IdPenanganan);
                                 }
                             }
-
-
                         }
 
 
                     if (item.Terlapor != null)
                         foreach (var data in item.Terlapor)
                         {
-                            if (data.Id ==null)
+                            if (data.Id == null)
                             {
                                 data.PengaduanId = item.Id.Value;
                                 data.Id = db.DataTerlapor.InsertAndGetLastID(data);
@@ -222,20 +258,20 @@ namespace Main.DataAccess
                                 }, data, x => x.Id == data.Id);
                             }
 
-                            foreach( var hub in data.Hubungan)
+                            foreach (var hub in data.Hubungan)
                             {
-                                if(hub.Id==null)
+                                if (hub.Id == null)
                                 {
                                     hub.TerlaporId = data.Id;
-                                    if(hub.KorbanId==null)
+                                    if (hub.KorbanId == null)
                                     {
                                         var korban = item.Korban.Where(x => x.Nama == hub.Korban.Nama).FirstOrDefault();
-                                        if(korban!=null)
+                                        if (korban != null)
                                         {
                                             hub.KorbanId = korban.Id;
                                         }
                                     }
-                                   int? hubId= db.DataHubungan.InsertAndGetLastID(hub);
+                                    int? hubId = db.DataHubungan.InsertAndGetLastID(hub);
                                     if (hubId > 0)
                                         hub.Id = hubId;
                                     else
@@ -244,7 +280,7 @@ namespace Main.DataAccess
                                 }
                                 else
                                 {
-                                    if(!db.DataHubungan.Update(x=> new {x.JenisHubungan, x.KorbanId},hub, x=>x.Id==hub.Id && x.TerlaporId==data.Id))
+                                    if (!db.DataHubungan.Update(x => new { x.JenisHubungan, x.KorbanId }, hub, x => x.Id == hub.Id && x.TerlaporId == data.Id))
                                         throw new SystemException("Data Hubungan Tidak Tersimpan");
                                 }
                             }
@@ -264,7 +300,7 @@ namespace Main.DataAccess
                         }
 
 
-                    if(item.Pelapor.Id==null)
+                    if (item.Pelapor.Id == null)
                     {
                         item.Pelapor.PengaduanId = item.Id.Value;
                         item.Pelapor.Id = db.DataPelapor.InsertAndGetLastID(item.Pelapor);
@@ -273,12 +309,12 @@ namespace Main.DataAccess
                     }
                     else
                     {
-                        if(!db.DataPelapor.Update(x => new { x.Alamat, x.Gender, x.Nama }, item.Pelapor, x => x.Id == item.Pelapor.Id))
+                        if (!db.DataPelapor.Update(x => new { x.Alamat, x.Gender, x.Nama }, item.Pelapor, x => x.Id == item.Pelapor.Id))
                             throw new SystemException("Data Pelapor Tidak Tersimpan");
                     }
-                    
-                    
-                    if(item.Kondisi.Id==null)
+
+
+                    if (item.Kondisi.Id == null)
                     {
                         item.Kondisi.PengaduanId = item.Id.Value;
                         item.Kondisi.Id = db.DataKondisiKorban.InsertAndGetLastID(item.Kondisi);
@@ -288,12 +324,12 @@ namespace Main.DataAccess
                     }
                     else
                     {
-                        if(!db.DataKondisiKorban.Update(x => new {x.Fisik,x.Psikis,x.PsikisText,x.Sex,x.SexText },item.Kondisi,x=>x.Id==item.Kondisi.Id))
+                        if (!db.DataKondisiKorban.Update(x => new { x.Fisik, x.Psikis, x.PsikisText, x.Sex, x.SexText }, item.Kondisi, x => x.Id == item.Kondisi.Id))
                             throw new SystemException("Data Kondisi Korban Tidak Tersimpan");
 
                     }
 
-                    if(item.Dampak.Id==null)
+                    if (item.Dampak.Id == null)
                     {
                         item.Dampak.PengaduanId = item.Id.Value;
                         item.Dampak.Id = db.DataDampak.InsertAndGetLastID(item.Dampak);
@@ -303,15 +339,14 @@ namespace Main.DataAccess
                     }
                     else
                     {
-
-                        if (!db.DataDampak.Update(x => new { x.Fisik, x.Psikis, x.Ekonomi, x.Kesehatan, x.Lain,x.Seksual }, item.Dampak, x => x.Id == item.Dampak.Id))
+                        if (!db.DataDampak.Update(x => new { x.Fisik, x.Psikis, x.Ekonomi, x.Kesehatan, x.Lain, x.Seksual }, item.Dampak, x => x.Id == item.Dampak.Id))
                             throw new SystemException("Data Dampak Yang Dialami Korban Tidak Tersimpan");
 
                     }
-
-
                     trans.Commit();
-                    this.list.Add(item);
+                    DeleteKorban(item.Id, item.Korban);
+                    DeleteTerlapor(item.Id, item.Terlapor);
+                    return true;
                 }
                 catch (Exception ex)
                 {
@@ -323,6 +358,42 @@ namespace Main.DataAccess
 
         }
 
+        private Task DeleteKorban(int? id, List<Korban> korbans)
+        {
+            using (var db = new DbContext())
+            {
+                var result = db.DataKorban.Where(x => x.PengaduanId == id);
+                foreach(var  item in result)
+                {
+                    var korban = korbans.Where(x => x.Id == item.Id).FirstOrDefault();
+                    if(korban==null)
+                    {
+                        db.DataKorban.Delete(x => x.Id == item.Id);
+                    }
+                }
+            }
+
+            return Task.FromResult(0);
+        }
+
+
+        private Task DeleteTerlapor(int? id, List<Terlapor> terlapors)
+        {
+            using (var db = new DbContext())
+            {
+                var result = db.DataTerlapor.Where(x => x.PengaduanId == id);
+                foreach (var item in result)
+                {
+                    var korban = terlapors.Where(x => x.Id == item.Id).FirstOrDefault();
+                    if (korban == null)
+                    {
+                        db.DataTerlapor.Delete(x => x.Id == item.Id);
+                    }
+                }
+            }
+
+            return Task.FromResult(0);
+        }
 
 
         public bool Update(Pengaduan item)
@@ -524,7 +595,7 @@ namespace Main.DataAccess
 
         public int IndexOf(Pengaduan item)
         {
-            throw new NotImplementedException();
+            return list.IndexOf(item);
         }
 
         public void Insert(int index, Pengaduan item)
@@ -534,14 +605,66 @@ namespace Main.DataAccess
 
         public bool Remove(Pengaduan item)
         {
-            try
+            using (var db = new DbContext())
             {
-                list.Remove(item);
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
+                var trans = db.BeginTransaction();
+                try
+                {
+                    if(item!=null)
+                    {
+                        foreach (var data in item.Terlapor)
+                        {
+                            if (!db.DataHubungan.Delete(x => x.TerlaporId == data.Id))
+                                throw new SystemException("Data tidak berhasil di hapus !");
+
+
+                            if(db.Penanganan.Where(x => x.IdentiasId == data.Id && x.IdentitasType == "Terlapor").FirstOrDefault()!=null && 
+                                !db.Penanganan.Delete(x => x.IdentiasId == data.Id && x.IdentitasType == "Terlapor"))
+                                throw new SystemException("Data Penangan Terlapor Tidak Berhasil di hapus");
+
+                            if(!db.DataTerlapor.Delete(x=>x.Id == data.Id))
+                                throw new SystemException("Data Terlapor Tidak Berhasil di hapus");
+
+                        }
+
+                        foreach (var data in item.Korban)
+                        {
+                            if (db.Penanganan.Where(x => x.IdentiasId == data.Id && x.IdentitasType == "Korban").FirstOrDefault() != null && 
+                                !db.Penanganan.Delete(x => x.IdentiasId == data.Id && x.IdentitasType == "Korban"))
+                                throw new SystemException("Data Penanganan Korban Tidak Berhasil di hapus");
+
+                            if (!db.DataKorban.Delete(x => x.Id == data.Id))
+                                throw new SystemException("Data Korban Tidak Berhasil di hapus");
+
+                        }
+
+                        if(!db.DataKondisiKorban.Delete(x=>x.PengaduanId==item.Id))
+                            throw new SystemException("Data Kondisi Korban Tidak Berhasil di hapus");
+
+                        if(!db.DataDampak.Delete(x=>x.PengaduanId==item.Id))
+                            throw new SystemException("Data Dampak Yang Dialami korban Korban Tidak Berhasil di hapus");
+
+
+                        if(!db.DataPengaduan.Delete(x=>x.Id==item.Id))
+                            throw new SystemException("Data Pengaduan Tidak Berhasil di hapus");
+
+                        trans.Commit();
+                        list.Remove(item);
+                        if (OnChange != null)
+                            OnChange(true);
+                        return true;
+                    }
+                    else
+                    {
+                        throw new SystemException("Data tidak ditemukan");
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    trans.Rollback();
+                    throw new SystemException(ex.Message);
+                }
             }
         }
 

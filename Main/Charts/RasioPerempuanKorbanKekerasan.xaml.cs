@@ -47,14 +47,31 @@ namespace Main.Charts
             {
                 var model = new GrafikModel { Kategori = kec.Nama, Series = kec.Nama };
                 var kasus = groupPengaduan.Where(x => x.Key == kec.Id).FirstOrDefault();
+
+               
+
                 if (kasus != null)
                 {
                     var kasusPerem = (from a in kasus
-                                     from korban in a.Korban where korban.Gender == Gender.P select korban).Count();
-                    rasio.Add((Convert.ToDouble(100000/kec.Perempuan)/ kasusPerem));
-                    jumlahKorbanPerempuan.Add(kasusPerem);
-                    model.Nilai = (Convert.ToDouble(100000 / kec.Perempuan) / kasusPerem);
-                    model.Nilai2 = kasusPerem;
+                                      from korban in a.Korban
+                                      where korban.Gender == Gender.P
+                                      select korban).Count();
+
+                    if(kasusPerem>0)
+                    {
+                        var data = (Convert.ToDouble(100000 / kec.Perempuan) / kasusPerem);
+                        rasio.Add(Math.Round(data,2));
+                        jumlahKorbanPerempuan.Add(kasusPerem);
+                        model.Nilai = Math.Round(data, 2);
+                        model.Nilai2 = kasusPerem;
+                    }
+                    else
+                    {
+                        rasio.Add(0);
+                        jumlahKorbanPerempuan.Add(0);
+                        model.Nilai = 0;
+                        model.Nilai2 = 0;
+                    }
                 }
                 else
                 {

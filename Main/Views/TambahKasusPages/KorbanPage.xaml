@@ -4,47 +4,80 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="850"
       xmlns:main="clr-namespace:Main"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
-     TextElement.FontSize="13"
+     TextElement.FontSize="13" 
      TextOptions.TextFormattingMode="Ideal"
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
-     FontFamily="{DynamicResource MaterialDesignFont}"
+     FontFamily="{DynamicResource MaterialDesignFont}" 
       Title="KorbanPage">
     <Page.Resources>
         <main:EnumToBoolConverter x:Key="EBConverter"/>
+        <Style x:Key="dg" TargetType="DataGrid">
+            <Setter Property="Background" Value="#A6B1E1"/>
+            <Setter Property="RowHeaderWidth" Value="0"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+        </Style>
+        
+        <Style x:Key="dgChild" TargetType="DataGrid">
+            <Setter Property="Background" Value="#E8CCBF"/>
+            <Setter Property="RowHeaderWidth" Value="0"/>
+            <Setter Property="BorderThickness" Value="0.5"/>
+            <Setter Property="Margin" Value="30,0,0,5"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Visible"/>
+        </Style>
+        
+        <Style x:Key="dgrow" TargetType="DataGridRow">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Background" Value="#817E9F"/>
+        </Style>
+        <Style TargetType="DataGridCell" BasedOn="{StaticResource ResourceKey={x:Type DataGridCell}}">
+            <Style.Triggers>
+                <Trigger Property="DataGridCell.IsSelected" Value="True">
+                    <Setter Property="Background" Value="#CACFD6" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="exp" TargetType="Expander" BasedOn="{StaticResource ResourceKey={x:Type Expander}}">
+            <Setter Property="Background" Value="#424874"/>
+            <Setter Property="IsExpanded" Value="True"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
     </Page.Resources>
-    <Grid VerticalAlignment="Top">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="50*"/>
-        </Grid.RowDefinitions>
-        <GroupBox Grid.Row="0"  Margin="20"  VerticalAlignment="Top">
-            <GroupBox.HeaderTemplate>
-                <DataTemplate>
-                    <Grid Margin="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80*"/>
-                            <ColumnDefinition Width="20*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Width="auto" Content="Korban" HorizontalAlignment="Left" Foreground="White"/>
-                        <WrapPanel HorizontalAlignment="Right" Grid.Column="1">
-                            <Button Click="addkorban"  Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Width="25" Height="25">
-                                <materialDesign:PackIcon
+    <StackPanel VerticalAlignment="Top">
+        <Expander Style="{StaticResource ResourceKey=exp}" >
+            <Expander.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80*"/>
+                        <ColumnDefinition Width="20*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Width="auto" Content="Korban" FontSize="20" HorizontalAlignment="Left" Foreground="White"/>
+                    <WrapPanel HorizontalAlignment="Right" Grid.Column="1">
+                        <Button Click="addkorban"  Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+                                Width="25" Height="25">
+                            <materialDesign:PackIcon
                                 Kind="Add"
                                 Height="24"
-                                Width="24" />               
-                            </Button>
-                        </WrapPanel>
-                    </Grid>
-                </DataTemplate>
-            </GroupBox.HeaderTemplate>
-            <DataGrid ItemsSource="{Binding Korbans}" RowDetailsVisibilityMode="Visible" SelectionMode="Single" CanUserAddRows="False" 
-                      CanUserDeleteRows="False" IsReadOnly="True" AutoGenerateColumns="False">
+                                Width="24" />
+                        </Button>
+                    </WrapPanel>
+                </Grid>
+            </Expander.Header>
+            <DataGrid ItemsSource="{Binding Korbans}"
+                      RowDetailsVisibilityMode="Visible" SelectionMode="Single" CanUserAddRows="False" 
+                      CanUserDeleteRows="False" IsReadOnly="True"
+                      AutoGenerateColumns="False" 
+                       Style="{StaticResource ResourceKey=dg}" 
+                      RowStyle="{StaticResource ResourceKey=dgrow}">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Action"  >
                         <DataGridTemplateColumn.CellTemplate>
@@ -72,7 +105,6 @@
                     <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding Suku}"/>
                     <DataGridTextColumn Width="auto" Header="Kekerasan" Binding="{Binding KekerasanDialami}"/>
                     <DataGridTextColumn Header="Alamat"  Binding="{Binding Alamat}"/>
-                  
                 </DataGrid.Columns>
                 <DataGrid.RowDetailsTemplate>
                     <DataTemplate>
@@ -81,7 +113,12 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <DataGrid  RowBackground="#FFA49BB4" SelectionMode="Single" Margin="50,0,30,10" Grid.Row="0"  ItemsSource="{Binding DataPenanganan}" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+                            <DataGrid   SelectionMode="Single" 
+                                       Grid.Row="0"  
+                                       ItemsSource="{Binding DataPenanganan}" 
+                                       AutoGenerateColumns="False" CanUserAddRows="False" 
+                                       CanUserDeleteRows="False" Style="{StaticResource ResourceKey=dgChild}"
+                                       >
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Action">
                                         <DataGridTemplateColumn.CellTemplate>
@@ -110,28 +147,29 @@
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
             </DataGrid>
-        </GroupBox>
-        <GroupBox Grid.Row="1" Header="Pelaku" VerticalAlignment="Stretch">
-            <GroupBox.HeaderTemplate>
-                <DataTemplate>
-                    <Grid Margin="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="80*"/>
-                            <ColumnDefinition Width="20*"/>
-                        </Grid.ColumnDefinitions>
-                        <Label Width="auto" Content="Pelaku" HorizontalAlignment="Left" Foreground="White"/>
-                        <WrapPanel Grid.Column="1" HorizontalAlignment="Right">
-                            <Button Click="addpelaku_Click"  Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Width="30" Height="30" >
-                                <materialDesign:PackIcon
+
+        </Expander>
+        <Expander Style="{StaticResource ResourceKey=exp}" >
+            <Expander.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80*"/>
+                        <ColumnDefinition Width="20*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Width="auto" Content="Pelaku"  FontSize="20"  HorizontalAlignment="Left" Foreground="White"/>
+                    <WrapPanel Grid.Column="1" HorizontalAlignment="Right">
+                        <Button Click="addpelaku_Click"  Style="{StaticResource MaterialDesignFloatingActionAccentButton}" Width="30" Height="30" >
+                            <materialDesign:PackIcon
                                 Kind="Add"
                                 Height="24"
                                 Width="24" />
-                            </Button>
-                        </WrapPanel>
-                    </Grid>
-                </DataTemplate>
-            </GroupBox.HeaderTemplate>
-            <DataGrid ItemsSource="{Binding Terlapors}" RowDetailsVisibilityMode="Visible" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
+                        </Button>
+                    </WrapPanel>
+                </Grid>
+            </Expander.Header>
+            <DataGrid  Style="{StaticResource dg}" RowStyle="{DynamicResource ResourceKey=dgrow}"
+                       ItemsSource="{Binding Terlapors}" RowDetailsVisibilityMode="Visible"
+                       AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Action"  >
                         <DataGridTemplateColumn.CellTemplate>
@@ -157,8 +195,7 @@
                     <DataGridTextColumn Width="100" Header="Agama" Binding="{Binding Agama}"/>
                     <DataGridTextColumn Width="150" Header="Pendidikan" Binding="{Binding Pendidikan}"/>
                     <DataGridTextColumn Width="100" Header="Suku" Binding="{Binding Suku}"/>
-                    <DataGridTextColumn Width="auto" Header="Hubungan" Binding="{Binding HubunganText}"/>
-                    <DataGridTemplateColumn Width="auto" Header=":">
+                    <DataGridTemplateColumn Width="auto" Header="">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <materialDesign:PopupBox   StaysOpen="True" IsEnabled="True">
@@ -168,9 +205,9 @@
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
                                         <StackPanel>
-                                            <Label Content="Hubungan Dengan Korban"/>
+                                            <Label HorizontalAlignment="Left" Content="Hubungan Dengan Korban"/>
                                         </StackPanel>
-                                        <DataGrid Grid.Row="1" ItemsSource="{Binding Hubungan}" 
+                                        <DataGrid  Style="{StaticResource dgChild}" Margin="10" Grid.Row="1" ItemsSource="{Binding Hubungan}" 
                                                   AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="Nama Korban" Binding="{Binding Korban.Nama}"/>
@@ -190,6 +227,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
+                    <DataGridTextColumn Width="auto" Header="Hubungan" Binding="{Binding HubunganText}"/>
                     <DataGridTextColumn Header="Alamat" Width="*" Binding="{Binding Alamat}"/>
                 </DataGrid.Columns>
                 <DataGrid.RowDetailsTemplate>
@@ -199,7 +237,8 @@
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <DataGrid RowBackground="#FFA49BB4" SelectionMode="Single" Margin="50,0,30,10" Grid.Row="0"  ItemsSource="{Binding DataPenanganan}" 
+                            <DataGrid Style="{StaticResource ResourceKey=dgChild}" RowStyle="{StaticResource ResourceKey=dgrow}" SelectionMode="Single" 
+                                      ItemsSource="{Binding DataPenanganan}" 
                                       AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
                                 <DataGrid.Columns>
                                     <DataGridTemplateColumn Header="Action">
@@ -224,13 +263,14 @@
                                     <DataGridTextColumn Header="Jenis Layanan" Binding="{Binding DetailLayanan}"/>
                                     <DataGridTextColumn  Header="Deskripsi" Binding="{Binding Deskripsi}"/>
                                 </DataGrid.Columns>
-                              
+
                             </DataGrid>
                         </Grid>
                     </DataTemplate>
                 </DataGrid.RowDetailsTemplate>
-              
+
             </DataGrid>
-        </GroupBox>
-    </Grid>
+
+        </Expander>
+    </StackPanel>
 </Page>
