@@ -6,22 +6,21 @@ using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Controls;
 
 namespace Main.Charts
 {
     /// <summary>
-    /// Interaction logic for RasioPerempuanKorbanKekerasan.xaml
+    /// Interaction logic for RasioAnakKorbanKekerasan.xaml
     /// </summary>
-    public partial class RasioPerempuanKorbanKekerasan : ChartMaster
+    public partial class RasioAnakKorbanKekerasan : ChartMaster
     {
-        public RasioPerempuanKorbanKekerasan()
+        public RasioAnakKorbanKekerasan()
         {
             InitializeComponent();
             this.RefreshChartCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = RefreshAction };
             this.PrintCommand = new CommandHandler { CanExecuteAction = x => true, ExecuteAction = PrintAction };
             this.RefreshChartCommand.Execute(null);
-            Title = "Rasio Perempuan Korban Kekerasan";
+            Title = "Rasio Anak Korban Kekerasan";
             this.DataContext = this;
         }
         public CommandHandler PrintCommand { get; }
@@ -41,50 +40,43 @@ namespace Main.Charts
             var groupPengaduan = DataAccess.DataBasic.DataPengaduan.GroupBy(x => x.KodeDistrik);
 
             List<double> rasio = new List<double>();
-            List<double> jumlahKorbanPerempuan = new List<double>();
+            List<double> jumlahKorbanAnak = new List<double>();
             datgrafirk.Clear();
             foreach (var kec in dataKec)
             {
                 var model = new GrafikModel { Kategori = kec.Nama, Series = kec.Nama };
                 var kasus = groupPengaduan.Where(x => x.Key == kec.Id).FirstOrDefault();
 
-               
-
                 if (kasus != null)
                 {
-                    double kasusPerem = (from a in kasus
-                                      from korban in a.Korban
-                                      where korban.Gender == Gender.P
-                                      select korban).Count();
+                    var listkasusAnak = (from p in kasus
+                                     from korban in p.Korban
+                                     where korban.TanggalLahir != null
+                                     let age = p.TanggalLapor.Value.Year - korban.TanggalLahir.Year
+                                     group p by
+                                        age < 18 ? "Anak" :"Dewasa" into ages
+                                     select new { Age = ages.Key, Persons = ages });
 
-                    if(kasusPerem>0)
-                    {
-                        double data = (Convert.ToDouble(kasusPerem / kec.Perempuan)* 10000);
-                        rasio.Add(Math.Round(data,2));
-                        jumlahKorbanPerempuan.Add(kasusPerem);
-                        model.Nilai = Math.Round(data, 2);
-                        model.Nilai2 = kasusPerem;
-                    }
-                    else
-                    {
-                        rasio.Add(0);
-                        jumlahKorbanPerempuan.Add(0);
-                        model.Nilai = 0;
-                        model.Nilai2 = 0;
-                    }
+
+                    Double kasusAnak = listkasusAnak.Where(x => x.Age == "Anak").Count();
+                    var total = kasusAnak + listkasusAnak.Where(x => x.Age == "Dewasa").Count();
+                    double data = (Convert.ToDouble((kasusAnak / kec.Total)*1000));
+                    rasio.Add(Math.Round(data, 2));
+                    jumlahKorbanAnak.Add(kasusAnak);
+                    model.Nilai = Math.Round(data, 2);
+                    model.Nilai2 = kasusAnak;
                 }
                 else
                 {
                     rasio.Add(0);
-                    jumlahKorbanPerempuan.Add(0);
-                    model.Nilai =0;
-                    model.Nilai2 =0;
+                    jumlahKorbanAnak.Add(0);
+                    model.Nilai = 0;
+                    model.Nilai2 = 0;
                 }
 
                 datgrafirk.Add(model);
 
             }
-
             SeriesCollection = new SeriesCollection
             {
                 new LineSeries
@@ -94,8 +86,8 @@ namespace Main.Charts
                 },
                   new ColumnSeries
                 {
-                    Title = "Jumlah Korban Perempuan",
-                    Values = new ChartValues<double>(jumlahKorbanPerempuan)
+                    Title = "Jumlah Korban Anak",
+                    Values = new ChartValues<double>(jumlahKorbanAnak)
                 }
             };
 
@@ -103,6 +95,5 @@ namespace Main.Charts
             //new[] { "Jan", "Feb", "Mar", "Apr", "May" };
             //YFormatter = value => value.ToString("C");
         }
-
     }
 }

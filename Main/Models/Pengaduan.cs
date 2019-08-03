@@ -164,7 +164,6 @@ namespace Main.Models
                 string error =
                     me[GetPropertyName(() => KodeDistrik)] +
                     me[GetPropertyName(() => Nomor)] +
-                    me[GetPropertyName(() => Rujukan)] +
                     me[GetPropertyName(() => WaktuLapor)] +
                     me[GetPropertyName(() => TanggalLapor)] +
                     me[GetPropertyName(() => Penerima)] +
@@ -185,11 +184,6 @@ namespace Main.Models
 
             if (name == "Nomor" && string.IsNullOrEmpty(Nomor))
                 return "Nomor Tidak Boleh Kosong";
-
-            if (name == "Rujukan" && string.IsNullOrEmpty(Rujukan))
-                return "Rujukan Tidak Boleh Kosong";
-
-           
 
             if (name == "Tanggal" && new DateTime() == TanggalLapor)
                 return "Tanggal Tidak Boleh Kosong";

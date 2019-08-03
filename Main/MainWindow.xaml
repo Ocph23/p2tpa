@@ -50,6 +50,7 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Grid MinHeight="100" >
                             <Grid.ColumnDefinitions>
@@ -140,6 +141,9 @@
                         <materialDesign:Card Padding="20" Margin="3" Grid.Row="2" >
                             <Charts:RasioPerempuanKorbanKekerasan x:Name="ratioChart" />
                         </materialDesign:Card>
+                        <materialDesign:Card Padding="20" Margin="3" Grid.Row="3" >
+                            <Charts:RasioAnakKorbanKekerasan x:Name="ratioAnakChart" />
+                        </materialDesign:Card>
                         <Grid MinHeight="100" Grid.Row="4" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
@@ -178,8 +182,20 @@
                                 <Charts:KorbanBerdasarkanPendidikan></Charts:KorbanBerdasarkanPendidikan>
                             </materialDesign:Card>
                         </Grid>
-
                         <Grid MinHeight="100" Grid.Row="7" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:Card Padding="20" Margin="3" Grid.Column="0"  >
+                                <Charts:LaporLangsung></Charts:LaporLangsung>
+                            </materialDesign:Card>
+                            <materialDesign:Card Grid.Column="1" Padding="20"  Margin="3"   >
+                                <Charts:LayananYangDiberikanKeKorban></Charts:LayananYangDiberikanKeKorban>
+                            </materialDesign:Card>
+                        </Grid>
+
+                        <Grid MinHeight="100" Grid.Row="8" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>

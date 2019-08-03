@@ -175,6 +175,12 @@
     <Compile Include="Charts\KorbanMenurutBanyaknyaKekerasanyangDialami.xaml.cs">
       <DependentUpon>KorbanMenurutBanyaknyaKekerasanyangDialami.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Charts\LaporLangsung.xaml.cs">
+      <DependentUpon>LaporLangsung.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\LayananYangDiberikanKeKorban.xaml.cs">
+      <DependentUpon>LayananYangDiberikanKeKorban.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Charts\PelakuBerdasarkanHubungan.xaml.cs">
       <DependentUpon>PelakuBerdasarkanHubungan.xaml</DependentUpon>
     </Compile>
@@ -186,6 +192,9 @@
     </Compile>
     <Compile Include="Charts\ProyeksiTerhadapPendduk.xaml.cs">
       <DependentUpon>ProyeksiTerhadapPendduk.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Charts\RasioAnakKorbanKekerasan.xaml.cs">
+      <DependentUpon>RasioAnakKorbanKekerasan.xaml</DependentUpon>
     </Compile>
     <Compile Include="Charts\RasioPerempuanKorbanKekerasan.xaml.cs">
       <DependentUpon>RasioPerempuanKorbanKekerasan.xaml</DependentUpon>
@@ -368,6 +377,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Charts\LaporLangsung.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\LayananYangDiberikanKeKorban.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Charts\PelakuBerdasarkanHubungan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -381,6 +398,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Charts\ProyeksiTerhadapPendduk.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Charts\RasioAnakKorbanKekerasan.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
