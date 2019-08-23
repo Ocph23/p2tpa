@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Main.Views"
-        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
         Title="AddInstansi" Height="502.273" Width="726.136">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -22,6 +23,10 @@
                     <WrapPanel>
                         <Label Content="Kategori"></Label>
                         <ComboBox ItemsSource="{Binding DataKategori}" Text="{Binding Kategori}"></ComboBox>
+                        <Button Margin="10,3" HorizontalAlignment="Right"  Command="{Binding AddCategoryCommand}" Width="20" Height="20" 
+                            Style="{StaticResource MaterialDesignFloatingActionAccentButton}" ToolTip="MaterialDesignFloatingActionAccentButton">
+                            <materialDesign:PackIcon Kind="Add" Height="15" Width="15" />
+                        </Button>
                     </WrapPanel>
                     <WrapPanel>
                         <Label Content="Tingkat"></Label>

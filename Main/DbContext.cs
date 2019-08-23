@@ -19,12 +19,11 @@ namespace Main
         {
             try
             {
-
                 this.Open();
             }
             catch (Exception)
             {
-
+                
             }
         }
 
@@ -36,8 +35,8 @@ namespace Main
         public IRepository<KondisiKorban> DataKondisiKorban { get { return new Repository<KondisiKorban>(this); } }
         public IRepository<Instansi> Instansi { get { return new Repository<Instansi>(this); } }
         public IRepository<Penanganan> Penanganan { get { return new Repository<Penanganan>(this); } }
-
         public IRepository<HubunganDenganKorban> DataHubungan{ get { return new Repository<HubunganDenganKorban>(this); } }
+        public  IRepository<KategoriInstansi> KategoriInstansi { get { return new Repository<KategoriInstansi>(this); } }
 
 
     }

@@ -1,0 +1,34 @@
+﻿<Window x:Class="Main.Views.KategoriView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Main.Views"
+        mc:Ignorable="d"
+        Title="KategoriView" Height="300.312" Width="453.847">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <GroupBox Grid.Row="0" Header="Tambah/Edit Kategori">
+            <ScrollViewer >
+                <StackPanel   Background="White">
+                    <WrapPanel>
+                        <Label Content="Nama" Width="82"></Label>
+                        <TextBox  Text="{Binding Name,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}" Width="253"></TextBox>
+                    </WrapPanel>
+                    <WrapPanel>
+                        <Label Content="Kode" Width="82"></Label>
+                        <TextBox  Text="{Binding Name,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay,ValidatesOnDataErrors=True}" Width="253"></TextBox>
+                    </WrapPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </GroupBox>
+        <WrapPanel Grid.Row="1" HorizontalAlignment="Right">
+            <Button Margin="2" Width="100" Command="{Binding SaveCommand}" Content="OK" ></Button>
+            <Button Margin="2" Width="100" Command="{Binding CancelCommand}" Content="Batal" Style="{StaticResource MaterialDesignRaisedAccentButton}" ></Button>
+        </WrapPanel>
+    </Grid>
+</Window>

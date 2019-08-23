@@ -111,7 +111,7 @@ namespace Main.Models
             if (name == "Name" && string.IsNullOrEmpty(Name))
                 return $"{name} Tidak Boleh Kosong";
 
-            if (name == "Kategori" && Kategori == KategoriInstansi.None)
+            if (name == "Kategori" && Kategori == null)
                 return $"{name} Tidak Boleh Kosong";
 
 

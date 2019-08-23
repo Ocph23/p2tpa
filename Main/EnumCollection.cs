@@ -51,11 +51,6 @@ namespace Main
     }
 
 
-    public enum KategoriInstansi
-    {
-        None , DPPPA, P2TP2A, Kepolisian, Kesehatan, Lapas, Sosial,  Lainnya
-    }
-
     public enum TingakatInstansi
     {
         None, Propinsi, Kabupaten, Distrik

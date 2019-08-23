@@ -3,6 +3,7 @@ using Main.Models;
 using Main.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,16 +34,52 @@ namespace Main.Views
     {
         public AddInstansiViewModel()
         {
-            DataKategori = Enum.GetValues(typeof(KategoriInstansi));
+            Load();
+        }
+
+        private void Load()
+        {
             DataTingkat = Enum.GetValues(typeof(TingakatInstansi));
             SaveCommand = new CommandHandler() { CanExecuteAction = x => string.IsNullOrEmpty(Error), ExecuteAction = SaveAction };
+            AddCategoryCommand = new CommandHandler() { CanExecuteAction = x => true, ExecuteAction = AddCategoryAction };
+            SourceKategori = GetDataKategori();
+            DataKategori = (CollectionView)CollectionViewSource.GetDefaultView(SourceKategori);
+        }
+
+        private void AddCategoryAction(object obj)
+        {
+            var form = new KategoriView(this.Kategori);
+            form.ShowDialog();
+            var vm = form.DataContext as KategoriViewModel;
+            if(vm!=null && vm.SelectedModel!=null)
+            {
+                var data = SourceKategori.Where(x => x.Id == vm.SelectedModel.Id).FirstOrDefault();
+                if(data!=null)
+                {
+                    data.Name = vm.SelectedModel.Name;
+                    data.Code = vm.SelectedModel.Code;
+                }
+                else
+                {
+                    SourceKategori.Add(vm.SelectedModel);
+                }
+            }
+
+            DataKategori.Refresh();
+        }
+
+        private ObservableCollection<KategoriInstansi> GetDataKategori()
+        {
+            using (var db = new DbContext())
+            {
+                var result= db.KategoriInstansi.Select();
+                return new ObservableCollection<KategoriInstansi>(result);
+            }
         }
 
         public AddInstansiViewModel(Instansi instansi)
         {
-            DataKategori = Enum.GetValues(typeof(KategoriInstansi));
-            DataTingkat = Enum.GetValues(typeof(TingakatInstansi));
-            SaveCommand = new CommandHandler() { CanExecuteAction = x => string.IsNullOrEmpty(Error), ExecuteAction = SaveAction };
+            Load();
             this.Id = instansi.Id;
             this.Name = instansi.Name;
             this.DistrikName = instansi.DistrikName;
@@ -68,10 +105,12 @@ namespace Main.Views
             }
         }
 
-        public Array DataKategori { get; }
-        public Array DataTingkat { get; }
-        public CommandHandler SaveCommand { get; }
+        public CollectionView DataKategori { get; set; }
+        public ObservableCollection<KategoriInstansi> SourceKategori { get; set; }
+        public Array DataTingkat { get; set; }
+        public CommandHandler SaveCommand { get; set; }
+        public CommandHandler AddCategoryCommand { get; set; }
         public List<Kecamatan> DataKecamatan { get; set; } = DataBasic.GetKecamatan();
-        public Action WindowClose { get; internal set; }
+        public Action WindowClose { get;  set; }
     }
 }

@@ -403,7 +403,7 @@ namespace Main.DataAccess
                         break;
                     instansi.Name = nama;
 
-                    KategoriInstansi kategori;
+                   /* KategoriInstansi kategori;
                     var success = Enum.TryParse<KategoriInstansi>(rngPengaduan.Cell(row, "B"), out kategori);
                     if (!success)
                         break;
@@ -416,7 +416,7 @@ namespace Main.DataAccess
                         break;
 
                     instansi.Tingkat = tingkat;
-                    instansi.Alamat = rngPengaduan.Cell(row, "D");
+                    instansi.Alamat = rngPengaduan.Cell(row, "D");*/
 
                     var isFound = DataAccess.DataBasic.DataInstansi.Where(x => x.Name.ToLower() == nama.ToLower()).FirstOrDefault();
                     if (isFound == null)

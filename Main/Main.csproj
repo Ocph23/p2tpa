@@ -213,6 +213,7 @@
       <DependentUpon>Flash.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\HubunganDenganKorban.cs" />
+    <Compile Include="Models\KategoriInstansi.cs" />
     <Compile Include="Models\Kecamatan.cs" />
     <Compile Include="Models\Korban.cs" />
     <Compile Include="Models\Pelapor.cs" />
@@ -265,6 +266,9 @@
     </Compile>
     <Compile Include="Views\InstansiView.xaml.cs">
       <DependentUpon>InstansiView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\KategoriView.xaml.cs">
+      <DependentUpon>KategoriView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TambahKasusPages\AddKorbanView.xaml.cs">
       <DependentUpon>AddKorbanView.xaml</DependentUpon>
@@ -466,6 +470,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\InstansiView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\KategoriView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
